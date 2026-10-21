@@ -207,6 +207,7 @@ html[lang=en] label.f.unsure::after{content:"To review — unclear handwriting"}
 #toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--wood);color:#fbefd6;padding:10px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:20;max-width:90vw}
 textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-size:.8rem;direction:ltr;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)}
 .keybox{display:grid;gap:8px;text-align:right}.keybox h3{margin:0;text-align:center}.keybox .small{line-height:1.7}.reccode{font:700 20px monospace;letter-spacing:1px;background:#fff8e6;border:2px dashed #c9a227;border-radius:8px;padding:12px;text-align:center;user-select:all;color:#222}
+.pwlinks{font-size:13px;text-align:center}.pwlinks a{color:inherit;text-decoration:underline;cursor:pointer}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spin{animation:none}}
@@ -223,7 +224,7 @@ textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;fon
     <h1>מערכת קבלת קהל</h1>
     <p>מרכז חסידי ביאלא בני ברק</p>
     <div id="gLogin" hidden class="gwrap"><div id="gBtn"></div><div id="gMsg" class="or"></div></div>
-    <div id="emailWrap" hidden style="display:grid;gap:8px"><div class="or">או עם מייל וסיסמה</div><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"></div>
+    <div id="emailWrap" hidden style="display:grid;gap:8px"><div class="or">או עם מייל וסיסמה</div><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"><div class="pwlinks"><a href="#" id="pwFirst">כניסה ראשונה? בחירת סיסמה</a> · <a href="#" id="pwForgot">שכחתי סיסמה</a></div></div>
     <input id="pw" type="password" placeholder="סיסמת כניסה" aria-label="סיסמה" autocomplete="current-password">
     <select id="gabbaiSel" aria-label="מי נכנס"></select>
     <button class="btn gold" type="submit">כניסה</button>
@@ -342,7 +343,7 @@ const I18N={
 'ינואר':'January','פברואר':'February','מרץ':'March','אפריל':'April','מאי':'May','יוני':'June','יולי':'July','אוגוסט':'August','ספטמבר':'September','אוקטובר':'October','נובמבר':'November','דצמבר':'December',
 /* הוראות וניהול */
 'את ההוראות אפשר לערוך בלשונית "ניהול".':'The instructions can be edited in the "Management" tab.','נעל ניהול':'Lock management','סיסמאות':'Passwords','איזו סיסמה':'Which password','כניסה למערכת':'System login',
-'סיסמה חדשה':'New password','🔓 המחשב הזה ממתין לפתיחה':'🔓 This computer is waiting to be opened','בדוק עכשיו':'Check now','יש לי את מפתח הארגון':'I have the organization key','אין לי מפתח – לחכות לפתיחה אוטומטית':'I have no key – wait for automatic opening','עדיין לא נפתח. המחשב ייפתח כשמנהל ייכנס למערכת.':'Not opened yet. The computer will open when a manager signs in.','פתיחת גישה למחשב':'Opened access for a computer','🔑 קביעת מפתח הארגון':'🔑 Set the organization key','🔑 מפתח הארגון':'🔑 Organization key','🧾 קוד שחזור':'🧾 Recovery code','🧾 שחזור עם קוד':'🧾 Restore with a code','מפתח הארגון':'Organization key','שוב, לאימות':'Again, to confirm','קבע מפתח והמשך':'Set key and continue','פתח':'Open','שחזר':'Restore','חזרה':'Back','שכחתי את המפתח – יש לי קוד שחזור':'I forgot the key – I have a recovery code','מפתח ארגון חדש':'New organization key','העתקה':'Copy','הדפסה':'Print','שמרתי את הקוד':'I saved the code','המשך למערכת':'Continue to the system','סיום':'Done','לפחות 10 תווים':'At least 10 characters','המפתחות לא זהים':'The keys do not match','מכין…':'Preparing…','בודק…':'Checking…','מחליף…':'Changing…','המפתח שגוי':'The key is wrong','קוד השחזור שגוי':'The recovery code is wrong','סמן שקודם שמרת את הקוד':'Tick that you saved the code first','המנהל הראשי צריך להיכנס ראשון ולקבוע את מפתח הארגון. נסה שוב אחר כך.':'The owner must sign in first and set the organization key. Please try again later.','🔒 הצפנת הנתונים':'🔒 Data encryption','החלף מפתח ארגון':'Change organization key','צור קוד שחזור חדש':'Create a new recovery code','רק המנהל הראשי יכול להחליף את מפתח הארגון.':'Only the owner can change the organization key.','ליצור קוד שחזור חדש? הקוד הישן יפסיק לעבוד.':'Create a new recovery code? The old code will stop working.','קוד השחזור החדש:':'The new recovery code:','שמור אותו במקום בטוח.':'Keep it somewhere safe.','אין מפתח ארגון – הנתונים לא נשמרו':'No organization key – the data was not saved','מפתח הארגון הוחלף. מעכשיו אומרים לגבאים חדשים את המפתח החדש.':'The organization key was changed. From now on, tell new gabbaim the new key.','הצפנה':'Encryption','נקבע מפתח ארגון':'Organization key set','מפתח ארגון שגוי 3 פעמים':'Wrong organization key 3 times','מפתח הארגון הוחלף':'Organization key changed','נוצר קוד שחזור חדש':'New recovery code created','מפתח הארגון הוחלף בעזרת קוד שחזור':'Organization key changed with a recovery code','החלפת המפתח לא משנה את הנתונים, רק את המשפט שפותח אותם. מי שכבר מחובר ממשיך לעבוד. כדאי להחליף מפתח אם גבאי עזב.':'Changing the key does not change the data, only the phrase that opens it. Anyone already connected keeps working. It is worth changing the key if a gabbai leaves.','מקלידים את קוד השחזור שקיבלת כשקבעת את המפתח, ובוחרים מפתח ארגון חדש.':'Type the recovery code you got when you set the key, and choose a new organization key.','הועתק':'Copied','הקוד הנוכחי':'Current code','הקוד הנוכחי שגוי':'The current code is wrong','כבעלים, אתה יכול להחליף קוד בלי להקליד את הקוד הישן.':'As the owner, you can change a code without typing the old one.','כדי להחליף קוד צריך להקליד את הקוד הנוכחי שלו. כך אי אפשר להשתלט על המערכת בלי לדעת את הקודים.':'To change a code you must type its current code. This way nobody can take over the system without knowing the codes.','ניסיון החלפת קוד עם קוד נוכחי שגוי':'Attempt to change a code with a wrong current code','קוד הכספים עודכן ל־123456':'Finance code updated to 123456','שוב סיסמה חדשה':'New password again','החלף סיסמה':'Change password','לפחות 4 תווים':'At least 4 characters','הסיסמאות לא זהות':'The passwords do not match','הסיסמה הוחלפה':'Password changed',
+'סיסמה חדשה':'New password','📧 שכחתי את המפתח – שחזור דרך המייל שלי':'📧 I forgot the key – recover through my email','יש לי קוד שחזור':'I have a recovery code','משחזר דרך החשבון שלך…':'Recovering through your account…','השחזור דרך המייל לא זמין. אפשר להשתמש בקוד השחזור.':'Recovery through email is not available. You can use the recovery code.','🔑 בחירת מפתח ארגון חדש':'🔑 Choose a new organization key','שמור והמשך':'Save and continue','שומר…':'Saving…','כניסה ראשונה? בחירת סיסמה':'First time? Choose a password','שכחתי סיסמה':'I forgot my password','כתוב קודם את כתובת המייל שלך':'Type your email address first','שולח…':'Sending…','נשלח אליך מייל עם קישור לבחירת סיסמה חדשה. פתח אותו מהמחשב הזה.':'An email with a link to choose a new password was sent to you. Open it on this computer.','כתוב את כתובת המייל שלך':'Type your email address','נרשם…':'Registering…','ההרשמה נכשלה: ':'Registration failed: ','🔒 בחירת סיסמה חדשה':'🔒 Choose a new password','שמור סיסמה':'Save password','הסיסמה נשמרה':'Password saved','לפחות 8 תווים':'At least 8 characters','נשלח אליך מייל לאישור הכתובת. לוחצים על הקישור במייל, ואחר כך נכנסים עם המייל והסיסמה שבחרת.':'A confirmation email was sent to you. Click the link in the email, then sign in with the email and password you chose.','🔓 המחשב הזה ממתין לפתיחה':'🔓 This computer is waiting to be opened','בדוק עכשיו':'Check now','יש לי את מפתח הארגון':'I have the organization key','אין לי מפתח – לחכות לפתיחה אוטומטית':'I have no key – wait for automatic opening','עדיין לא נפתח. המחשב ייפתח כשמנהל ייכנס למערכת.':'Not opened yet. The computer will open when a manager signs in.','פתיחת גישה למחשב':'Opened access for a computer','🔑 קביעת מפתח הארגון':'🔑 Set the organization key','🔑 מפתח הארגון':'🔑 Organization key','🧾 קוד שחזור':'🧾 Recovery code','🧾 שחזור עם קוד':'🧾 Restore with a code','מפתח הארגון':'Organization key','שוב, לאימות':'Again, to confirm','קבע מפתח והמשך':'Set key and continue','פתח':'Open','שחזר':'Restore','חזרה':'Back','שכחתי את המפתח – יש לי קוד שחזור':'I forgot the key – I have a recovery code','מפתח ארגון חדש':'New organization key','העתקה':'Copy','הדפסה':'Print','שמרתי את הקוד':'I saved the code','המשך למערכת':'Continue to the system','סיום':'Done','לפחות 10 תווים':'At least 10 characters','המפתחות לא זהים':'The keys do not match','מכין…':'Preparing…','בודק…':'Checking…','מחליף…':'Changing…','המפתח שגוי':'The key is wrong','קוד השחזור שגוי':'The recovery code is wrong','סמן שקודם שמרת את הקוד':'Tick that you saved the code first','המנהל הראשי צריך להיכנס ראשון ולקבוע את מפתח הארגון. נסה שוב אחר כך.':'The owner must sign in first and set the organization key. Please try again later.','🔒 הצפנת הנתונים':'🔒 Data encryption','החלף מפתח ארגון':'Change organization key','צור קוד שחזור חדש':'Create a new recovery code','רק המנהל הראשי יכול להחליף את מפתח הארגון.':'Only the owner can change the organization key.','ליצור קוד שחזור חדש? הקוד הישן יפסיק לעבוד.':'Create a new recovery code? The old code will stop working.','קוד השחזור החדש:':'The new recovery code:','שמור אותו במקום בטוח.':'Keep it somewhere safe.','אין מפתח ארגון – הנתונים לא נשמרו':'No organization key – the data was not saved','מפתח הארגון הוחלף. מעכשיו אומרים לגבאים חדשים את המפתח החדש.':'The organization key was changed. From now on, tell new gabbaim the new key.','הצפנה':'Encryption','נקבע מפתח ארגון':'Organization key set','מפתח ארגון שגוי 3 פעמים':'Wrong organization key 3 times','מפתח הארגון הוחלף':'Organization key changed','נוצר קוד שחזור חדש':'New recovery code created','מפתח הארגון הוחלף בעזרת קוד שחזור':'Organization key changed with a recovery code','החלפת המפתח לא משנה את הנתונים, רק את המשפט שפותח אותם. מי שכבר מחובר ממשיך לעבוד. כדאי להחליף מפתח אם גבאי עזב.':'Changing the key does not change the data, only the phrase that opens it. Anyone already connected keeps working. It is worth changing the key if a gabbai leaves.','מקלידים את קוד השחזור שקיבלת כשקבעת את המפתח, ובוחרים מפתח ארגון חדש.':'Type the recovery code you got when you set the key, and choose a new organization key.','הועתק':'Copied','הקוד הנוכחי':'Current code','הקוד הנוכחי שגוי':'The current code is wrong','כבעלים, אתה יכול להחליף קוד בלי להקליד את הקוד הישן.':'As the owner, you can change a code without typing the old one.','כדי להחליף קוד צריך להקליד את הקוד הנוכחי שלו. כך אי אפשר להשתלט על המערכת בלי לדעת את הקודים.':'To change a code you must type its current code. This way nobody can take over the system without knowing the codes.','ניסיון החלפת קוד עם קוד נוכחי שגוי':'Attempt to change a code with a wrong current code','קוד הכספים עודכן ל־123456':'Finance code updated to 123456','שוב סיסמה חדשה':'New password again','החלף סיסמה':'Change password','לפחות 4 תווים':'At least 4 characters','הסיסמאות לא זהות':'The passwords do not match','הסיסמה הוחלפה':'Password changed',
 'במצב שרת, הכניסה למערכת היא עם המייל והסיסמה של כל גבאי. כאן מחליפים את סיסמאות הכספים והניהול.':"In server mode, each gabbai signs in with their own email and password. Here you change the finance and management passwords.",
 'גבאים':'Gabbaim','שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה.':'One name per line. The names appear in the choice on the sign-in screen.','שמור גבאים':'Save gabbaim','הגבאים נשמרו':'Gabbaim saved',
 'אפשרויות במערכת':'System options','כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.':'Turning an option off hides it from all gabbaim. No data is deleted.',
@@ -587,7 +588,14 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 כל הנתונים מוצפנים במחשב לפני שהם יוצאים לשרת, עם "מפתח הארגון". בשרת נשמר רק ג'יבריש, ובגיטהאב יש רק את התוכנה בלי שום נתון. גם מי שיצליח להגיע לשרת יראה רק ג'יבריש.
 בכניסה הראשונה המנהל הראשי קובע את מפתח הארגון (משפט של לפחות 10 תווים, אפשר בעברית) ומקבל קוד שחזור. את הקוד שומרים במקום בטוח, למשל מדפיסים אותו.
 גבאי שאישרת לא צריך לדעת שום מפתח. הוא נכנס עם Google, ובפעם הראשונה המחשב שלו מחכה לפתיחה. המחשב נפתח אוטומטית ברגע שמנהל נכנס למערכת. כל מחשב מקבל מנעול משלו, שנשאר נעול בתוך הדפדפן שלו ולא יוצא ממנו אף פעם. מי שלא אושר, או שהושבת, לא מקבל נתונים מהשרת בכלל, והגישה של המחשבים שלו נמחקת.
-שכחת את המפתח? במסך המפתח לוחצים "שכחתי את המפתח – יש לי קוד שחזור", מקלידים את הקוד ובוחרים מפתח חדש.
+מתי צריך את המפתח? כמעט אף פעם. רק אם אתה (הבעלים) נכנס ממחשב חדש, או אחרי שמחקת את נתוני הדפדפן.
+שכחת את המפתח? במסך המפתח לוחצים "📧 שכחתי את המפתח – שחזור דרך המייל שלי" ובוחרים מפתח חדש. זה עובד רק לחשבון של הבעלים, ושום נתון לא נמחק. אפשר גם להשתמש בקוד השחזור. חשוב: מי שנכנס למייל שלך יכול לשחזר, לכן שומרים היטב על הסיסמה של המייל.
+
+# כניסה עם מייל וסיסמה
+מי שיש לו Gmail נכנס בכפתור Google, ולא צריך שום סיסמה.
+מי שאין לו Gmail: כותב את המייל שלו, כותב בשדה הסיסמה סיסמה שהוא בוחר (לפחות 8 תווים), ולוחץ "כניסה ראשונה? בחירת סיסמה". מקבל מייל לאישור, לוחץ על הקישור, ואחר כך נכנס עם המייל והסיסמה.
+שכח סיסמה? כותב את המייל ולוחץ "שכחתי סיסמה". מגיע אליו מייל עם קישור לבחירת סיסמה חדשה.
+כמו בכניסה עם Google, גם כאן רק מי שאישרת ברשימת המשתמשים רואה נתונים.
 בלשונית "ניהול" ← "הצפנת הנתונים" המנהל הראשי יכול להחליף את מפתח הארגון (למשל כשגבאי עוזב) וליצור קוד שחזור חדש.
 
 # סיסמאות ראשוניות
@@ -680,7 +688,14 @@ The system locks itself after 20 minutes without activity (can be turned off in 
 All data is encrypted on the computer before it leaves for the server, with the "organization key". The server only stores gibberish, and GitHub only holds the program, with no data at all. Even someone who reaches the server sees only gibberish.
 On the first sign-in the owner sets the organization key (a phrase of at least 10 characters, Hebrew is fine) and receives a recovery code. Keep the code somewhere safe, for example print it.
 A gabbai you approve does not need to know any key. They sign in with Google, and the first time their computer waits to be opened. It opens automatically as soon as a manager signs in. Each computer gets its own lock, which stays locked inside its browser and never leaves it. Anyone not approved, or disabled, gets no data from the server at all, and their computers' access is deleted.
-Forgot the key? On the key screen click "I forgot the key – I have a recovery code", type the code and choose a new key.
+When is the key needed? Almost never. Only if you (the owner) sign in from a new computer, or after clearing the browser data.
+Forgot the key? On the key screen click "📧 I forgot the key – recover through my email" and choose a new key. It works only for the owner's account, and no data is deleted. You can also use the recovery code. Important: anyone who gets into your email can recover, so guard your email password well.
+
+# Signing in with email and password
+Anyone with Gmail signs in with the Google button and needs no password.
+Without Gmail: type your email, type a password you choose (at least 8 characters) in the password field, and click "First time? Choose a password". You get an email to confirm, click the link, then sign in with the email and password.
+Forgot your password? Type your email and click "I forgot my password". An email with a link to choose a new password arrives.
+As with Google sign-in, only people you approved in the users list see any data.
 In "Management" → "Data encryption" the owner can change the organization key (for example when a gabbai leaves) and create a new recovery code.
 
 # Initial passwords
@@ -775,6 +790,12 @@ async function grantDevices(){if(!DEK||!isAdm()||MODE!=='cloud')return 0;
   for(const d of devs){if(!ok.has(d.email))continue;try{const pk=await crypto.subtle.importKey('jwk',d.pub,{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
     const {error}=await SB.from('kk_devices').update({wrap:kb64(await crypto.subtle.encrypt({name:'RSA-OAEP'},pk,raw)),granted_at:new Date().toISOString(),granted_by:MYEMAIL}).eq('id',d.id);if(!error){n++;log('פתיחת גישה למחשב',d.email)}}catch(e){}}
   return n}
+/* שחזור דרך המייל של הבעלים (כמו בעזר): עותק של מפתח הנתונים שמור בשרת בטבלה שרק החשבון של הבעלים יכול לקרוא.
+   מי שנכנס לחשבון ה־Google / המייל של הבעלים יכול לשחזר – לכן שומרים היטב על הסיסמה של המייל. */
+async function escrowSave(){if(!DEK||!isOwner()||MODE!=='cloud')return;try{const {data}=await SB.from('kk_escrow').select('email').eq('email',MYEMAIL).maybeSingle();
+  if(!data)await SB.from('kk_escrow').upsert({email:MYEMAIL,dek:kb64(await crypto.subtle.exportKey('raw',DEK)),updated_at:new Date().toISOString()})}catch(e){}}
+async function escrowLoad(){const {data,error}=await SB.from('kk_escrow').select('dek').eq('email',MYEMAIL).maybeSingle();if(error||!data)return false;
+  DEK=await importDek(kub(data.dek));if(!await dekCheck()){DEK=null;return false}return true}
 async function dropDevices(email){try{await SB.from('kk_devices').delete().eq('email',email)}catch(e){}}
 function ensureKey(){return new Promise(async res=>{
   const {data,error}=await SB.from('kk_settings').select('data').eq('id','crypto').maybeSingle();
@@ -793,16 +814,21 @@ function ensureKey(){return new Promise(async res=>{
       kErr('מכין…');try{const raw=crypto.getRandomValues(new Uint8Array(32));DEK=await importDek(raw);const code=genRecovery();
         const w1=await wrapDek(p1,raw),w2=await wrapDek(normCode(code),raw);
         await putCMeta({v:1,salt:w1.salt,wrap:w1.wrap,rsalt:w2.salt,rwrap:w2.wrap,check:await encStr('kk-ok'),created:new Date().toISOString(),by:MYEMAIL});
-        await dekSave();log('הצפנה','נקבע מפתח ארגון');await deviceUnlock();recoveryScreen(code,true,done)}catch(e){DEK=null;kErr('לא הצליח: '+(e.message||''))}};return}
+        await dekSave();log('הצפנה','נקבע מפתח ארגון');await deviceUnlock();await escrowSave();recoveryScreen(code,true,done)}catch(e){DEK=null;kErr('לא הצליח: '+(e.message||''))}};return}
   const enterUI=()=>{keyBox(`<h3>🔑 מפתח הארגון</h3><p class="small">כותבים פעם אחת במחשב הזה את מפתח הארגון. ${isOwner()?'(אם מנהל אחר כבר נכנס היום, המחשב הזה ייפתח גם לבד.)':''}</p>
       <input id="k1" type="password" placeholder="מפתח הארגון" autocomplete="off">
       <button type="button" class="btn primary" id="kGo">פתח</button><div id="kErr" class="err"></div>
-      ${isOwner()?'<button type="button" class="btn sm" id="kRec">שכחתי את המפתח – יש לי קוד שחזור</button>':'<button type="button" class="btn sm" id="kWait">אין לי מפתח – לחכות לפתיחה אוטומטית</button>'}${kOutBtn}`);
+      ${isOwner()?'<button type="button" class="btn" id="kMail">📧 שכחתי את המפתח – שחזור דרך המייל שלי</button><button type="button" class="btn sm" id="kRec">יש לי קוד שחזור</button>':'<button type="button" class="btn sm" id="kWait">אין לי מפתח – לחכות לפתיחה אוטומטית</button>'}${kOutBtn}`);
     let fails=0;
     $('#kGo').onclick=async()=>{kErr('בודק…');try{DEK=await importDek(await unwrapDek(normKey($('#k1').value),CMETA.salt,CMETA.wrap));if(!await dekCheck())throw 0;await dekSave();done()}
       catch(e){DEK=null;fails++;kErr('המפתח שגוי');if(fails===3)log('מפתח ארגון שגוי 3 פעמים')}};
-    const r=$('#kRec');if(r)r.onclick=recUI;const w=$('#kWait');if(w)w.onclick=waitUI};
+    const r=$('#kRec');if(r)r.onclick=recUI;const m=$('#kMail');if(m)m.onclick=async()=>{kErr('משחזר דרך החשבון שלך…');try{if(await escrowLoad()){await dekSave();log('הצפנה','מפתח הארגון שוחזר דרך המייל של הבעלים');newKeyUI();return}}catch(e){}DEK=null;kErr('השחזור דרך המייל לא זמין. אפשר להשתמש בקוד השחזור.')};const w=$('#kWait');if(w)w.onclick=waitUI};
   let poll=null;
+  const newKeyUI=()=>{keyBox(`<h3>🔑 בחירת מפתח ארגון חדש</h3><p class="small">הנתונים נפתחו. בחר עכשיו מפתח ארגון חדש (לפחות 10 תווים). שום נתון לא נמחק.</p>
+      <input id="k1" type="password" placeholder="מפתח ארגון חדש" autocomplete="new-password"><input id="k2" type="password" placeholder="שוב, לאימות" autocomplete="new-password">
+      <button type="button" class="btn primary" id="kGo">שמור והמשך</button><div id="kErr" class="err"></div>`);
+    $('#kGo').onclick=async()=>{const p1=normKey($('#k1').value);if(p1.length<10)return kErr('לפחות 10 תווים');if(p1!==normKey($('#k2').value))return kErr('המפתחות לא זהים');
+      kErr('שומר…');try{await changeOrgKey(p1);done()}catch(e){kErr('לא הצליח: '+(e.message||''))}}};
   const waitUI=()=>{keyBox(`<h3>🔓 המחשב הזה ממתין לפתיחה</h3><p class="small">הנתונים במערכת מוצפנים. המחשב הזה ייפתח לבד ברגע שמנהל המערכת ייכנס למערכת (אצלו זה קורה אוטומטית, בלי שהוא צריך לעשות כלום). אפשר להשאיר את המסך פתוח – הוא יתעדכן לבד.</p>
       <button type="button" class="btn primary" id="kGo">בדוק עכשיו</button><div id="kErr" class="err"></div><button type="button" class="btn sm" id="kHave">יש לי את מפתח הארגון</button>${kOutBtn}`);
     const tryIt=async()=>{if(await deviceUnlock()){clearInterval(poll);done();return true}return false};
@@ -851,7 +877,8 @@ async function boot(){
     setInterval(async()=>{if($('#app').hidden||isOwner()||!MYEMAIL)return;const [{data:sys},{data:me}]=await Promise.all([SB.from('kk_system').select('disabled,message').eq('id',1).maybeSingle(),SB.from('kk_users').select('active,blocked').eq('email',MYEMAIL).maybeSingle()]);
       const msg=sys?.disabled?(sys.message||'המערכת מושבתת זמנית.'):(!me||me.blocked||!me.active)?'המשתמש שלך הושבת. פנה לבעל המערכת.':'';if(msg){R=[];EXP=[];logout();$('#loginErr').textContent=T(msg)}},20000);
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!$('#app').hidden)loadCloud().then(refresh).catch(()=>{})});
-    const {data}=await SB.auth.getSession();if(data?.session){return await afterCloudAuth(data.session.user)}}
+    if(/type=recovery/.test(location.hash)){await SB.auth.getSession();history.replaceState(null,'',location.pathname);newPasswordUI();return false}
+    const {data}=await SB.auth.getSession();if(data?.session){history.replaceState(null,'',location.pathname+location.search);return await afterCloudAuth(data.session.user)}}
   return false}
 function renderModebar(){$('#modebar').innerHTML=MODE==='cloud'?'':`<div>הנתונים נשמרים רק במחשב הזה. כדי שכל הגבאים יעבדו על אותם נתונים, מחברים שרת משותף בלשונית "ניהול".</div>`}
 
@@ -874,7 +901,7 @@ async function afterCloudAuth(user){
   MYEMAIL=email;ME=u.name||name;ROLE=u.role||'gabbai';
   if(!await ensureKey())return false;
   try{await loadCloud()}catch(x){showPending('אין גישה לנתונים: '+(x.message||''),true);return false}
-  grantDevices().catch(()=>{});
+  grantDevices().catch(()=>{});escrowSave();
   if(ROLE==='owner'){FIN=true;ADM=true;ss.set('biala_fin','1');ss.set('biala_adm','1')}
   if(!S.finMig&&isAdm()){S.fin=await hash('123456');S.finMig=1;try{await putS('קוד הכספים עודכן ל־123456')}catch(e){}}
   SB.rpc('kk_touch',{n:name}).then(()=>{},()=>{});
@@ -896,6 +923,22 @@ async function onGoogle(resp){$('#loginErr').textContent=T('נכנס...');
   const {data,error}=await SB.auth.signInWithIdToken({provider:'google',token:resp.credential,nonce:gNonce});
   if(error){$('#loginErr').textContent=T('הכניסה עם Google נכשלה: ')+error.message;initGoogle();return}
   $('#loginErr').textContent='';if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}}
+/* סיסמה: בחירה בכניסה ראשונה, ושחזור דרך המייל */
+const backUrl=()=>location.origin+location.pathname;
+$('#pwForgot').onclick=async e=>{e.preventDefault();const em=$('#em').value.trim(),err=$('#loginErr');if(!/.+@.+\..+/.test(em)){err.textContent=T('כתוב קודם את כתובת המייל שלך');$('#em').focus();return}
+  err.textContent=T('שולח…');const {error}=await SB.auth.resetPasswordForEmail(em,{redirectTo:backUrl()});
+  err.textContent=T(error?'לא הצלחתי לשלוח: '+error.message:'נשלח אליך מייל עם קישור לבחירת סיסמה חדשה. פתח אותו מהמחשב הזה.')};
+$('#pwFirst').onclick=async e=>{e.preventDefault();const em=$('#em').value.trim(),pw=$('#pw').value,err=$('#loginErr');
+  if(!/.+@.+\..+/.test(em)){err.textContent=T('כתוב את כתובת המייל שלך');$('#em').focus();return}if(pw.length<8){err.textContent=T('כתוב בשדה הסיסמה סיסמה חדשה (לפחות 8 תווים), ואז לחץ שוב על "בחירת סיסמה"');$('#pw').focus();return}
+  err.textContent=T('נרשם…');const {data,error}=await SB.auth.signUp({email:em,password:pw,options:{emailRedirectTo:backUrl()}});
+  if(error){err.textContent=/registered|already/i.test(error.message)?T('למייל הזה כבר יש סיסמה. אם שכחת – "שכחתי סיסמה".'):T('ההרשמה נכשלה: ')+error.message;return}
+  if(data?.session){err.textContent='';if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}return}
+  err.textContent=T('נשלח אליך מייל לאישור הכתובת. לוחצים על הקישור במייל, ואחר כך נכנסים עם המייל והסיסמה שבחרת.')};
+function newPasswordUI(){const b=$('#pendingBox');b.hidden=false;b.classList.remove('bad');b.classList.add('keybox');
+  b.innerHTML=`<h3>🔒 בחירת סיסמה חדשה</h3><input id="np1" type="password" placeholder="סיסמה חדשה (לפחות 8 תווים)" autocomplete="new-password"><input id="np2" type="password" placeholder="שוב, לאימות" autocomplete="new-password"><button type="button" class="btn primary" id="npGo">שמור סיסמה</button><div id="kErr" class="err"></div>`;
+  $('#npGo').onclick=async()=>{const a=$('#np1').value;if(a.length<8)return kErr('לפחות 8 תווים');if(a!==$('#np2').value)return kErr('הסיסמאות לא זהות');
+    const {data,error}=await SB.auth.updateUser({password:a});if(error)return kErr('לא הצליח: '+error.message);b.hidden=true;b.classList.remove('keybox');toast('הסיסמה נשמרה');
+    if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}}}
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('#loginErr');
   if(MODE==='cloud'){err.textContent='מתחבר...';
     const {data,error}=await SB.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
@@ -1694,6 +1737,11 @@ create policy kk_d_sel on kk_devices for select to authenticated using (email=kk
 create policy kk_d_ins on kk_devices for insert to authenticated with check (email=kk_me() and wrap is null and kk_active());
 create policy kk_d_upd on kk_devices for update to authenticated using (kk_admin()) with check (kk_admin());
 create policy kk_d_del on kk_devices for delete to authenticated using (email=kk_me() or kk_admin());
+-- שחזור מפתח הארגון דרך המייל של הבעלים
+create table if not exists kk_escrow (email text primary key, dek text not null, updated_at timestamptz default now());
+alter table kk_escrow enable row level security;
+drop policy if exists kk_e_own on kk_escrow;
+create policy kk_e_own on kk_escrow for all to authenticated using (email=kk_me() and kk_owner()) with check (email=kk_me() and kk_owner());
 -- משתמש רואה את עצמו; מנהל רואה ומנהל את כולם; חדש יכול רק לבקש הצטרפות (לא מאושר)
 create policy kk_u_sel on kk_users for select to authenticated using (email=kk_me() or kk_admin());
 create policy kk_u_req on kk_users for insert to authenticated with check ((email=kk_me() and active=false and role='gabbai') or kk_admin());
