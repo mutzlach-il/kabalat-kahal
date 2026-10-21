@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#4a2410">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="crest.webp">
+<link rel="apple-touch-icon" href="crest.webp">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>קבלת קהל ביאלה</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* פריסה: פס עליון מהגוני עם הכתר ולשוניות; אזור עבודה עם הכתר כסימן מים; תאריך עברי ראשי, לועזי קטן לידו */
+:root{
+  --bg:#f3efe8; --panel:#fffdf9; --ink:#2b1d12; --muted:#76624f; --line:#e1d6c6;
+  --wood:#4a2410; --wood2:#6b3416; --gold:#b8862b; --gold-soft:#f1e3c2;
+  --ok:#2f6b3a; --warn:#c2620a; --warn-soft:#fde8d2; --bad:#9b2c1e; --field:#fff;
+  --display:"Frank Ruhl Libre","David",serif; --body:"Assistant","Arial",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1b130d; --panel:#251a12; --ink:#f1e6d6; --muted:#b9a58e; --line:#3d2c1f;
+  --wood:#2e160a; --wood2:#4a2410; --gold:#d6a84a; --gold-soft:#3a2a14;
+  --ok:#7fc28a; --warn:#f0a050; --warn-soft:#3d2610; --bad:#e08070; --field:#1f160f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b130d; --panel:#251a12; --ink:#f1e6d6; --muted:#b9a58e; --line:#3d2c1f;
+  --wood:#2e160a; --wood2:#4a2410; --gold:#d6a84a; --gold-soft:#3a2a14;
+  --ok:#7fc28a; --warn:#f0a050; --warn-soft:#3d2610; --bad:#e08070; --field:#1f160f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;direction:rtl}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+#login{min-height:100vh;display:grid;place-items:center;padding-block:32px;background:radial-gradient(ellipse at top,#6b3416,#3a1a08 70%)}
+.login-card{width:min(400px,100%);text-align:center;color:#f6ead2;display:grid;gap:12px}
+.login-card img{width:min(300px,80%);margin:0 auto;filter:drop-shadow(0 10px 24px rgba(0,0,0,.45))}
+.login-card h1{font-family:var(--display);font-weight:900;font-size:2rem;margin:0}
+.login-card p{margin:0;color:#d9c39b}
+.login-card input,.login-card select{background:rgba(255,255,255,.08);border:1px solid #8a6a3a;color:#fff;border-radius:10px;padding:12px 14px;text-align:center;font-size:1.1rem}
+.login-card select option{color:#222}
+.login-card .err{color:#ffb4a6;min-height:1.5em}
+
+header.top{background:linear-gradient(180deg,var(--wood2),var(--wood));color:#f6ead2;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--wood2)}
+.top-in{max-width:1280px;margin:0 auto;padding-block:6px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.top-in img{height:44px}
+.brand{display:grid;line-height:1.15}
+.brand b{font-family:var(--display);font-size:1.2rem}
+.brand span{font-size:.78rem;color:#d9c39b}
+.who{font-size:.8rem;color:#d9c39b;margin-inline-start:auto;white-space:nowrap}
+nav.tabs{display:flex;gap:2px;flex-wrap:wrap;width:100%;padding-bottom:4px}
+nav.tabs button{background:none;border:0;color:#e9d7b5;padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.95rem;display:inline-flex;gap:6px;align-items:center}
+nav.tabs button[aria-current="true"]{background:var(--gold);color:#2b1606}
+nav.tabs button:hover:not([aria-current="true"]){background:rgba(255,255,255,.08)}
+nav.tabs .badge{background:var(--warn);color:#fff;border-radius:99px;font-size:.72rem;padding:0 6px}
+.modebar{max-width:1280px;margin:8px auto 0;font-size:.85rem}
+.modebar div{background:var(--warn-soft);border:1px solid var(--warn);border-radius:9px;padding:6px 12px}
+main{position:relative;max-width:1280px;margin:0 auto;padding-block:18px 70px}
+.watermark{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:0}
+.watermark img{width:min(640px,80vw);opacity:.07}
+main>section{position:relative;z-index:1}
+
+h2{font-family:var(--display);font-weight:700;font-size:1.6rem;margin:0;text-wrap:balance}
+h3{font-family:var(--display);font-weight:700;font-size:1.15rem;margin:0}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:8px 14px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--gold)}
+a.btn{color:inherit;text-decoration:none;display:inline-flex;align-items:center}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.primary{background:var(--wood2);border-color:var(--wood2);color:#fbefd6}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#2b1606}
+.btn.warn{background:var(--warn);border-color:var(--warn);color:#fff}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:4px 10px;font-size:.86rem}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0 18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:default}
+.stat.link{cursor:pointer}.stat.link:hover{border-color:var(--gold)}
+.stat b{display:block;font-family:var(--display);font-size:1.7rem;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.88rem}
+.stat.alert{border-color:var(--warn);background:var(--warn-soft)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar input,.toolbar select{background:var(--field);border:1px solid var(--line);border-radius:9px;padding:8px 12px}
+.toolbar input[type=search]{flex:1;min-width:200px}
+
+.tablewrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse}
+table.wide{min-width:760px}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.8rem;color:var(--muted);font-weight:700;background:var(--gold-soft);white-space:nowrap}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover{background:color-mix(in srgb,var(--gold-soft) 55%,transparent)}
+tr.rev td:first-child{box-shadow:inset -4px 0 0 var(--warn)}
+td.num,.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.ltr{direction:ltr;unicode-bidi:isolate}
+.pill{display:inline-block;padding:1px 9px;border-radius:99px;font-size:.78rem;font-weight:700;border:1px solid currentColor;white-space:nowrap}
+.pill.wait{color:var(--warn)} .pill.in{color:var(--gold)} .pill.done{color:var(--ok)}
+.pill.rev{color:#fff;background:var(--warn);border-color:var(--warn)}
+.pill.tag{color:var(--wood2);border-style:dashed}
+:root[data-theme="dark"] .pill.tag{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pill.tag{color:var(--gold)}}
+.g{font-size:.74rem;color:var(--muted);font-weight:400}
+.hd{font-weight:600}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+
+.form{display:grid;gap:14px}
+.formwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.formwrap.withimg{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+@media (max-width:900px){.formwrap.withimg{grid-template-columns:1fr}}
+.scanimg{position:sticky;top:120px;align-self:start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px}
+.scanimg img{width:100%;border-radius:6px;cursor:zoom-in}
+.scanimg img.big{cursor:zoom-out}
+fieldset{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:12px 16px 16px;margin:0;min-width:0}
+legend{font-family:var(--display);font-weight:700;font-size:1.08rem;padding:0 8px;color:var(--wood2)}
+:root[data-theme="dark"] legend{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) legend{color:var(--gold)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px 14px}
+.grid .wide{grid-column:1/-1}
+label.f{display:grid;gap:3px;font-size:.86rem;color:var(--muted);font-weight:600;min-width:0}
+label.f input,label.f select,label.f textarea{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--ink);font-weight:400;font-size:1rem;width:100%}
+label.f textarea{min-height:84px;resize:vertical}
+label.f.unsure input,label.f.unsure textarea{border:2px solid var(--warn);background:var(--warn-soft)}
+label.f.unsure::after{content:"לבדיקה — לא ברור בכתב היד";color:var(--warn);font-size:.74rem}
+.hint{font-size:.76rem;color:var(--gold);font-weight:600;min-height:1.1em}
+input[dir="ltr"]{text-align:left}
+.dec-row{display:grid;grid-template-columns:2fr 1fr 1.3fr auto;gap:8px;align-items:end;margin-bottom:8px}
+@media (max-width:560px){.dec-row{grid-template-columns:1fr 1fr}.dec-row .rm{grid-column:1/-1}}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips label{border:1px solid var(--line);border-radius:99px;padding:3px 12px;cursor:pointer;font-size:.9rem;background:var(--field)}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label:has(input:checked){background:var(--gold);border-color:var(--gold);color:#2b1606;font-weight:700}
+.chips label:has(input:focus-visible){outline:2px solid var(--gold)}
+.sticky-actions{position:sticky;bottom:0;background:var(--bg);padding-block:10px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);z-index:3}
+.notice{background:var(--warn-soft);border:1px solid var(--warn);border-radius:10px;padding:10px 12px}
+.notice.info{background:var(--gold-soft);border-color:var(--gold)}
+.lock{background:var(--gold-soft);border:1px dashed var(--gold);border-radius:10px;padding:10px 12px;font-size:.9rem}
+
+.view{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.view{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px;align-content:start}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}
+dt{color:var(--muted);font-size:.86rem}
+dd{margin:0;overflow-wrap:anywhere}
+dd.unsure{color:var(--warn);font-weight:700}
+.req{background:var(--gold-soft);border-radius:10px;padding:12px 14px;white-space:pre-wrap;font-size:1.05rem}
+.confirm{background:color-mix(in srgb,var(--bad) 12%,var(--panel));border:1px solid var(--bad);border-radius:10px;padding:10px 12px}
+
+/* קוויטל — מסך גדול */
+.kv{background:var(--panel);border:2px solid var(--gold);border-radius:16px;padding:clamp(18px,4vw,44px);text-align:center;display:grid;gap:18px;min-height:60vh;align-content:center}
+.kv .nm{font-family:var(--display);font-weight:900;font-size:clamp(2rem,6vw,4rem);line-height:1.2}
+.kv .rq{font-size:clamp(1.2rem,3vw,1.9rem);white-space:pre-wrap}
+.kv .sub{color:var(--muted);font-size:1.05rem}
+.kv .dec{font-family:var(--display);font-size:1.3rem}
+
+.queue{display:grid;gap:8px}
+.qi{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.qi .no{font-family:var(--display);font-weight:900;font-size:1.6rem;color:var(--gold);min-width:2.2ch;text-align:center}
+.qi.cur{border:2px solid var(--gold);background:var(--gold-soft)}
+.qi.done{opacity:.55}
+
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:90px 1fr 90px;gap:8px;align-items:center;font-size:.88rem}
+.bar i{display:block;height:14px;border-radius:4px;background:var(--gold)}
+.bar i.out{background:var(--bad)}
+.help{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px;max-width:78ch}
+.help h3{margin-top:14px}
+.help p{margin:6px 0}
+.drop{display:grid;place-items:center;gap:6px;text-align:center;border:2px dashed var(--gold);border-radius:16px;padding:44px 16px;background:var(--panel);cursor:pointer;margin:14px 0 6px}
+.drop b{font-family:var(--display);font-size:1.4rem;color:var(--wood2)}.drop span{color:var(--muted)}.drop.over,.drop:hover{background:var(--gold-soft)}
+:root[data-theme="dark"] .drop b{color:var(--gold)}
+.pcard{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--gold-soft),var(--panel));border:1px solid var(--gold);border-radius:14px;padding:16px 18px;margin:14px 0}
+.pname{font-family:var(--display);font-weight:900;font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15}
+.pstats{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:.92rem}.pstats b{font-family:var(--display);font-size:1.3rem}
+.timeline{display:grid;gap:10px}.tl{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg)}.tl.rev{border-color:var(--warn)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.gallery figure{margin:0;display:grid;gap:4px}
+.gallery img{width:100%;border-radius:8px;border:1px solid var(--line);cursor:zoom-in}.gallery figure.big{grid-column:1/-1}.gallery figure.big img{cursor:zoom-out}
+.gallery figcaption{font-size:.8rem;text-align:center}
+.docs{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;margin-top:12px}@media (max-width:820px){.docs{grid-template-columns:1fr}}
+.doclist{gap:4px;padding:8px}.doclist button{background:none;border:0;text-align:right;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+.doclist button:hover{background:var(--gold-soft)}.doclist button.on{background:var(--wood2);color:#fbefd6}
+.edbar{display:flex;gap:4px;flex-wrap:wrap;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px}
+.edbar>button:not(.btn){border:1px solid var(--line);background:var(--field);border-radius:6px;padding:3px 10px;cursor:pointer}
+.paper{background:#fff;color:#000;border:1px solid var(--line);border-radius:4px;box-shadow:0 4px 18px rgba(0,0,0,.12);padding:clamp(14px,4vw,40px);min-height:70vh;overflow-x:auto;outline:none}
+.paper:focus{box-shadow:0 0 0 2px var(--gold),0 4px 18px rgba(0,0,0,.12)}
+
+.langsw{display:inline-flex;border:1px solid #8a6a3a;border-radius:9px;overflow:hidden;flex:none}
+.langsw button{background:transparent;color:#e9d7b5;border:0;padding:4px 10px;cursor:pointer;font-weight:700;font-size:.85rem}
+.langsw button[aria-pressed="true"]{background:var(--gold);color:#2b1606}
+.login-card .langsw{justify-self:center}
+html[dir=ltr] body{direction:ltr}
+html[dir=ltr] th,html[dir=ltr] td,html[dir=ltr] .doclist button{text-align:left}
+html[lang=en] label.f.unsure::after{content:"To review — unclear handwriting"}
+#toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--wood);color:#fbefd6;padding:10px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:20;max-width:90vw}
+textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-size:.8rem;direction:ltr;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head>
+<body>
+
+
+<div id="login" class="gut">
+  <form class="login-card" id="loginForm">
+    <div class="langsw" data-noi18n role="group" aria-label="Language / שפה"><button type="button" data-lang="he">עברית</button><button type="button" data-lang="en">English</button></div>
+    <img src="crest.webp" alt="כתר ביאלה">
+    <h1>מערכת קבלת קהל</h1>
+    <p>מרכז חסידי ביאלא בני ברק</p>
+    <div id="emailWrap" hidden style="display:grid"><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"></div>
+    <input id="pw" type="password" placeholder="סיסמת כניסה" aria-label="סיסמה" autocomplete="current-password">
+    <select id="gabbaiSel" aria-label="מי נכנס"></select>
+    <button class="btn gold" type="submit">כניסה</button>
+    <div class="err" id="loginErr"></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="top"><div class="top-in gut">
+    <img src="crest.webp" alt="">
+    <div class="brand"><b>קבלת קהל</b><span>מרכז חסידי ביאלא בני ברק</span></div>
+    <span class="who" id="who"></span><div class="langsw" data-noi18n role="group" aria-label="Language / שפה"><button type="button" data-lang="he">עברית</button><button type="button" data-lang="en">English</button></div><button class="btn sm" id="themeBtn" style="background:transparent;color:#e9d7b5;border-color:#8a6a3a" aria-label="מצב תצוגה">◐</button>
+    <nav class="tabs" id="tabs"></nav>
+  </div></header>
+  <div class="modebar gut" id="modebar"></div>
+  <div class="watermark"><img src="crest.webp" alt=""></div>
+  <main id="main" class="gut"></main>
+</div>
+<div id="toast" hidden></div>
+
+<script>if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(function(){});</script>
+<script>
+/* ===== כלים ===== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* ===== שפה: עברית (ברירת מחדל) / English ===== */
+let LANG=(()=>{try{return localStorage.getItem('biala_kk_lang')||'he'}catch(e){return 'he'}})();
+const I18N={
+/* כללי וכניסה */
+'מערכת קבלת קהל':'Reception System','קבלת קהל':'Reception','מרכז חסידי ביאלא בני ברק':'Biala Chassidic Center, Bnei Brak','כתר ביאלה':'Biala crown',
+'סיסמת כניסה':'Login password','סיסמה':'Password','כניסה':'Sign in','מי נכנס':'Who is signing in','— מי נכנס? —':'— Who is signing in? —','כתובת מייל':'Email address',
+'הסיסמה שגויה, נסה שוב':'Wrong password, please try again','הסיסמה שגויה':'Wrong password','הסיסמה שגויה. אם שכחת — מנהל המערכת יכול להחליף אותה מהמחשב הראשי.':'Wrong password. If you forgot it, the system manager can change it from the main computer.',
+'מתחבר...':'Connecting...','המייל או הסיסמה שגויים':'Wrong email or password','המערכת ננעלה אחרי 20 דקות ללא פעילות':'The system locked after 20 minutes without activity',
+'אזור זה מוגן בסיסמה נוספת.':'This area is protected by an extra password.','פתח':'Open','גבאי':'Gabbai','גבאי ראשי':'Head gabbai','מצב תצוגה':'Display mode',
+'הנתונים נשמרים רק במחשב הזה. כדי שכל הגבאים יעבדו על אותם נתונים, מחברים שרת משותף בלשונית "ניהול".':'Data is saved on this computer only. To let all gabbaim work on the same data, connect a shared server in the "Management" tab.',
+/* לשוניות */
+'ראשי':'Home','בקשות':'Requests','בקשה חדשה':'New request','סריקת דפים':'Scan pages','אנשים':'People','מסמכים והדפסות':'Documents & printing','תור היום':"Today's queue",
+'קוויטל':'Kvittel','שמות לתפילה':'Names for prayer','ימי זיכרון והולדת':'Yahrzeits & birthdays','כספים':'Finances','קופה':'Cash box','הוראות':'Instructions','ניהול':'Management','יציאה':'Sign out',
+/* ראשי */
+'בקשות במערכת':'Requests in system','נקלטו היום':'Received today','ממתינות לאדמו״ר':'Waiting for the Rebbe','לבדיקה ותיקון':'To review & fix','אנשים שונים':'Different people',
+'לבדיקה':'To review','הן פוענחו מכתב יד, וחלק מהשדות לא היו ברורים.':'They were read from handwriting, and some fields were unclear.',
+'ימי זיכרון בשבועיים הקרובים':'Yahrzeits in the next two weeks','אין ימי זיכרון קרובים לפי הרשום.':'No upcoming yahrzeits recorded.','ימי הולדת עבריים קרובים':'Upcoming Hebrew birthdays',
+'אין ימי הולדת קרובים לפי הרשום.':'No upcoming birthdays recorded.','נושאי הבקשות':'Request topics','מסמנים נושא בכל בקשה (רפואה, פרנסה...) ואז רואים כאן סיכום.':'Mark a topic on each request (health, livelihood...) to see a summary here.',
+'היום':'Today','מחר':'Tomorrow','עדיין לא הורד גיבוי.':'No backup downloaded yet.','הנתונים שמורים רק במחשב הזה.':'The data is saved on this computer only.','לגיבוי':'To backup',
+'+ בקשה חדשה':'+ New request',
+/* רשימה */
+'בקשות ברכה':'Blessing requests','חיפוש: שם, טלפון, עיר, בקשה, שם נפטר':'Search: name, phone, city, request, deceased name','כל הסטטוסים':'All statuses','כל הנושאים':'All topics',
+'רק לבדיקה':'To review only','תאריך':'Date','שם':'Name','שם לתפילה':'Name for prayer','עיר':'City','נייד':'Mobile','בקשה':'Request','תרומה':'Donation','סטטוס':'Status',
+'לא נמצאו בקשות לפי החיפוש.':'No requests match the search.','עדיין אין בקשות. לחץ "בקשה חדשה" או "סרוק טופס נייר".':'No requests yet. Click "New request" or "Scan paper form".','ללא שם':'No name',
+/* סטטוס, תרומה, נושאים */
+'ממתין':'Waiting','הוכנס לאדמו״ר':'Went in to the Rebbe','טופל':'Handled','ללא':'None','מזומן':'Cash','הוראת קבע':'Standing order','צ׳ק':'Check','העברה בנקאית':'Bank transfer',
+'רפואה':'Health','פרנסה':'Livelihood','זיווג':'Shidduch','הצלחה':'Success','שלום בית':'Shalom bayis','נחת':'Nachas','דירה':'Housing','הצלה':'Salvation','לימוד':'Learning','אחר':'Other',
+'נשוי':'Married','נשואה':'Married','רווק':'Single','רווקה':'Single','אלמן':'Widower','אלמנה':'Widow','גרוש':'Divorced','גרושה':'Divorced',
+'אב':'Father','אבא':'Father','אם':'Mother','סב':'Grandfather','סבתא':'Grandmother','אח':'Brother','אחות':'Sister','חותן':'Father-in-law','חותנת':'Mother-in-law','בן':'Son','בת':'Daughter','בעל':'Husband','אשה':'Wife',
+/* טופס */
+'בקשת ברכה חדשה':'New blessing request','עריכת בקשה':'Edit request','סרוק טופס נייר':'Scan paper form','פרטי המבקש':'Requester details','תאריך הבקשה':'Request date',
+'שם משפחה':'Last name','תאריך לידה':'Date of birth','עברי או לועזי, למשל 25/04/1956':'Hebrew or Gregorian, e.g. 25/04/1956','עברי או לועזי':'Hebrew or Gregorian',
+'שם להתפלל בקברי צדיקים':'Name to pray for at the tzaddikim\'s graves','שם בן/בת שם האם, למשל: משה בן שרה':"Name son/daughter of mother's name, e.g. Moshe ben Sarah",
+'בן / בת הזוג ומשפחה':'Spouse & family','שם בן / בת הזוג':'Spouse name','תאריך לידה בן / בת הזוג':'Spouse date of birth','מצב משפחתי':'Marital status','מספר ילדים':'Number of children',
+'כתובת וטלפונים':'Address & phones','טלפון בבית':'Home phone','כתובת':'Address','מיקוד':'Zip code','מקום העבודה':'Workplace','טלפון העבודה':'Work phone',
+'תפילות ולימוד בישיבה לעילוי נשמת יקיריכם שנפטרו':'Prayers and yeshiva learning for the elevation of the souls of your departed loved ones',
+'+ הוסף נפטר':'+ Add deceased','שם ושם האבא':"Name and father's name",'קירבה':'Relation','יום ושנה':'Day and year','ח׳ אייר תשס״ה':'e.g. 8 Iyar 5765','הסר':'Remove',
+'בקשה אישית מהאדמו״ר':'Personal request from the Rebbe','תוכן הבקשה':'Request text','תרומה / פדיון':'Donation / pidyon','אופן':'Method','סכום (₪)':'Amount (₪)','סכום חודשי (₪)':'Monthly amount (₪)',
+'מספר חודשים':'Number of months','ללא הגבלה':'Unlimited','חודש התחלה':'Start month','לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.':'Do not enter credit card or bank account numbers here.',
+'הוזן סכום. הצפייה והשינוי דורשים סיסמת כספים.':'An amount was entered. Viewing or changing it requires the finance password.',
+'טיפול':'Handling','הערות פנימיות':'Internal notes','שמור':'Save','שמור וסמן כנבדק':'Save & mark as reviewed','שמור והתחל חדשה':'Save & start new','ביטול':'Cancel',
+'בקשה זו פוענחה מכתב יד. השדות בכתום לא היו ברורים. בדוק מול תמונת הדף ותקן.':'This request was read from handwriting. Orange fields were unclear. Check against the page image and fix.',
+'תמונת הדף המקורי':'Original page image','לחץ על התמונה להגדלה':'Click the image to enlarge','הטופס הסרוק':'The scanned form','נמצא ביקור קודם:':'Previous visit found:','מלא פרטים חסרים':'Fill in missing details',
+'יש למלא לפחות שם או שם לתפילה':'Please fill in at least a name or a name for prayer','הבקשה נשמרה':'Request saved','נשמר וסומן כנבדק':'Saved and marked as reviewed','נשמרה. אפשר להקליד את הבאה':'Saved. You can type the next one',
+'הפרטים מולאו מהביקור הקודם':'Details filled in from the previous visit','קורא את כתב היד... זה יכול לקחת עד דקה.':'Reading the handwriting... this can take up to a minute.',
+'הטופס נקרא. בדוק את כל השדות מול הדף לפני השמירה.':'The form was read. Check all fields against the page before saving.',
+/* תצוגת בקשה */
+'→ חזרה':'← Back','כרטיס אדם מלא':'Full person card','מסך קוויטל':'Kvittel screen','הדפסה':'Print','וורד':'Word','עריכה':'Edit','מחיקה':'Delete','כן, למחוק':'Yes, delete',
+'שם לתפילה בקברי צדיקים':'Name for prayer at the tzaddikim\'s graves','לא נרשמה בקשה':'No request recorded','לעילוי נשמת':'In memory of','הדף המקורי':'The original page','הטופס המקורי':'The original form',
+'פרטים':'Details','בן/בת זוג':'Spouse','לידת בן/בת זוג':'Spouse birth date','מקום עבודה':'Workplace','מייל':'Email','הערות':'Notes','נקלט על ידי':'Received by','נבדק על ידי':'Reviewed by',
+'שינוי סטטוס':'Change status','פתח לתיקון':'Open to fix','פוענח מכתב יד. השדות המסומנים "לבדיקה" לא היו ברורים.':'Read from handwriting. Fields marked "To review" were unclear.',
+'(לבדיקה)':'(to review)','(סכום בסיסמת כספים)':'(amount behind finance password)','הסטטוס עודכן':'Status updated','הבקשה נמחקה':'Request deleted','פוענח מתמונה':'Read from image',
+/* סריקה */
+'לחץ כאן לבחירת תמונות':'Click here to choose images','או גרור לכאן תמונות של הטפסים · אפשר לבחור כמה דפים ביחד':'or drag form images here · you can choose several pages at once',
+'טיפ: צלם כל דף לבד, מקרוב, באור טוב ובלי צל. דף ישר וחד נקרא הרבה יותר טוב.':'Tip: photograph each page alone, up close, in good light and without shadow. A straight, sharp page reads much better.',
+'מעלים תמונה של טופס "בקשת ברכה" — אחד או כמה ביחד. המערכת קוראת את כתב היד, שומרת כל דף כבקשה ומסמנת בכתום מה שצריך לבדוק. תמונת הדף נשמרת ליד הבקשה ובכרטיס האדם.':'Upload images of "blessing request" forms, one or several at once. The system reads the handwriting, saves each page as a request and marks in orange what needs checking. The page image is kept with the request and in the person card.',
+'הסריקה האוטומטית עוד לא מחוברת: מכניסים פעם אחת מפתח Gemini בלשונית "ניהול". עד אז אפשר להעלות תמונות ולהקליד את הפרטים ידנית ליד התמונה.':'Automatic scanning is not connected yet: enter a Gemini key once in the "Management" tab. Until then you can upload images and type the details by hand next to the image.',
+'ממתין בתור':'Waiting in line','קורא את כתב היד...':'Reading the handwriting...','פתח לבדיקה':'Open to review','הקלד ידנית ליד התמונה':'Type by hand next to the image','נשמר. לבדוק מול הדף':'Saved. Check against the page',
+'כדי לסרוק אוטומטית צריך להכניס פעם אחת מפתח Gemini בלשונית "ניהול".':'To scan automatically, enter a Gemini key once in the "Management" tab.','מפתח ה־Gemini לא התקבל. בדוק אותו בלשונית "ניהול".':'The Gemini key was not accepted. Check it in the "Management" tab.',
+'יותר מדי סריקות ברצף. המתן דקה ונסה שוב.':'Too many scans in a row. Wait a minute and try again.','אין חיבור לאינטרנט, או שהשירות חסום בסינון.':'No internet connection, or the service is blocked by the filter.',
+'הדף לא נקרא כראוי. נסה תמונה חדה יותר.':'The page was not read properly. Try a sharper image.','נסה תמונה חדה ומוארת יותר.':'Try a sharper, brighter image.','הסריקה לא הצליחה.':'The scan failed.','אפשר להקליד ידנית.':'You can type it by hand.',
+/* אנשים */
+'כל אדם מופיע פעם אחת, לפי מספר הטלפון. לחיצה פותחת כרטיס עם כל החומר עליו: פרטים, כל הביקורים והבקשות, נפטרים, תרומות והדפים הסרוקים.':'Each person appears once, by phone number. Clicking opens a card with all their material: details, all visits and requests, deceased, donations and scanned pages.',
+'חיפוש אדם':'Search person','ביקורים':'Visits','ביקור אחרון':'Last visit','אין':'None','→ לכל האנשים':'← All people','+ בקשה חדשה לאדם זה':'+ New request for this person','עריכת הפרטים':'Edit details',
+'שלח מייל':'Send email','פתח בוורד':'Open in Word','ראשון:':'First:','אחרון:':'Last:','כל הביקורים והבקשות':'All visits and requests','שם לתפילה:':'Name for prayer:','תרומה:':'Donation:','פרטים אישיים':'Personal details','תרומות':'Donations',
+/* מסמכים */
+'בוחרים מסמך, עורכים את הטקסט ישירות על הדף, ואז מדפיסים או מורידים לוורד לעריכה נוספת.':'Choose a document, edit the text directly on the page, then print or download to Word for further editing.',
+'טופס בקשה ריק להדפסה':'Blank request form to print','טופס בקשה ממולא':'Filled request form','כרטיס אדם מלא':'Full person card','קוויטלים להדפסה (דף לכל בקשה)':'Kvittels to print (page per request)',
+'רשימת שמות לתפילה':'List of names for prayer','דוח בקשות לתקופה':'Requests report for a period','מדבקות כתובת למעטפות':'Address labels for envelopes','מכתב חופשי על נייר המרכז':'Free letter on center letterhead',
+'מכתב תזכורת יום זיכרון':'Yahrzeit reminder letter','מכתב תודה לתורם':'Thank-you letter to donor','קבלה על תרומה':'Donation receipt','אישור הוראת קבע':'Standing order confirmation','(כספים)':'(finances)',
+'— בחר בקשה —':'— Choose a request —','— בחר אדם —':'— Choose a person —','מתאריך':'From date','עד':'To','ימין':'Right','מרכז':'Center','גדול':'Large','רגיל':'Normal','הדפס':'Print','הורד לוורד':'Download to Word','אפס שינויים':'Reset changes',
+'אפשר לכתוב, למחוק ולשנות כל דבר בדף לפני ההורדה. "הורד לוורד" שומר קובץ שנפתח ב־Word לעריכה והדפסה. "הדפס" פותח מיד את חלון ההדפסה (שם אפשר גם לשמור כ־PDF).':'You can write, delete and change anything on the page before downloading. "Download to Word" saves a file that opens in Word for editing and printing. "Print" opens the print window right away (you can also save as PDF there).',
+'מסמכי כספים':'Finance documents','קובץ הוורד ירד לתיקיית ההורדות. פתח אותו ב־Word':'The Word file was downloaded to your Downloads folder. Open it in Word','ההדפסה לא נפתחה':'Printing did not open',
+/* תור וקוויטל */
+'תור קבלת קהל':'Reception queue','בתור':'In line','ממתינים':'Waiting','נכנסו':'Went in','נכנס':'Went in','הבא בתור':'Next in line','הדפסת התור':'Print queue',
+'אין אנשים בתור בתאריך הזה. בקשות שנקלטות היום נכנסות לתור אוטומטית.':'No one in line on this date. Requests received today enter the queue automatically.',
+'כל הממתינים':'All waiting','רק היום':'Today only','סמן שנכנס':'Mark as went in','סמן טופל':'Mark as handled','→ הקודם':'← Previous','הבא ←':'Next →','מסך מלא':'Full screen','אין בקשות להצגה.':'No requests to show.',
+'מסך מלא לא זמין כאן':'Full screen is not available here','עודכן':'Updated','בן/בת הזוג:':'Spouse:',
+/* שמות וימי זיכרון */
+'לקברי צדיקים ולעילוי נשמה, לפי טווח תאריכים.':'For the tzaddikim\'s graves and in memory of the departed, by date range.','העתק':'Copy','אין שמות':'No names','השמות הועתקו':'Names copied',
+'ימי זיכרון וימי הולדת':'Yahrzeits and birthdays','לטווח של':'For a range of','ימים':'days','החישוב לפי הלוח העברי, מתוך התאריכים שנרשמו. תאריך שלא ניתן לפענח לא מופיע כאן.':'Calculated by the Hebrew calendar from the recorded dates. A date that cannot be understood does not appear here.',
+'ימי זיכרון קרובים':'Upcoming yahrzeits','ימי הולדת עבריים קרובים':'Upcoming Hebrew birthdays','חיפוש לפי שם או חודש, למשל: אייר':'Search by name or month, e.g. Iyar','נמסר על ידי':'Given by','אין רשומות':'No records',
+/* כספים וקופה */
+'נעל כספים':'Lock finances','תרומות חד־פעמיות':'One-time donations','נגבו החודש':'Collected this month','הוראות קבע — סימון גבייה לפי חודש':'Standing orders — mark collection by month',
+'חודשי':'Monthly','חודשים':'Months','נגבה עד כה':'Collected so far','נגבה':'Collected','אין הוראות קבע':'No standing orders','אין תרומות':'No donations','סכום':'Amount','מס׳ קבלה':'Receipt no.','הפק מספר':'Issue number',
+'סומן כנגבה':'Marked as collected','הסימון הוסר':'Mark removed','הכספים ננעלו':'Finances locked',
+'הכנסות והוצאות של המשרד שלא קשורות לבקשה מסוימת.':'Office income and expenses not tied to a specific request.','הכנסות':'Income','הוצאות':'Expenses','יתרה':'Balance','רישום חדש':'New entry','סוג':'Type',
+'הכנסה':'Income','הוצאה':'Expense','תיאור':'Description','למשל: הדפסת טפסים':'e.g. printing forms','הוסף':'Add','לפי חודשים':'By month','זהב = הכנסות, אדום = הוצאות':'Gold = income, red = expenses',
+'נרשם ע״י':'Recorded by','מחק':'Delete','אין רישומים עדיין':'No entries yet','נרשם':'Recorded',
+'ינואר':'January','פברואר':'February','מרץ':'March','אפריל':'April','מאי':'May','יוני':'June','יולי':'July','אוגוסט':'August','ספטמבר':'September','אוקטובר':'October','נובמבר':'November','דצמבר':'December',
+/* הוראות וניהול */
+'את ההוראות אפשר לערוך בלשונית "ניהול".':'The instructions can be edited in the "Management" tab.','נעל ניהול':'Lock management','סיסמאות':'Passwords','איזו סיסמה':'Which password','כניסה למערכת':'System login',
+'סיסמה חדשה':'New password','שוב סיסמה חדשה':'New password again','החלף סיסמה':'Change password','לפחות 4 תווים':'At least 4 characters','הסיסמאות לא זהות':'The passwords do not match','הסיסמה הוחלפה':'Password changed',
+'במצב שרת, הכניסה למערכת היא עם המייל והסיסמה של כל גבאי. כאן מחליפים את סיסמאות הכספים והניהול.':"In server mode, each gabbai signs in with their own email and password. Here you change the finance and management passwords.",
+'גבאים':'Gabbaim','שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה.':'One name per line. The names appear in the choice on the sign-in screen.','שמור גבאים':'Save gabbaim','הגבאים נשמרו':'Gabbaim saved',
+'אפשרויות במערכת':'System options','כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.':'Turning an option off hides it from all gabbaim. No data is deleted.',
+'סריקת טופס אוטומטית':'Automatic form scanning','מסך קוויטל לאדמו״ר':'Kvittel screen for the Rebbe','כספים והוראות קבע':'Finances & standing orders','קופה (הכנסות והוצאות)':'Cash box (income & expenses)',
+'ימי זיכרון':'Yahrzeits','ימי הולדת עבריים':'Hebrew birthdays','הצג תאריך לועזי קטן ליד העברי':'Show small Gregorian date next to the Hebrew one','נעילה אוטומטית אחרי 20 דקות ללא פעילות':'Automatic lock after 20 minutes without activity',
+'עריכת ההוראות':'Edit instructions','שורה שמתחילה ב־"# " היא כותרת.':'A line starting with "# " is a heading.','שמור הוראות':'Save instructions','החזר להוראות המקוריות':'Restore original instructions','ההוראות נשמרו':'Instructions saved',
+'נוסחי מכתבים':'Letter templates','מכתב חופשי':'Free letter','תזכורת יום זיכרון':'Yahrzeit reminder','שמור נוסחים':'Save templates','הנוסחים נשמרו':'Templates saved',
+'מילים בסוגריים מסולסלים מתמלאות לבד: {שם} {כתובת} {עיר} {תאריך} {סכום} {אופן} {קבלה} {חודשים} {שם_לתפילה} {נפטר} {יום_זיכרון}':'Words in curly brackets fill in automatically (keep them in Hebrew): {שם} name, {כתובת} address, {עיר} city, {תאריך} date, {סכום} amount, {אופן} method, {קבלה} receipt, {חודשים} months, {שם_לתפילה} prayer name, {נפטר} deceased, {יום_זיכרון} yahrzeit',
+'סריקה אוטומטית (Gemini)':'Automatic scanning (Gemini)','מפתח Gemini':'Gemini key','דגם':'Model','שמור מפתח':'Save key','בדוק חיבור':'Test connection','בודק...':'Checking...','החיבור תקין ✓':'Connection OK ✓','המפתח נשמר':'Key saved',
+'הסריקה קוראת את כתב היד בעזרת Gemini של גוגל. צריך מפתח פעם אחת: נכנסים ל־aistudio.google.com/apikey, לוחצים "Create API key" ומעתיקים לכאן.':'Scanning reads the handwriting with Google Gemini. You need a key once: go to aistudio.google.com/apikey, click "Create API key" and copy it here.',
+'המפתח נשמר במחשב הזה.':'The key is saved on this computer.','המפתח נשמר בשרת ומשמש את כל הגבאים.':'The key is saved on the server and used by all gabbaim.',
+'שים לב: בחשבון גוגל חינמי, גוגל רשאית להשתמש בתוכן שנשלח אליה לשיפור השירות. בגלל שבטפסים יש פרטים אישיים, עדיף מפתח מחשבון בתשלום (כמו שעשית בביאלה).':'Note: on a free Google account, Google may use the content sent to it to improve its service. Because the forms contain personal details, a key from a paid account is better.',
+'חיבור לשרת משותף (Supabase)':'Shared server connection (Supabase)','כתובת הפרויקט (Project URL)':'Project URL','מפתח ציבורי (anon public)':'Public key (anon public)','שמור והתחבר':'Save & connect',
+'העלה לשרת את הנתונים שבמחשב הזה':'Upload this computer\'s data to the server','נתק מהשרת במחשב הזה':'Disconnect this computer from the server','העתק קוד הקמה':'Copy setup code','איך מוסיפים גבאי בשרת?':'How do I add a gabbai on the server?',
+'כרגע הנתונים במחשב הזה בלבד. כדי שכמה גבאים יעבדו ביחד מכל מחשב: יוצרים פרויקט ב־Supabase, מריצים את קוד ההקמה למטה, ומכניסים כאן את הכתובת והמפתח.':'Right now the data is on this computer only. For several gabbaim to work together from any computer: create a Supabase project, run the setup code below, and enter the URL and key here.',
+'המערכת מחוברת לשרת.':'The system is connected to the server.','כל הגבאים רואים את אותם נתונים, וכל גבאי נכנס עם מייל וסיסמה משלו.':'All gabbaim see the same data, and each gabbai signs in with their own email and password.',
+'ב־Supabase: Authentication ← Users ← Add user ← Create new user. מכניסים מייל וסיסמה לגבאי ומסמנים Auto Confirm. אחר כך הוא נכנס למערכת עם המייל והסיסמה האלה. כדי לחסום גבאי — מוחקים אותו משם.':'In Supabase: Authentication → Users → Add user → Create new user. Enter an email and password for the gabbai and tick Auto Confirm. Then they sign in with that email and password. To block a gabbai, delete them there.',
+'הכתובת צריכה להתחיל ב־https://':'The URL must start with https://','נשמר. המערכת נטענת מחדש':'Saved. The system is reloading','החיבור נמחק':'Connection removed','אין נתונים שמורים במחשב הזה':'No data is saved on this computer',
+'קוד ההקמה הועתק. הדבק אותו ב־Supabase ← SQL Editor':'The setup code was copied. Paste it in Supabase → SQL Editor',
+'גיבוי, שחזור ואקסל':'Backup, restore & Excel','הורד קובץ גיבוי':'Download backup file','הורד טבלה לאקסל':'Download table for Excel','העתק טבלה לאקסל':'Copy table for Excel','שחזור מקובץ גיבוי':'Restore from backup file',
+'או הדבק כאן טקסט של גיבוי':'or paste backup text here','שחזר מהטקסט (מוסיף ומעדכן, לא מוחק)':'Restore from text (adds and updates, does not delete)',
+'הנתונים במחשב הזה בלבד. חובה להוריד קובץ גיבוי פעם בשבוע ולשמור אותו בדיסק נוסף או במייל של החברה.':'The data is on this computer only. Download a backup file every week and keep it on another drive or in the company email.',
+'הנתונים שמורים בשרת. בכל זאת מומלץ להוריד קובץ גיבוי פעם בשבוע.':'The data is saved on the server. It is still recommended to download a backup file every week.','עדיין לא הורד גיבוי מהמחשב הזה.':'No backup has been downloaded from this computer yet.',
+'קובץ הגיבוי ירד לתיקיית ההורדות':'The backup file was downloaded to your Downloads folder','הטבלה ירדה. פתח אותה באקסל':'The table was downloaded. Open it in Excel','הטבלה הועתקה, הדבק באקסל':'The table was copied, paste it in Excel',
+'הקובץ אינו קובץ גיבוי תקין':'The file is not a valid backup file','הטקסט שהודבק אינו גיבוי תקין':'The pasted text is not a valid backup','סמן והעתק מהתיבה (Ctrl+C)':'Select and copy from the box (Ctrl+C)',
+'השמירה במחשב נכשלה':'Saving on the computer failed',
+'הנתונים במחשב הזה בלבד.':'The data is on this computer only.','חובה להוריד קובץ גיבוי פעם בשבוע ולשמור אותו בדיסק נוסף או במייל של החברה.':'Download a backup file every week and keep it on another drive or in the company email.',
+'הנתונים שמורים בשרת.':'The data is saved on the server.','בכל זאת מומלץ להוריד קובץ גיבוי פעם בשבוע.':'It is still recommended to download a backup file every week.',
+'הסריקה קוראת את כתב היד בעזרת Gemini של גוגל.':'Scanning reads the handwriting with Google Gemini.','צריך מפתח פעם אחת: נכנסים ל־aistudio.google.com/apikey, לוחצים "Create API key" ומעתיקים לכאן.':'You need a key once: go to aistudio.google.com/apikey, click "Create API key" and copy it here.'
+};
+const I18N_RX=[
+[/^מחובר: (.+)$/,(m,a)=>'Signed in: '+T1x(a)],
+[/^מוצגות (\d+) מתוך (\d+) בקשות$/,'Showing $1 of $2 requests'],
+[/^בעוד (\d+) ימים$/,'in $1 days'],[/^בעוד (\d+)$/,'in $1 days'],
+[/^(\d+) בקשות מחכות לבדיקה\.$/,'$1 requests are waiting for review.'],
+[/^ביקורים קודמים \((\d+)\)$/,'Previous visits ($1)'],[/^דפים סרוקים \((\d+)\)$/,'Scanned pages ($1)'],
+[/^כל הנפטרים לעילוי נשמה \((\d+)\)$/,'All deceased, in memory of ($1)'],[/^לעילוי נשמת \((\d+)\)$/,'In memory of ($1)'],[/^לעילוי נשמת:$/,'In memory of:'],
+[/^שמות לרפואה ולברכה \((\d+)\)$/,'Names for healing and blessing ($1)'],[/^הוראות קבע לחודש \((\d+)\)$/,'Standing orders per month ($1)'],[/^תרומות חד־פעמיות \((\d+)\)$/,'One-time donations ($1)'],
+[/^(\d+) לבדיקה$/,'$1 to review'],[/^· (\d+) מתוך (\d+)$/,'· $1 of $2'],
+[/^הבא בתור: (.+)$/,(m,a)=>'Next in line: '+T1x(a)],[/^הבא בתור(.+)$/,(m,a)=>'Next in line'+a],
+[/^למחוק את הבקשה של (.+)\? אי אפשר לבטל\.$/,(m,a)=>'Delete the request of '+T1x(a)+'? This cannot be undone.'],
+[/^(.+), (\d+) ילדים$/,(m,a,b)=>T1x(a)+', '+b+' children'],[/^(\d+) ילדים$/,'$1 children'],
+[/^סה״כ חד־פעמי: (.+)$/,'One-time total: $1'],
+[/^(₪[\d,.]+) לחודש(?:, (\d+) חודשים)?(?:, מ־(.+))?$/,(m,a,b,c)=>a+' per month'+(b?', '+b+' months':'')+(c?', from '+c:'')],[/^לחודש$/,'per month'],
+[/^(.+?) (₪[\d,.]+)$/,(m,a,b)=>T1x(a)+' '+b],
+[/^דף מתאריך (.+)$/,'Page from $1'],
+[/^(\d+) תרומות רשומות\. הסכומים בסיסמת כספים\.$/,'$1 donations recorded. The amounts are behind the finance password.'],
+[/^נשמר\. (\d+) שדות לבדיקה$/,'Saved. $1 fields to review'],
+[/^הטופס נקרא\. (\d+) שדות מסומנים בכתום לבדיקה\.$/,'The form was read. $1 fields are marked orange for review.'],
+[/^שוחזרו (\d+) בקשות$/,'Restored $1 requests'],[/^הועלו (\d+) בקשות לשרת$/,'Uploaded $1 requests to the server'],
+[/^השמירה בשרת נכשלה: (.*)$/,'Saving on the server failed: $1'],[/^המחיקה בשרת נכשלה: (.*)$/,'Deleting on the server failed: $1'],[/^אין גישה לנתונים: (.*)$/,'No access to the data: $1'],
+[/^הסריקה לא הצליחה\. (.*)$/,(m,a)=>'The scan failed. '+T1x(a)],
+[/^גיבוי אחרון מהמחשב הזה: (.*)$/,'Last backup from this computer: $1'],
+[/^(\S+) (\d{4})$/,(m,a,b)=>I18N[a]?I18N[a]+' '+b:m],
+[/^(.+) \(לבדיקה\)$/,(m,a)=>T1x(a)+' (to review)'],
+[/^(.+) \((.+)\)$/,(m,a,b)=>I18N[b]?T1x(a)+' ('+I18N[b]+')':null]
+];
+function T1(t){if(I18N[t]!=null)return I18N[t];
+  for(const[rx,rep]of I18N_RX){const m=t.match(rx);if(m){const r=typeof rep==='function'?rep(...m):t.replace(rx,rep);if(r!=null)return r}}
+  const parts=t.split(/(?<=[.!?])\s+/);if(parts.length>1){const out=parts.map(p=>T1(p));if(out.some(x=>x!=null))return parts.map((p,i)=>out[i]??p).join(' ')}
+  return null}
+function T1x(t){const r=T1(t);return r==null?t:r}
+function T(s){if(LANG!=='en'||s==null)return s;const str=String(s),t=str.trim();if(!t||!/[֐-׿]/.test(t))return str;const r=T1(t);return r==null?str:str.replace(t,r)}
+const I18N_SKIP='#paper,textarea,script,style,[data-noi18n]';
+function i18nTree(root){if(LANG!=='en'||!root)return;
+  if(root.nodeType===3){const p=root.parentElement;if(p&&!p.closest(I18N_SKIP)){const v=T(root.nodeValue);if(v!==root.nodeValue)root.nodeValue=v}return}
+  if(root.nodeType!==1||root.closest('#paper,[data-noi18n]'))return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){const p=n.parentElement;if(!p||p.closest(I18N_SKIP))continue;const v=T(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v}
+  [root,...root.querySelectorAll('[placeholder],[title],[aria-label],[alt]')].forEach(e=>{if(e.closest&&e.closest('#paper,[data-noi18n]'))return;['placeholder','title','aria-label','alt'].forEach(a=>{const v=e.getAttribute&&e.getAttribute(a);if(v){const t=T(v);if(t!==v)e.setAttribute(a,t)}})})}
+function setLang(l){try{localStorage.setItem('biala_kk_lang',l)}catch(e){}try{sessionStorage.setItem('biala_view',typeof view!=='undefined'?view:'')}catch(e){}location.reload()}
+if(LANG==='en'){document.documentElement.lang='en';document.documentElement.dir='ltr';
+  new MutationObserver(ms=>{for(const m of ms){m.addedNodes.forEach(n=>i18nTree(n));if(m.type==='characterData')i18nTree(m.target)}}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+  document.addEventListener('DOMContentLoaded',()=>i18nTree(document.body));i18nTree(document.body)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(b&&b.dataset.lang!==LANG)setLang(b.dataset.lang)});
+
+const ss={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}},del(k){try{sessionStorage.removeItem(k)}catch(e){}}};
+function toast(t){const el=$('#toast');el.textContent=T(t);el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,2800)}
+async function hash(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('biala|'+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const newId=()=>'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const money=n=>(n||n===0)&&n!==''?('₪'+Number(n).toLocaleString('he-IL')):'';
+const digits=s=>String(s||'').replace(/\D/g,'');
+
+/* ===== תאריך עברי ===== */
+const HM={Tishri:'תשרי',Heshvan:'חשוון',Kislev:'כסלו',Tevet:'טבת',Shevat:'שבט','Adar I':'אדר א׳','Adar II':'אדר ב׳',Adar:'אדר',Nisan:'ניסן',Iyar:'אייר',Sivan:'סיוון',Tamuz:'תמוז',Av:'אב',Elul:'אלול'};
+const HP=(()=>{try{return new Intl.DateTimeFormat('en-u-ca-hebrew',{day:'numeric',month:'long',year:'numeric'})}catch(e){return null}})();
+function hparts(d){if(!HP)return null;const p={};HP.formatToParts(d).forEach(x=>p[x.type]=x.value);return {day:+p.day,month:p.month,year:+(p.year||p.relatedYear)}}
+function gem(n){const L=[[400,'ת'],[300,'ש'],[200,'ר'],[100,'ק'],[90,'צ'],[80,'פ'],[70,'ע'],[60,'ס'],[50,'נ'],[40,'מ'],[30,'ל'],[20,'כ'],[10,'י'],[9,'ט'],[8,'ח'],[7,'ז'],[6,'ו'],[5,'ה'],[4,'ד'],[3,'ג'],[2,'ב'],[1,'א']];
+  let s='';n=n%1000;while(n>0){if(n===15){s+='טו';break}if(n===16){s+='טז';break}for(const[v,c]of L){if(n>=v){s+=c;n-=v;break}}}
+  return s.length>1?s.slice(0,-1)+'״'+s.slice(-1):s+'׳'}
+function hebOf(d){const p=hparts(d);if(!p)return '';return LANG==='en'?`${p.day} ${p.month} ${p.year}`:`${gem(p.day)} ${HM[p.month]||p.month} ${gem(p.year)}`}
+const isoDate=iso=>iso?new Date(iso+'T12:00:00'):null;
+function heb(iso){const d=isoDate(iso);return d&&!isNaN(d)?hebOf(d):''}
+function greg(iso){if(!iso)return'';const [y,m,d]=iso.split('-');return `${d}/${m}/${y}`}
+/* תאריך כפול: עברי ראשי, לועזי קטן */
+function dual(iso){if(!iso)return'';const h=heb(iso);return `<span class="hd">${h||greg(iso)}</span>${h&&S.features.showGreg?` <span class="g num">${greg(iso)}</span>`:''}`}
+/* טקסט חופשי של תאריך לידה: לועזי 25/04/1956 → המרה; עברי נשאר */
+function parseGreg(t){const m=String(t||'').trim().match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})$/);if(!m)return null;let y=+m[3];if(y<100)y+=y>30?1900:2000;const d=new Date(y,+m[2]-1,+m[1],12);return isNaN(d)||d.getDate()!=+m[1]?null:d}
+function freeDate(t){const d=parseGreg(t);return d?`${hebOf(d)} <span class="g num">${esc(t)}</span>`:esc(t)}
+const GV={א:1,ב:2,ג:3,ד:4,ה:5,ו:6,ז:7,ח:8,ט:9,י:10,כ:20,ך:20,ל:30};
+const MRX=[['Tishri',/תשרי/],['Heshvan',/חשו?ון|מרחשון/],['Kislev',/כסלי?ו/],['Tevet',/טבת/],['Shevat',/שבט/],['AdarII',/אדר\s*(ב|ב׳|ב'|שני)(\s|$)/],['AdarI',/אדר\s*(א|א׳|א'|ראשון)(\s|$)/],['Adar',/אדר/],['Nisan',/ניסן/],['Iyar',/איי?ר/],['Sivan',/סיו?ון/],['Tamuz',/תמוז/],['Av',/(^|\s|מנחם\s*)אב(?![א-ת])/],['Elul',/אלול/]];
+/* מפענח "ח׳ אייר תשס״ה" או "25/04/1956" ליום+חודש עברי */
+function hebDayMonth(t){t=String(t||'');const g=parseGreg(t);if(g){const p=hparts(g);return p?{day:p.day,m:p.month.replace(' ','')}:null}
+  let m=null;for(const[k,rx]of MRX){if(rx.test(t)){m=k;break}}if(!m)return null;
+  const w=t.trim().split(/\s+/)[0].replace(/[׳״'"]/g,'');let day=0;
+  if(/^\d+$/.test(w))day=+w;else for(const c of w)day+=GV[c]||0;
+  return day>=1&&day<=30?{day,m}:null}
+function monthMatch(dm,hm){const h=hm.replace(' ','');if(dm===h)return true;
+  if(dm==='Adar')return h==='AdarII'||h==='Adar';if(dm==='AdarI'||dm==='AdarII')return h==='Adar';return false}
+/* כמה ימים עד היום העברי הבא */
+function daysUntil(dm,maxDays=30){if(!dm||!HP)return -1;const base=new Date();base.setHours(12,0,0,0);
+  for(let i=0;i<=maxDays;i++){const d=new Date(base);d.setDate(base.getDate()+i);const p=hparts(d);if(p.day===dm.day&&monthMatch(dm.m,p.month))return i}return -1}
+
+/* ===== נתונים קבועים ===== */
+const STATUS={wait:'ממתין',in:'הוכנס לאדמו״ר',done:'טופל'};
+const DON={none:'ללא',cash:'מזומן',standing:'הוראת קבע',check:'צ׳ק',transfer:'העברה בנקאית'};
+const MARITAL=['נשוי','נשואה','רווק','רווקה','אלמן','אלמנה','גרוש','גרושה'];
+const TAGS=['רפואה','פרנסה','זיווג','הצלחה','שלום בית','נחת','דירה','הצלה','לימוד','אחר'];
+const FEATURES={scan:'סריקת טופס אוטומטית',queue:'תור קבלת קהל',kvittel:'מסך קוויטל לאדמו״ר',finance:'כספים והוראות קבע',kupa:'קופה (הכנסות והוצאות)',yahr:'ימי זיכרון',birthdays:'ימי הולדת עבריים',names:'רשימת שמות לתפילה',autolock:'נעילה אוטומטית אחרי 20 דקות ללא פעילות',showGreg:'הצג תאריך לועזי קטן ליד העברי'};
+const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
+המערכת מחליפה את טופס הנייר "בקשת ברכה מכ״ק מרן האדמו״ר מביאלא שליט״א". כל מה שרשום בטופס נרשם כאן, ואפשר לחפש, לסדר תור ולהכין את השמות לאדמו״ר.
+
+# שפה
+הכפתורים למעלה מחליפים בין עברית ל־English. ברירת המחדל היא עברית. שמות, בקשות ומכתבים להדפסה נשארים כמו שנכתבו.
+
+# כניסה
+מקלידים את סיסמת הכניסה ובוחרים את שם הגבאי. כל בקשה שנקלטת נרשמת על שם הגבאי שהכניס אותה.
+
+# קליטת בקשה חדשה
+לוחצים על "בקשה חדשה" וממלאים לפי הסדר של הטופס. ליד כל תאריך מופיע התאריך העברי.
+תאריך לידה אפשר לכתוב בעברי (למשל: ד׳ חשוון תשי״ז) או בלועזי (למשל: 25/04/1956). לועזי מומר לעברי אוטומטית.
+כשמקלידים מספר נייד שכבר קיים במערכת, מופיעה הודעה "נמצא ביקור קודם". לחיצה על "מלא פרטים" ממלאת את כל מה שידוע מהביקור הקודם.
+"שמור והתחל חדשה" שומר ופותח טופס ריק, נוח כשיש ערימה של טפסים.
+
+# סריקת טופס נייר
+בטופס בקשה חדשה לוחצים "סרוק טופס נייר" ובוחרים תמונה של הטופס. המערכת קוראת את כתב היד וממלאת את השדות.
+שדות שלא היו ברורים מסומנים בכתום עם הכיתוב "לבדיקה". תמונת הטופס מוצגת ליד הטופס, ואפשר להגדיל אותה בלחיצה.
+חשוב: תמיד לעבור על השדות ולתקן לפני השמירה. כתובות מייל מתוקנות לפי הנפוץ (למשל ‎@gmail.com‎), אבל יש לוודא מול הדף.
+הסריקה צריכה מפתח Gemini, שמכניסים פעם אחת בלשונית "ניהול" ← "סריקה אוטומטית".
+
+# לשונית "סריקת דפים"
+מקום מיוחד לסריקה. לוחצים על המסגרת הגדולה ובוחרים תמונה אחת או כמה תמונות ביחד (או גוררים אותן פנימה).
+כל דף נקרא ונשמר אוטומטית כבקשה, עם תמונת הדף לידו. ברשימה שמתחת רואים את ההתקדמות, ולכל דף כפתור "פתח לבדיקה".
+אם דף לא נקרא, אפשר ללחוץ "הקלד ידנית ליד התמונה" ולהקליד מול הדף.
+
+# כרטיס אדם — כל החומר במקום אחד
+בלשונית "אנשים" לוחצים על שם, ונפתח כרטיס עם הכל: פרטים אישיים, כל הביקורים והבקשות לפי תאריכים, כל השמות לתפילה, הנפטרים וימי הזיכרון הקרובים, התרומות (בסיסמת כספים) וכל הדפים הסרוקים שלו.
+מכל בקשה אפשר להגיע לכרטיס בכפתור "כרטיס אדם מלא".
+"בקשה חדשה לאדם זה" פותח טופס שכבר מולאו בו כל הפרטים, ונשאר רק לכתוב את הבקשה.
+
+# מסמכים, וורד והדפסות
+בלשונית "מסמכים והדפסות" בוחרים מסמך: טופס בקשה ריק, טופס ממולא, כרטיס אדם, קוויטלים (דף לכל בקשה), רשימת שמות, תור היום, דוח לתקופה, מדבקות כתובת, מכתב חופשי, מכתב תזכורת יום זיכרון, ובסיסמת כספים גם מכתב תודה, קבלה ואישור הוראת קבע.
+המסמך מופיע כדף לבן. אפשר לכתוב ולשנות בו כל דבר, להדגיש ולהגדיל.
+"הורד לוורד" שומר קובץ שנפתח ב־Word לעריכה נוספת. "הדפס" פותח מיד את חלון ההדפסה (שם אפשר גם לשמור כ־PDF).
+כפתורי הדפסה ווורד יש גם בתוך כל בקשה, בכרטיס אדם, ברשימת השמות ובתור.
+את נוסחי המכתבים עורכים בלשונית "ניהול".
+
+# בקשות שמסומנות "לבדיקה"
+בקשה שנסרקה או שפוענחה מכתב יד מסומנת בפס כתום ובתווית "לבדיקה". נכנסים לבקשה, לוחצים "עריכה", מתקנים ולוחצים "סמן כנבדק".
+
+# תור קבלת קהל
+בלשונית "תור היום" מופיעים כל מי שנקלטו היום לפי מספר. "הבא בתור" מסמן את הבא כמי שנכנס לאדמו״ר.
+
+# מסך קוויטל
+מציג בקשה אחת באותיות גדולות: השם לתפילה, הבקשה והנפטרים. מעבר בין בקשות בחצים. מתאים להראות לאדמו״ר או לגבאי שבפנים.
+
+# רשימת שמות לתפילה
+מרכזת את כל השמות לתפילה בקברי צדיקים ואת שמות הנפטרים לפי טווח תאריכים. כפתור "העתק" מעתיק את הרשימה, ויש גם הדפסה ווורד.
+
+# כספים (סיסמה נוספת)
+פרטי התרומות וסכומים מוסתרים מכל מי שאין לו סיסמת כספים. בלי הסיסמה רואים רק שיש תרומה, בלי סכום.
+בלשונית "כספים" רואים תרומות, הוראות קבע, ומסמנים כל חודש אם הוראת הקבע נגבתה.
+"קופה" מאפשרת לרשום הכנסות והוצאות של המשרד ולראות סיכום לפי חודשים.
+לא רושמים במערכת מספרי כרטיס אשראי או חשבון בנק.
+
+# ימי זיכרון וימי הולדת
+המערכת מחשבת לפי הלוח העברי מי שיום הזיכרון או יום ההולדת שלו בשבועיים הקרובים.
+
+# ניהול (סיסמת מנהל)
+החלפת שלוש הסיסמאות, רשימת הגבאים, הפעלה וכיבוי של כל אפשרות במערכת, עריכת ההוראות האלה, עריכת נוסחי המכתבים, מפתח הסריקה, חיבור לשרת משותף, גיבוי ושחזור, והורדה לאקסל.
+
+# איפה הנתונים נשמרים
+בלי חיבור לשרת: הנתונים נשמרים רק במחשב שעליו עובדים. חובה להוריד קובץ גיבוי פעם בשבוע (ניהול ← "הורד קובץ גיבוי").
+עם חיבור לשרת משותף (ניהול ← "חיבור לשרת משותף"): כל הגבאים עובדים על אותם נתונים מכל מחשב, וכל גבאי נכנס עם מייל וסיסמה משלו.
+
+# אקסל וגיבוי
+"הורד טבלה לאקסל" שומר קובץ שנפתח באקסל עם כל הבקשות. "הורד קובץ גיבוי" שומר את כל המערכת לקובץ אחד, ו"שחזור מקובץ גיבוי" מחזיר אותו.
+
+# נעילה ומצב תצוגה
+המערכת ננעלת לבד אחרי 20 דקות בלי פעילות (אפשר לכבות בניהול). הכפתור ◐ למעלה מחליף בין תצוגה בהירה לכהה.
+
+# סיסמאות ראשוניות
+כניסה: 1234 · כספים: 4321 · ניהול: 123456. יש להחליף אותן מיד בלשונית "ניהול". (במצב שרת הכניסה היא עם מייל וסיסמה של כל גבאי.)`;
+
+const DEF_HELP_EN=`# Welcome to the reception system
+The system replaces the paper form "Blessing request from the Biala Rebbe shlita". Everything on the form is recorded here, and you can search, arrange a queue and prepare the names for the Rebbe.
+
+# Language
+The buttons at the top switch between עברית and English. Hebrew is the default. Names, requests and printed letters stay exactly as they were written.
+
+# Signing in
+Type the login password and choose the gabbai's name. Every request that is received is recorded under the gabbai who entered it.
+
+# Receiving a new request
+Click "New request" and fill it in by the order of the form. Next to every date the Hebrew date appears.
+A date of birth can be written in Hebrew (e.g. ד׳ חשוון תשי״ז) or Gregorian (e.g. 25/04/1956). Gregorian is converted to Hebrew automatically.
+When you type a mobile number that already exists, a "Previous visit found" message appears. Clicking "Fill in missing details" fills in everything known from the previous visit.
+"Save & start new" saves and opens an empty form, handy when there is a pile of forms.
+
+# Scanning a paper form
+In a new request click "Scan paper form" and choose an image of the form. The system reads the handwriting and fills in the fields.
+Fields that were unclear are marked in orange with "To review". The form image is shown next to the form and can be enlarged by clicking.
+Important: always go over the fields and fix them before saving. Email addresses are corrected to the common form (e.g. @gmail.com), but check against the page.
+Scanning needs a Gemini key, entered once in "Management" → "Automatic scanning".
+
+# The "Scan pages" tab
+A dedicated place for scanning. Click the big frame and choose one image or several at once (or drag them in).
+Each page is read and saved automatically as a request, with the page image next to it. The list below shows the progress, and each page has an "Open to review" button.
+If a page could not be read, click "Type by hand next to the image" and type it while looking at the page.
+
+# Person card — all the material in one place
+In the "People" tab click a name to open a card with everything: personal details, all visits and requests by date, all names for prayer, the deceased and upcoming yahrzeits, donations (with the finance password) and all their scanned pages.
+From any request you can reach the card with the "Full person card" button.
+"New request for this person" opens a form with all details already filled in, so only the request needs to be written.
+
+# Documents, Word and printing
+In the "Documents & printing" tab choose a document: blank request form, filled form, person card, kvittels (a page per request), list of names, today's queue, report for a period, address labels, free letter, yahrzeit reminder letter, and with the finance password also a thank-you letter, receipt and standing order confirmation.
+The document appears as a white page. You can write and change anything on it, make text bold and larger.
+"Download to Word" saves a file that opens in Word for further editing. "Print" opens the print window right away (you can also save as PDF there).
+Print and Word buttons also appear inside each request, in the person card, in the names list and in the queue.
+The letter templates are edited in the "Management" tab.
+
+# Requests marked "To review"
+A request that was scanned or read from handwriting has an orange stripe and a "To review" label. Open the request, click "Edit", fix it and click "Save & mark as reviewed".
+
+# Reception queue
+The "Today's queue" tab shows everyone received today, by number. "Next in line" marks the next person as having gone in to the Rebbe.
+
+# Kvittel screen
+Shows one request in large letters: the name for prayer, the request and the deceased. Move between requests with the arrows. Suitable for showing to the Rebbe or to the gabbai inside.
+
+# List of names for prayer
+Gathers all names for prayer at the tzaddikim's graves and the names of the deceased by date range. "Copy" copies the list, and there is also Print and Word.
+
+# Finances (extra password)
+Donation details and amounts are hidden from anyone without the finance password. Without it you only see that there is a donation, without the amount.
+The "Finances" tab shows donations and standing orders, and each month you mark whether the standing order was collected.
+"Cash box" lets you record office income and expenses and see a monthly summary.
+Never enter credit card or bank account numbers in the system.
+
+# Yahrzeits and birthdays
+The system calculates by the Hebrew calendar whose yahrzeit or birthday falls in the coming two weeks.
+
+# Management (manager password)
+Changing the three passwords, the list of gabbaim, turning each option on and off, editing these instructions, editing the letter templates, the scanning key, the shared server connection, backup and restore, and downloading to Excel.
+
+# Where the data is saved
+Without a server connection: the data is saved only on the computer you work on. Download a backup file every week (Management → "Download backup file").
+With a shared server (Management → "Shared server connection"): all gabbaim work on the same data from any computer, and each gabbai signs in with their own email and password.
+
+# Excel and backup
+"Download table for Excel" saves a file that opens in Excel with all requests. "Download backup file" saves the whole system to one file, and "Restore from backup file" brings it back.
+
+# Lock and display mode
+The system locks itself after 20 minutes without activity (can be turned off in Management). The ◐ button at the top switches between light and dark display.
+
+# Initial passwords
+Login: 1234 · Finances: 4321 · Management: 123456. Change them right away in the "Management" tab. (In server mode, each gabbai signs in with their own email and password.)`;
+
+/* ===== חיבור לשרת משותף (לא חובה) =====
+   ריק = הנתונים נשמרים רק במחשב הזה.
+   כדי שכל הגבאים יעבדו על אותם נתונים: מכניסים כאן את כתובת Supabase ואת המפתח הציבורי (anon public),
+   או מכניסים אותם במסך "ניהול" ← "חיבור לשרת משותף". */
+const SUPA_URL='';
+const SUPA_KEY='';
+const LKEY='biala_kk_';
+const lget=(k,d)=>{try{const v=localStorage.getItem(LKEY+k);return v?JSON.parse(v):d}catch(e){return d}};
+const lset=(k,v)=>{try{localStorage.setItem(LKEY+k,JSON.stringify(v))}catch(e){}};
+const CONN=()=>({url:SUPA_URL||lget('supaUrl',''),key:SUPA_KEY||lget('supaKey','')});
+/* אחסון במחשב: IndexedDB (מחזיק גם תמונות של דפים) */
+const idb={db:null,open(){return new Promise((res,rej)=>{const r=indexedDB.open('biala_kabalat_kahal',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>{this.db=r.result;res()};r.onerror=()=>rej(r.error)})},
+  get(k){return new Promise(res=>{try{const t=this.db.transaction('kv').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>res(undefined)}catch(e){res(undefined)}})},
+  set(k,v){return new Promise(res=>{try{const t=this.db.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=()=>res(true);t.onerror=()=>{toast('השמירה במחשב נכשלה');res(false)}}catch(e){toast('השמירה במחשב נכשלה');res(false)}})}};
+let SB=null, MODE='local', DEFS=null;
+let R=[], EXP=[], S=null;
+const DEF_S=async()=>({pw:await hash('1234'),fin:await hash('4321'),adm:await hash('123456'),gabbaim:['גבאי ראשי'],features:Object.fromEntries(Object.keys(FEATURES).map(k=>[k,true])),help:DEF_HELP,geminiKey:'',geminiModel:'gemini-3.8-flash',templates:{}});
+function withDefaults(o,d){return {...d,...o,features:{...d.features,...(o?.features||{})}}}
+async function cloudPut(tbl,id,data){const {error}=await SB.from(tbl).upsert({id,data,updated_at:new Date().toISOString()});if(error){toast('השמירה בשרת נכשלה: '+error.message);return false}return true}
+async function cloudDel(tbl,id){const {error}=await SB.from(tbl).delete().eq('id',id);if(error)toast('המחיקה בשרת נכשלה: '+error.message)}
+async function putRec(o){o.updatedAt=Date.now();const i=R.findIndex(r=>r.id===o.id);if(i>=0)R[i]=o;else R.push(o);
+  if(MODE==='cloud')await cloudPut('kk_records',o.id,o);else await idb.set('records',R)}
+async function delRec(id){R=R.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_records',id);else await idb.set('records',R)}
+async function putExp(o){const i=EXP.findIndex(r=>r.id===o.id);if(i>=0)EXP[i]=o;else EXP.push(o);if(MODE==='cloud')await cloudPut('kk_kupa',o.id,o);else await idb.set('kupa',EXP)}
+async function delExp(id){EXP=EXP.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_kupa',id);else await idb.set('kupa',EXP)}
+async function putS(){if(MODE==='cloud')await cloudPut('kk_settings','main',S);else await idb.set('settings',S)}
+async function loadCloud(){
+  const [a,b,c]=await Promise.all([SB.from('kk_records').select('id,data'),SB.from('kk_kupa').select('id,data'),SB.from('kk_settings').select('data').eq('id','main').maybeSingle()]);
+  if(a.error)throw a.error;
+  R=(a.data||[]).map(x=>({...x.data,id:x.id}));EXP=(b.data||[]).map(x=>({...x.data,id:x.id}));S=withDefaults(c.data?.data||null,DEFS)}
+async function boot(){
+  DEFS=await DEF_S();try{await idb.open()}catch(e){}
+  const c=CONN();
+  if(c.url&&c.key&&window.supabase){try{SB=supabase.createClient(c.url,c.key);MODE='cloud'}catch(e){SB=null}}
+  if(MODE==='local'){S=withDefaults(await idb.get('settings'),DEFS);R=(await idb.get('records'))||[];EXP=(await idb.get('kupa'))||[]}
+  else S=withDefaults(null,DEFS);
+  $('#emailWrap').hidden=MODE!=='cloud';$('#gabbaiSel').hidden=MODE==='cloud';
+  $('#pw').placeholder=T(MODE==='cloud'?'סיסמה':'סיסמת כניסה');
+  fillGabbai();renderModebar();
+  /* רענון אוטומטי כשעובדים כמה גבאים */
+  if(MODE==='cloud'){setInterval(()=>{if(!document.hidden&&!$('#app').hidden&&view!=='new'&&view!=='edit')loadCloud().then(refresh).catch(()=>{})},45000);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!$('#app').hidden)loadCloud().then(refresh).catch(()=>{})});
+    const {data}=await SB.auth.getSession();if(data?.session){ME=data.session.user.user_metadata?.name||data.session.user.email.split('@')[0];try{await loadCloud();return true}catch(e){}}}
+  return false}
+function renderModebar(){$('#modebar').innerHTML=MODE==='cloud'?'':`<div>הנתונים נשמרים רק במחשב הזה. כדי שכל הגבאים יעבדו על אותם נתונים, מחברים שרת משותף בלשונית "ניהול".</div>`}
+
+/* ===== כניסה והרשאות ===== */
+let ME=ss.get('biala_me')||'', FIN=ss.get('biala_fin')==='1', ADM=ss.get('biala_adm')==='1';
+function fillGabbai(){const sel=$('#gabbaiSel');if(!sel||!S)return;const cur=sel.value||ME;sel.innerHTML='<option value="">— מי נכנס? —</option>'+S.gabbaim.map(g=>`<option ${g===cur?'selected':''}>${esc(g)}</option>`).join('')}
+let loginFails=0;
+$('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('#loginErr');
+  if(MODE==='cloud'){err.textContent='מתחבר...';
+    const {data,error}=await SB.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
+    if(error){err.textContent='המייל או הסיסמה שגויים';return}
+    try{await loadCloud()}catch(x){err.textContent='אין גישה לנתונים: '+(x.message||'');return}
+    ME=data.user.user_metadata?.name||data.user.email.split('@')[0];err.textContent='';ss.set('biala_me',ME);enter();return}
+  if(await hash($('#pw').value)!==S.pw){loginFails++;err.textContent=loginFails>=3?'הסיסמה שגויה. אם שכחת — מנהל המערכת יכול להחליף אותה מהמחשב הראשי.':'הסיסמה שגויה, נסה שוב';$('#pw').select();return}
+  ME=$('#gabbaiSel').value||'גבאי';ss.set('biala_in','1');ss.set('biala_me',ME);enter()});
+function enter(){$('#login').hidden=true;$('#app').hidden=false;lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person'].includes(v)?v:'')||location.hash.slice(1)||'home')}
+function logout(){['biala_in','biala_fin','biala_adm','biala_me'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
+/* נעילה אוטומטית אחרי 20 דקות בלי פעילות */
+let lastAct=Date.now();['click','keydown','mousemove','touchstart'].forEach(ev=>document.addEventListener(ev,()=>lastAct=Date.now(),{passive:true}));
+setInterval(()=>{if(S?.features?.autolock&&!$('#app').hidden&&Date.now()-lastAct>20*60000){logout();$('#loginErr').textContent='המערכת ננעלה אחרי 20 דקות ללא פעילות'}},30000);
+/* קבצים: הורדה והדפסה */
+function downloadBlob(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},3000)}
+function printHTML(html){const f=document.createElement('iframe');f.style.cssText='position:fixed;width:0;height:0;border:0;left:-9999px';document.body.appendChild(f);
+  const d=f.contentDocument;d.open();d.write(html);d.close();setTimeout(()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast('ההדפסה לא נפתחה')}setTimeout(()=>f.remove(),3000)},600)}
+const fileStamp=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+/* שער סיסמה פנימי (כספים / ניהול) */
+function gate(kind,title,onOk){
+  $('#main').innerHTML=`<section style="display:grid;place-items:center;min-height:50vh"><form class="card" id="gf" style="width:min(380px,100%);text-align:center">
+    <h2>${title}</h2><p class="muted" style="margin:0">אזור זה מוגן בסיסמה נוספת.</p>
+    <label class="f"><span>סיסמה</span><input id="gp" type="password" autofocus></label>
+    <button class="btn primary">פתח</button><div id="ge" style="color:var(--bad);min-height:1.4em"></div></form></section>`;
+  $('#gf').onsubmit=async e=>{e.preventDefault();if(await hash($('#gp').value)===S[kind]){if(kind==='fin'){FIN=true;ss.set('biala_fin','1')}else{ADM=true;ss.set('biala_adm','1')}onOk()}else $('#ge').textContent='הסיסמה שגויה'}}
+
+/* ===== ניווט ===== */
+let view='home', current=null, filt={q:'',status:'',date:'',tag:'',rev:false};
+const TABS=()=>[['home','ראשי'],['list','בקשות'],['new','בקשה חדשה'],S.features.scan&&['scan','סריקת דפים'],['people','אנשים'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.finance&&['money','כספים'],S.features.kupa&&['kupa','קופה'],['help','הוראות'],['admin','ניהול'],['logout','יציאה']].filter(Boolean);
+function renderTabs(){const rev=R.filter(r=>r.review).length;
+  $('#tabs').innerHTML=TABS().map(([k,t])=>`<button data-v="${k}" aria-current="${k===(['view','edit'].includes(view)?'list':view==='person'?'people':view)}">${t}${k==='list'&&rev?`<span class="badge">${rev}</span>`:''}</button>`).join('');
+  $('#who').textContent=ME?`מחובר: ${ME}`:''}
+(()=>{const t=lget('theme','');if(t)document.documentElement.dataset.theme=t})();
+$$('.langsw [data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===LANG)));
+$('#themeBtn').onclick=()=>{const cur=document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');const n=cur==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lset('theme',n)};
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v==='logout')return logout();go(b.dataset.v)});
+let pendingPre=null, curPerson=null;
+const VIEWS={home:renderHome,list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
+  money:()=>FIN?renderMoney():gate('fin','כספים',renderMoney),kupa:()=>FIN?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,admin:()=>ADM?renderAdmin():gate('adm','ניהול',renderAdmin)};
+function go(v,rec){if(!VIEWS[v])v='home';view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
+let dirty=false;
+function refresh(){if($('#app').hidden)return;renderTabs();if(view==='new'||view==='edit'||$('#gf'))return;if(view==='view'&&current)current=R.find(r=>r.id===current.id)||null;
+  if(view==='list'&&$('#rows')){fillRows();return}VIEWS[view]()}
+const byId=id=>R.find(r=>r.id===id);
+const fullName=x=>[x.first,x.last].filter(Boolean).join(' ')||x.prayName||'ללא שם';
+function bindRows(sel){$$(sel+' tr[data-id]').forEach(tr=>tr.onclick=()=>go('view',byId(tr.dataset.id)))}
+function donCell(x){const d=x.donation;if(!d||d.type==='none'||!d.type)return'<span class="muted">—</span>';return `<span class="pill tag">${DON[d.type]}</span>${FIN&&d.amount?` <span class="num">${money(d.amount)}</span>`:''}`}
+
+/* ===== ראשי ===== */
+function renderHome(){
+  const t=todayISO(), todays=R.filter(r=>r.date===t), rev=R.filter(r=>r.review);
+  const yahr=S.features.yahr?upcomingYahr(14):[], bd=S.features.birthdays?upcomingBirthdays(14):[];
+  const tagCount={};R.forEach(r=>(r.tags||[]).forEach(g=>tagCount[g]=(tagCount[g]||0)+1));
+  const maxTag=Math.max(1,...Object.values(tagCount));
+  $('#main').innerHTML=`<section>
+  <div class="row"><h2>${hebOf(new Date())}</h2><span class="g num">${greg(t)}</span><span class="spacer"></span><button class="btn primary" id="hNew">+ בקשה חדשה</button></div>
+  <div class="stats">
+    <div class="stat link" data-go="list"><b>${R.length}</b><span>בקשות במערכת</span></div>
+    <div class="stat link" data-go="queue"><b>${todays.length}</b><span>נקלטו היום</span></div>
+    <div class="stat link" data-go="list" data-f="wait"><b>${R.filter(r=>r.status==='wait').length}</b><span>ממתינות לאדמו״ר</span></div>
+    <div class="stat link ${rev.length?'alert':''}" data-go="list" data-f="rev"><b>${rev.length}</b><span>לבדיקה ותיקון</span></div>
+    <div class="stat"><b>${new Set(R.map(personKey)).size}</b><span>אנשים שונים</span></div>
+  </div>
+  ${MODE==='local'&&R.length&&!lget('lastBackup','')?`<div class="notice" style="margin-bottom:14px"><b>עדיין לא הורד גיבוי.</b> הנתונים שמורים רק במחשב הזה. <button class="btn sm warn" id="hBk">לגיבוי</button></div>`:''}
+  ${rev.length?`<div class="notice" style="margin-bottom:14px"><b>${rev.length} בקשות מחכות לבדיקה.</b> הן פוענחו מכתב יד, וחלק מהשדות לא היו ברורים. <button class="btn sm warn" id="hRev">לבדיקה</button></div>`:''}
+  <div class="cols">
+    <div class="card"><h3>ימי זיכרון בשבועיים הקרובים</h3>${yahr.length?`<table><tbody>${yahr.slice(0,8).map(y=>`<tr class="click" data-id="${y.by.id}"><td><b>${esc(y.name)}</b> <span class="g">${esc(y.rel)}</span></td><td class="num">${y.days===0?'היום':y.days===1?'מחר':'בעוד '+y.days+' ימים'}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">אין ימי זיכרון קרובים לפי הרשום.</p>'}</div>
+    <div class="card"><h3>ימי הולדת עבריים קרובים</h3>${bd.length?`<table><tbody>${bd.slice(0,8).map(y=>`<tr class="click" data-id="${y.by.id}"><td><b>${esc(y.name)}</b></td><td class="num">${y.days===0?'היום':y.days===1?'מחר':'בעוד '+y.days+' ימים'}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">אין ימי הולדת קרובים לפי הרשום.</p>'}</div>
+    <div class="card"><h3>נושאי הבקשות</h3>${Object.keys(tagCount).length?`<div class="bars">${Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar"><span>${k}</span><i style="width:${v/maxTag*100}%"></i><span class="num">${v}</span></div>`).join('')}</div>`:'<p class="muted">מסמנים נושא בכל בקשה (רפואה, פרנסה...) ואז רואים כאן סיכום.</p>'}</div>
+  </div></section>`;
+  $('#hNew').onclick=()=>go('new');if($('#hBk'))$('#hBk').onclick=()=>go('admin'); if($('#hRev'))$('#hRev').onclick=()=>{filt={q:'',status:'',date:'',tag:'',rev:true};go('list')};
+  $$('.stat.link').forEach(s=>s.onclick=()=>{filt={q:'',status:'',date:'',tag:'',rev:false};if(s.dataset.f==='rev')filt.rev=true;else if(s.dataset.f)filt.status=s.dataset.f;go(s.dataset.go)});
+  bindRows('#main');
+}
+function upcomingYahr(n){const out=[];R.forEach(x=>(x.deceased||[]).forEach(d=>{const dm=hebDayMonth(d.date);const k=daysUntil(dm,n);if(k>=0)out.push({...d,by:x,days:k})}));return out.sort((a,b)=>a.days-b.days)}
+function upcomingBirthdays(n){const out=[];R.forEach(x=>{[[x.birth,fullName(x)],[x.spouseBirth,x.spouseName]].forEach(([b,nm])=>{if(!b||!nm)return;const k=daysUntil(hebDayMonth(b),n);if(k>=0)out.push({name:nm,by:x,days:k})})});return out.sort((a,b)=>a.days-b.days)}
+
+/* ===== רשימה ===== */
+function renderList(){
+  $('#main').innerHTML=`<section>
+  <div class="row"><h2>בקשות ברכה</h2><span class="spacer"></span><button class="btn primary" id="addBtn">+ בקשה חדשה</button></div>
+  <div class="toolbar" style="margin-top:12px">
+    <input type="search" id="q" placeholder="חיפוש: שם, טלפון, עיר, בקשה, שם נפטר" value="${esc(filt.q)}">
+    <select id="fs"><option value="">כל הסטטוסים</option>${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${filt.status===k?'selected':''}>${v}</option>`).join('')}</select>
+    <select id="ft"><option value="">כל הנושאים</option>${TAGS.map(t=>`<option ${filt.tag===t?'selected':''}>${t}</option>`).join('')}</select>
+    <input id="fd" type="date" value="${filt.date}" aria-label="תאריך">
+    <label class="row small" style="gap:4px"><input type="checkbox" id="fr" ${filt.rev?'checked':''}> רק לבדיקה</label>
+  </div>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך</th><th>שם</th><th>שם לתפילה</th><th>עיר</th><th>נייד</th><th>בקשה</th><th>תרומה</th><th>סטטוס</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <p class="muted small" id="cnt"></p></section>`;
+  $('#addBtn').onclick=()=>go('new');
+  $('#q').oninput=e=>{filt.q=e.target.value;fillRows()};$('#fs').onchange=e=>{filt.status=e.target.value;fillRows()};$('#ft').onchange=e=>{filt.tag=e.target.value;fillRows()};
+  $('#fd').onchange=e=>{filt.date=e.target.value;fillRows()};$('#fr').onchange=e=>{filt.rev=e.target.checked;fillRows()};
+  fillRows();
+}
+function fillRows(){const q=filt.q.trim();
+  const list=R.filter(x=>(!filt.status||x.status===filt.status)&&(!filt.date||x.date===filt.date)&&(!filt.tag||(x.tags||[]).includes(filt.tag))&&(!filt.rev||x.review)&&
+    (!q||[x.first,x.last,x.prayName,x.mobile,x.homePhone,x.city,x.request,x.email,x.spouseName,...(x.deceased||[]).map(d=>d.name)].join(' ').includes(q)||(digits(q).length>3&&(digits(x.mobile)+digits(x.homePhone)).includes(digits(q)))))
+    .sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||0)-(a.createdAt||0));
+  $('#rows').innerHTML=list.length?list.map(x=>`<tr class="click ${x.review?'rev':''}" data-id="${x.id}">
+    <td>${dual(x.date)}</td>
+    <td><b>${esc(fullName(x))}</b> ${x.review?'<span class="pill rev">לבדיקה</span>':''}</td>
+    <td>${esc(x.prayName)}</td><td>${esc(x.city)}</td><td class="num"><span class="ltr">${esc(x.mobile||x.homePhone)}</span></td>
+    <td>${esc((x.request||'').slice(0,36))}${(x.request||'').length>36?'…':''}${(x.tags||[]).map(t=>` <span class="pill tag">${t}</span>`).join('')}</td>
+    <td>${donCell(x)}</td><td><span class="pill ${x.status}">${STATUS[x.status]||''}</span></td></tr>`).join('')
+    :`<tr><td colspan="8" class="empty">${R.length?'לא נמצאו בקשות לפי החיפוש.':'עדיין אין בקשות. לחץ "בקשה חדשה" או "סרוק טופס נייר".'}</td></tr>`;
+  $('#cnt').textContent=`מוצגות ${list.length} מתוך ${R.length} בקשות`;bindRows('#rows')}
+
+/* ===== טופס ===== */
+const FIELDS=[['first','שם'],['last','שם משפחה'],['birth','תאריך לידה'],['prayName','שם להתפלל בקברי צדיקים'],['spouseName','שם בן / בת הזוג'],['spouseBirth','תאריך לידה בן / בת הזוג'],['address','כתובת'],['city','עיר'],['zip','מיקוד'],['homePhone','טלפון בבית'],['mobile','נייד'],['work','מקום העבודה'],['workPhone','טלפון העבודה'],['email','כתובת מייל'],['marital','מצב משפחתי'],['children','מספר ילדים'],['request','בקשה אישית מהאדמו״ר']];
+const FL=Object.fromEntries(FIELDS);
+function renderForm(rec,prefill){
+  const x=prefill||rec||{date:todayISO(),deceased:[],donation:{type:'none'},status:'wait',tags:[]};
+  const d=x.donation||{type:'none'}, uns=new Set(x.unsure||[]);
+  const F=(id,type='text',extra='',ph='')=>`<label class="f ${uns.has(id)?'unsure':''} ${extra}">${FL[id]||id}<input id="${id}" type="${type}" value="${esc(x[id])}" ${['tel','email'].includes(type)?'dir="ltr"':''} ${ph?`placeholder="${ph}"`:''}>${['birth','spouseBirth'].includes(id)?`<span class="hint" data-h="${id}">${parseGreg(x[id])?hebOf(parseGreg(x[id])):''}</span>`:''}</label>`;
+  const lockedAmt=!FIN&&rec&&d.amount;
+  $('#main').innerHTML=`<section>
+  <div class="row"><h2>${rec?'עריכת בקשה':'בקשת ברכה חדשה'}</h2><span class="spacer"></span>
+    ${S.features.scan&&!rec?`<label class="btn gold" for="scanFile" id="scanLbl">סרוק טופס נייר</label><input type="file" id="scanFile" accept="image/*" hidden>`:''}</div>
+  <div id="scanMsg"></div>
+  <div class="formwrap ${x.scanUrl||x._scanData?'withimg':''}" id="fw" style="margin-top:12px"><form class="form" id="frm">
+  ${x.review?`<div class="notice">בקשה זו פוענחה מכתב יד. השדות בכתום לא היו ברורים. בדוק מול תמונת הדף ותקן.</div>`:''}
+  <fieldset><legend>פרטי המבקש</legend><div class="grid">
+    <label class="f">תאריך הבקשה<input id="date" type="date" value="${esc(x.date)}"><span class="hint" data-h="date">${heb(x.date)}</span></label>
+    ${F('first')}${F('last')}${F('birth','text','','עברי או לועזי, למשל 25/04/1956')}
+    ${F('prayName','text','wide','שם בן/בת שם האם, למשל: משה בן שרה')}
+  </div></fieldset>
+  <fieldset><legend>בן / בת הזוג ומשפחה</legend><div class="grid">
+    ${F('spouseName')}${F('spouseBirth','text','','עברי או לועזי')}
+    <label class="f ${uns.has('marital')?'unsure':''}">מצב משפחתי<input id="marital" list="maritalL" value="${esc(x.marital)}"></label><datalist id="maritalL">${MARITAL.map(m=>`<option>${m}</option>`).join('')}</datalist>
+    ${F('children','number')}
+  </div></fieldset>
+  <fieldset><legend>כתובת וטלפונים</legend><div class="grid">
+    ${F('mobile','tel')}<div id="dupMsg" class="wide" hidden></div>
+    ${F('homePhone','tel')}${F('address')}${F('city')}${F('zip')}${F('email','email')}${F('work')}${F('workPhone','tel')}
+  </div></fieldset>
+  <fieldset><legend>תפילות ולימוד בישיבה לעילוי נשמת יקיריכם שנפטרו</legend><div id="decList"></div>
+    <button type="button" class="btn sm" id="addDec">+ הוסף נפטר</button></fieldset>
+  <fieldset><legend>בקשה אישית מהאדמו״ר</legend>
+    <label class="f ${uns.has('request')?'unsure':''}"><textarea id="request" placeholder="תוכן הבקשה">${esc(x.request)}</textarea></label>
+    <div class="chips" style="margin-top:8px">${TAGS.map(t=>`<label><input type="checkbox" name="tag" value="${t}" ${(x.tags||[]).includes(t)?'checked':''}>${t}</label>`).join('')}</div></fieldset>
+  ${S.features.finance?`<fieldset><legend>תרומה / פדיון</legend><div class="grid">
+    <label class="f">אופן<select id="dtype">${Object.entries(DON).map(([k,v])=>`<option value="${k}" ${d.type===k?'selected':''}>${v}</option>`).join('')}</select></label>
+    ${lockedAmt?`<div class="lock wide" id="wAmount">הוזן סכום. הצפייה והשינוי דורשים סיסמת כספים.</div>`:`<label class="f" id="wAmount">סכום (₪)<input id="damount" type="number" min="0" value="${esc(d.amount)}"></label>`}
+    <label class="f" id="wMonths">מספר חודשים<input id="dmonths" type="number" min="0" placeholder="ללא הגבלה" value="${esc(d.months)}"></label>
+    <label class="f" id="wStart">חודש התחלה<input id="dstart" type="month" value="${esc(d.start)}"></label>
+  </div><p class="muted small" style="margin:8px 0 0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p></fieldset>`:''}
+  <fieldset><legend>טיפול</legend><div class="grid">
+    <label class="f">סטטוס<select id="status">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${x.status===k?'selected':''}>${v}</option>`).join('')}</select></label>
+    <label class="f wide">הערות פנימיות<textarea id="notes" style="min-height:56px">${esc(x.notes)}</textarea></label>
+  </div></fieldset>
+  <div class="sticky-actions"><button class="btn primary" type="submit">שמור</button>
+    ${x.review?'<button class="btn warn" type="button" id="saveOk">שמור וסמן כנבדק</button>':''}
+    ${rec?'':'<button class="btn" type="button" id="saveNew">שמור והתחל חדשה</button>'}
+    <button class="btn" type="button" id="cancel">ביטול</button></div>
+  </form>${x.scanUrl||x._scanData?`<aside class="scanimg"><b>תמונת הדף המקורי</b><img id="simg" src="${esc(x.scanUrl||x._scanData)}" alt="הטופס הסרוק"><span class="muted small">לחץ על התמונה להגדלה</span></aside>`:''}</div></section>`;
+  dirty=false;$('#frm').addEventListener('input',()=>dirty=true);
+  if($('#simg'))$('#simg').onclick=e=>{e.target.classList.toggle('big');$('#fw').classList.toggle('withimg')};
+  const decs=(x.deceased||[]).map(o=>({...o}));if(!decs.length)decs.push({name:'',rel:'',date:''});
+  const drawDec=()=>{$('#decList').innerHTML=decs.map((o,i)=>`<div class="dec-row">
+    <label class="f ${o.unsure?'unsure':''}">שם ושם האבא<input data-i="${i}" data-k="name" value="${esc(o.name)}"></label>
+    <label class="f">קירבה<input data-i="${i}" data-k="rel" value="${esc(o.rel)}" list="rels"></label>
+    <label class="f">יום ושנה<input data-i="${i}" data-k="date" value="${esc(o.date)}" placeholder="ח׳ אייר תשס״ה"></label>
+    <button type="button" class="btn sm danger rm" data-rm="${i}">הסר</button></div>`).join('')+'<datalist id="rels">'+['אב','אם','סב','סבתא','אח','אחות','חותן','חותנת','בן','בת','בעל','אשה'].map(r=>`<option>${r}</option>`).join('')+'</datalist>';
+    $$('#decList input').forEach(inp=>inp.oninput=()=>decs[inp.dataset.i][inp.dataset.k]=inp.value);
+    $$('#decList [data-rm]').forEach(b=>b.onclick=()=>{decs.splice(b.dataset.rm,1);drawDec()})};
+  drawDec();$('#addDec').onclick=()=>{decs.push({name:'',rel:'',date:''});drawDec()};
+  $('#date').oninput=()=>$('[data-h="date"]').textContent=heb($('#date').value);
+  ['birth','spouseBirth'].forEach(id=>$('#'+id).addEventListener('input',()=>{const g=parseGreg($('#'+id).value);$(`[data-h="${id}"]`).textContent=g?hebOf(g):''}));
+  if($('#dtype')){const dv=()=>{const t=$('#dtype').value;$('#wAmount').hidden=t==='none';$('#wMonths').hidden=$('#wStart').hidden=t!=='standing';const l=$('#wAmount').firstChild;if(l&&l.nodeType===3)l.textContent=t==='standing'?'סכום חודשי (₪)':'סכום (₪)'};$('#dtype').onchange=dv;dv()}
+  /* זיהוי ביקור קודם לפי נייד */
+  $('#mobile').addEventListener('blur',()=>{const m=digits($('#mobile').value);const box=$('#dupMsg');if(m.length<9){box.hidden=true;return}
+    const prev=R.filter(r=>r.id!==rec?.id&&digits(r.mobile)===m).sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];
+    if(!prev){box.hidden=true;return}box.hidden=false;box.innerHTML=`<div class="notice info row">נמצא ביקור קודם: <b>${esc(fullName(prev))}</b> ${dual(prev.date)}<span class="spacer"></span><button type="button" class="btn sm gold" id="fillPrev">מלא פרטים חסרים</button></div>`;
+    $('#fillPrev').onclick=()=>{FIELDS.forEach(([k])=>{const el=$('#'+k);if(el&&!el.value&&prev[k]&&k!=='request')el.value=prev[k]});if(!decs.some(o=>o.name)&&prev.deceased?.length){decs.splice(0,decs.length,...prev.deceased.map(o=>({...o})));drawDec()}toast('הפרטים מולאו מהביקור הקודם')}});
+  if($('#scanFile'))$('#scanFile').onchange=e=>{const f=e.target.files[0];if(f)scanForm(f)};
+  $('#cancel').onclick=()=>{rec?go('view',rec):go('list')};
+  const collect=()=>{const v=id=>($('#'+id)?.value||'').trim();
+    const o={...(rec||{}),id:rec?.id||newId(),date:v('date')};FIELDS.forEach(([k])=>o[k]=v(k));
+    o.deceased=decs.filter(d=>d.name||d.date).map(({unsure,...r})=>r);o.tags=$$('input[name=tag]:checked').map(i=>i.value);o.status=v('status');o.notes=v('notes');
+    if(S.features.finance){const old=rec?.donation||{};o.donation={...old,type:v('dtype')||'none',amount:$('#damount')?(v('damount')?Number(v('damount')):''):old.amount,months:v('dmonths'),start:v('dstart')}}
+    if(!rec){o.createdAt=Date.now();o.createdBy=ME;if(o.date===todayISO())o.queueNo=Math.max(0,...R.filter(r=>r.date===o.date).map(r=>r.queueNo||0))+1}
+    if(x._scanUrl)o.scanUrl=x._scanUrl;else if(x._scanData&&!rec)o.scanUrl=x._scanData;if(prefill&&!rec&&x.review){o.review=true;o.unsure=x.unsure||[]}
+    o.email=fixEmail(o.email);
+    if(!o.first&&!o.last&&!o.prayName){toast('יש למלא לפחות שם או שם לתפילה');return null}return o};
+  $('#frm').onsubmit=async e=>{e.preventDefault();const o=collect();if(!o)return;await putRec(o);dirty=false;toast('הבקשה נשמרה');go('view',o)};
+  if($('#saveOk'))$('#saveOk').onclick=async()=>{const o=collect();if(!o)return;o.review=false;o.unsure=[];o.checkedBy=ME;await putRec(o);toast('נשמר וסומן כנבדק');go('view',o)};
+  if($('#saveNew'))$('#saveNew').onclick=async()=>{const o=collect();if(!o)return;await putRec(o);toast('נשמרה. אפשר להקליד את הבאה');go('new')};
+}
+/* תיקון מייל לפי הנפוץ */
+function fixEmail(e){e=String(e||'').trim().replace(/\s+/g,'');if(!e)return'';if(!e.includes('@')&&/gmail|gmial|gmai/i.test(e))e=e.replace(/(gmail|gmial|gmai)\.?(com|co)?$/i,'@gmail.com');
+  return e.replace(/@(gmail|gmial|gmai|gamil|gnail|gmal)(\.c?o?m?)?$/i,'@gmail.com').replace(/@(walla|wala)(\.c?o?\.?i?l?)?$/i,'@walla.co.il').toLowerCase()}
+
+/* ===== סריקת טופס ===== */
+async function shrink(file,max=1600,q=.85){const img=await createImageBitmap(file);const k=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=img.width*k;c.height=img.height*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return {blob:await new Promise(r=>c.toBlob(r,'image/jpeg',q)),url:c.toDataURL('image/jpeg',Math.min(q,.6))}}
+const SCAN_PROMPT=`זו תמונה של טופס נייר בעברית בשם "בקשת ברכה מכ״ק מרן האדמו״ר מביאלא שליט״א", מולא בכתב יד.
+קרא את כתב היד והחזר JSON בלבד, בלי טקסט נוסף, במבנה:
+{"date":"YYYY-MM-DD או ריק","hebDate":"תאריך עברי כפי שנכתב או ריק","first":"","last":"","birth":"כפי שנכתב","prayName":"","spouseName":"","spouseBirth":"כפי שנכתב","address":"","city":"","zip":"","homePhone":"","mobile":"","work":"","workPhone":"","email":"","marital":"","children":"","deceased":[{"name":"","rel":"","date":""}],"request":"","unsure":["שמות השדות שלא היו ברורים"]}
+כללים: אל תמציא. שדה ריק בטופס = מחרוזת ריקה. אם קראת חלקית — כתוב את הניחוש הטוב ביותר והוסף את שם השדה ל-unsure. מייל: השלם לפי הנפוץ (רוב המיילים נגמרים ב-@gmail.com) והוסף email ל-unsure אם ניחשת. מספרי טלפון ישראליים בפורמט 05X-XXXXXXX. "מצב משפחתי" כמו "נשוי + 4" → marital "נשוי", children "4". כתב בשוליים ליד "בקשה אישית" — צרף ל-request. תאריך הבקשה בראש הדף: אם לועזי — המר ל-YYYY-MM-DD; אם עברי — השאר date ריק ומלא hebDate.`;
+const blobToB64=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(b)});
+const hasKey=()=>!!(S.geminiKey);
+async function aiReadImage(blob){
+  if(!hasKey())throw {code:'no_key'};
+  const model=(S.geminiModel||'gemini-3.8-flash').trim();
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':S.geminiKey.trim()},
+    body:JSON.stringify({contents:[{parts:[{text:SCAN_PROMPT},{inline_data:{mime_type:'image/jpeg',data:await blobToB64(blob)}}]}],generationConfig:{response_mime_type:'application/json',temperature:0.1}})}).catch(()=>{throw {code:'net'}});
+  if(r.status===429)throw {code:'rate_limited'};
+  if(!r.ok){let m='';try{m=(await r.json()).error?.message||''}catch(e){}throw {code:r.status===400||r.status===403?'bad_key':'api',message:m}}
+  const j=await r.json();const t=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('').replace(/^\s*```(json)?/,'').replace(/```\s*$/,'').trim();
+  try{return JSON.parse(t)}catch(e){throw {code:'parse'}}}
+/* קורא תמונה אחת ומחזיר רשומה (לא שמורה) */
+async function scanToRecord(file){
+  if(!hasKey())throw {code:'no_key'};
+  const {blob,url}=await shrink(file);let scanUrl='';try{scanUrl=(await shrink(file,1100,.6)).url}catch(e){scanUrl=url}
+  const res=await aiReadImage(blob);
+  const pre={date:res.date&&/^\d{4}-\d\d-\d\d$/.test(res.date)?res.date:todayISO(),deceased:(res.deceased||[]).filter(d=>d&&(d.name||d.date)),donation:{type:'none'},status:'wait',tags:[],
+    unsure:Array.isArray(res.unsure)?res.unsure.filter(k=>FL[k]):[],review:true,_scanData:url,_scanUrl:scanUrl,notes:res.hebDate?`תאריך בדף: ${res.hebDate}`:''};
+  FIELDS.forEach(([k])=>{if(res[k]!=null)pre[k]=String(res[k])});pre.email=fixEmail(pre.email);return pre}
+const scanErr=e=>({no_key:'כדי לסרוק אוטומטית צריך להכניס פעם אחת מפתח Gemini בלשונית "ניהול".',bad_key:'מפתח ה־Gemini לא התקבל. בדוק אותו בלשונית "ניהול".',rate_limited:'יותר מדי סריקות ברצף. המתן דקה ונסה שוב.',net:'אין חיבור לאינטרנט, או שהשירות חסום בסינון.',parse:'הדף לא נקרא כראוי. נסה תמונה חדה יותר.'}[e?.code]||('הסריקה לא הצליחה. '+(e?.message||'נסה תמונה חדה ומוארת יותר.')));
+async function scanForm(file){const msg=$('#scanMsg');
+  msg.innerHTML='<div class="notice info" style="margin-top:10px"><span class="spin"></span> קורא את כתב היד... זה יכול לקחת עד דקה.</div>';
+  try{const pre=await scanToRecord(file);renderForm(null,pre);$('#scanMsg').innerHTML=`<div class="notice" style="margin-top:10px">הטופס נקרא. ${pre.unsure.length?`${pre.unsure.length} שדות מסומנים בכתום לבדיקה.`:'בדוק את כל השדות מול הדף לפני השמירה.'}</div>`}
+  catch(e){msg.innerHTML=`<div class="notice" style="margin-top:10px">${scanErr(e)} אפשר להקליד ידנית.</div>`}}
+
+/* ===== לשונית סריקת דפים ===== */
+let scanJobs=[];
+function renderScan(){
+  $('#main').innerHTML=`<section><h2>סריקת דפים</h2>
+  <p class="muted">מעלים תמונה של טופס "בקשת ברכה" — אחד או כמה ביחד. המערכת קוראת את כתב היד, שומרת כל דף כבקשה ומסמנת בכתום מה שצריך לבדוק. תמונת הדף נשמרת ליד הבקשה ובכרטיס האדם.</p>
+  ${hasKey()?'':'<div class="notice" style="margin:10px 0">הסריקה האוטומטית עוד לא מחוברת: מכניסים פעם אחת מפתח Gemini בלשונית "ניהול". עד אז אפשר להעלות תמונות ולהקליד את הפרטים ידנית ליד התמונה.</div>'}
+  <label class="drop" id="drop" for="multiScan"><b>לחץ כאן לבחירת תמונות</b><span>או גרור לכאן תמונות של הטפסים · אפשר לבחור כמה דפים ביחד</span></label>
+  <input type="file" id="multiScan" accept="image/*" multiple hidden>
+  <p class="small muted">טיפ: צלם כל דף לבד, מקרוב, באור טוב ובלי צל. דף ישר וחד נקרא הרבה יותר טוב.</p>
+  <div class="queue" id="jobs"></div></section>`;
+  const add=files=>{[...files].filter(f=>f.type.startsWith('image/')).forEach(f=>scanJobs.push({file:f,name:f.name,state:'wait'}));drawJobs();runJobs()};
+  $('#multiScan').onchange=e=>add(e.target.files);
+  const dz=$('#drop');['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over')}));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over')}));dz.addEventListener('drop',e=>add(e.dataTransfer.files));
+  drawJobs();
+}
+function drawJobs(){const box=$('#jobs');if(!box)return;
+  box.innerHTML=scanJobs.slice().reverse().map((j,i)=>`<div class="qi ${j.state==='done'?'':''}"><span class="no">${scanJobs.length-i}</span>
+    <div><b>${j.rec?esc(fullName(j.rec)):esc(j.name)}</b><div class="small ${j.state==='err'?'':'muted'}" style="${j.state==='err'?'color:var(--bad)':''}">${j.state==='wait'?'ממתין בתור':j.state==='run'?'<span class="spin"></span> קורא את כתב היד...':j.state==='done'?`נשמר. ${j.rec.unsure?.length?j.rec.unsure.length+' שדות לבדיקה':'לבדוק מול הדף'}`:esc(j.err)}</div></div>
+    <div class="row">${j.state==='done'?`<button class="btn sm warn" data-open="${j.rec.id}">פתח לבדיקה</button>`:''}${j.state==='err'&&j.url?`<button class="btn sm" data-manual="${i}">הקלד ידנית ליד התמונה</button>`:''}</div></div>`).join('');
+  $$('#jobs [data-open]').forEach(b=>b.onclick=()=>go('edit',byId(b.dataset.open)));
+  $$('#jobs [data-manual]').forEach(b=>b.onclick=()=>{const j=scanJobs[scanJobs.length-1-b.dataset.manual];pendingPre={date:todayISO(),deceased:[],donation:{type:'none'},status:'wait',tags:[],review:true,unsure:[],_scanData:j.url,_scanUrl:j.scanUrl||j.url};go('new')})}
+let jobsRunning=false;
+async function runJobs(){if(jobsRunning)return;jobsRunning=true;
+  for(const j of scanJobs){if(j.state!=='wait')continue;j.state='run';drawJobs();
+    try{const pre=await scanToRecord(j.file);const o={...pre,id:newId(),createdAt:Date.now(),createdBy:ME+' (סריקה)',scanUrl:pre._scanUrl||pre._scanData};delete o._scanData;delete o._scanUrl;
+      if(o.date===todayISO())o.queueNo=Math.max(0,...R.filter(r=>r.date===o.date).map(r=>r.queueNo||0))+1;
+      await putRec(o);j.rec=o;j.state='done'}
+    catch(e){j.state='err';j.err=scanErr(e);try{const s=await shrink(j.file,1100,.6);j.url=j.scanUrl=s.url}catch(_){}}
+    drawJobs()}
+  jobsRunning=false;renderTabs()}
+
+/* ===== תצוגת בקשה ===== */
+const personKey=x=>digits(x.mobile)||digits(x.homePhone)||(x.first+' '+x.last).trim();
+function renderView(){const x=current;if(!x)return go('list');const d=x.donation||{type:'none'};const uns=new Set(x.unsure||[]);
+  const row=(k,v,f)=>v?`<dt>${k}</dt><dd class="${f&&uns.has(f)?'unsure':''}">${v}${f&&uns.has(f)?' (לבדיקה)':''}</dd>`:'';
+  const hist=R.filter(r=>r.id!==x.id&&personKey(r)===personKey(x)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  $('#main').innerHTML=`<section>
+  <div class="row"><button class="btn sm" id="back">→ חזרה</button><span class="spacer"></span>
+    <button class="btn gold" id="toPerson">כרטיס אדם מלא</button>${S.features.kvittel?'<button class="btn" id="kv">מסך קוויטל</button>':''}<button class="btn" id="vPrint">הדפסה</button><button class="btn" id="vWord">וורד</button><button class="btn primary" id="edit">עריכה</button><button class="btn danger" id="del">מחיקה</button></div>
+  <div id="confirmBox"></div>
+  <div class="row" style="margin:14px 0"><h2>${esc(fullName(x))}</h2><span class="pill ${x.status}">${STATUS[x.status]||''}</span>${x.review?'<span class="pill rev">לבדיקה</span>':''}${(x.tags||[]).map(t=>`<span class="pill tag">${t}</span>`).join('')}</div>
+  ${x.review?`<div class="notice" style="margin-bottom:12px">פוענח מכתב יד. השדות המסומנים "לבדיקה" לא היו ברורים. <button class="btn sm warn" id="fix">פתח לתיקון</button></div>`:''}
+  <div class="view">
+    <div class="card">
+      <h3>שם לתפילה בקברי צדיקים</h3><div class="req" style="font-family:var(--display);font-size:1.35rem">${esc(x.prayName)||'—'}</div>
+      <h3>בקשה אישית מהאדמו״ר</h3><div class="req">${esc(x.request)||'<span class="muted">לא נרשמה בקשה</span>'}</div>
+      ${x.deceased?.length?`<h3>לעילוי נשמת</h3><div class="tablewrap"><table><thead><tr><th>שם ושם האבא</th><th>קירבה</th><th>יום ושנה</th></tr></thead><tbody>${x.deceased.map(o=>`<tr><td>${esc(o.name)}</td><td>${esc(o.rel)}</td><td>${freeDate(o.date)}</td></tr>`).join('')}</tbody></table></div>`:''}
+      ${x.scanUrl?`<h3>הדף המקורי</h3><img src="${esc(x.scanUrl)}" alt="הטופס המקורי" style="border-radius:8px;border:1px solid var(--line)">`:''}
+    </div>
+    <div class="card"><h3>פרטים</h3><dl>
+      ${row('תאריך',dual(x.date))}${row('תאריך לידה',freeDate(x.birth),'birth')}
+      ${row('בן/בת זוג',esc(x.spouseName),'spouseName')}${row('לידת בן/בת זוג',freeDate(x.spouseBirth),'spouseBirth')}
+      ${row('מצב משפחתי',esc([x.marital,x.children?x.children+' ילדים':''].filter(Boolean).join(', ')),'marital')}
+      ${row('כתובת',esc([x.address,x.city,x.zip].filter(Boolean).join(', ')),'address')}
+      ${row('נייד',x.mobile?`<span class="ltr">${esc(x.mobile)}</span>`:'','mobile')}${row('טלפון בבית',x.homePhone?`<span class="ltr">${esc(x.homePhone)}</span>`:'','homePhone')}
+      ${row('מקום עבודה',esc([x.work,x.workPhone].filter(Boolean).join(' · ')),'work')}${row('מייל',x.email?`<span class="ltr">${esc(x.email)}</span>`:'','email')}
+      ${S.features.finance?row('תרומה',d.type&&d.type!=='none'?`<span class="pill tag">${DON[d.type]}</span> ${FIN?money(d.amount)+(d.type==='standing'?` לחודש${d.months?`, ${esc(d.months)} חודשים`:''}`:''):'<span class="muted small">(סכום בסיסמת כספים)</span>'}`:'ללא'):''}
+      ${row('הערות',esc(x.notes))}${row('נקלט על ידי',esc(x.createdBy))}${row('נבדק על ידי',esc(x.checkedBy))}
+    </dl>
+    <label class="f">שינוי סטטוס<select id="qs">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${x.status===k?'selected':''}>${v}</option>`).join('')}</select></label>
+    ${hist.length?`<h3>ביקורים קודמים (${hist.length})</h3><table><tbody>${hist.map(h=>`<tr class="click" data-id="${h.id}"><td>${dual(h.date)}</td><td>${esc((h.request||'').slice(0,30))}</td></tr>`).join('')}</tbody></table>`:''}
+    </div></div></section>`;
+  bindRows('#main');
+  $('#back').onclick=()=>go('list');$('#edit').onclick=()=>go('edit',x);$('#toPerson').onclick=()=>openPerson(personKey(x));
+  $('#vPrint').onclick=()=>saveDoc('בקשה '+fullName(x),docRequest(x),'print');$('#vWord').onclick=()=>saveDoc('בקשה '+fullName(x),docRequest(x),'word');if($('#fix'))$('#fix').onclick=()=>go('edit',x);
+  if($('#kv'))$('#kv').onclick=()=>{kvIdx=null;kvList=[x.id];go('kvittel')};
+  $('#qs').onchange=async e=>{x.status=e.target.value;await putRec(x);toast('הסטטוס עודכן');renderView()};
+  $('#del').onclick=()=>{$('#confirmBox').innerHTML=`<div class="confirm row" style="margin-top:10px"><span>למחוק את הבקשה של ${esc(fullName(x))}? אי אפשר לבטל.</span><span class="spacer"></span><button class="btn danger" id="yes">כן, למחוק</button><button class="btn" id="no">ביטול</button></div>`;
+    $('#yes').onclick=async()=>{await delRec(x.id);toast('הבקשה נמחקה');go('list')};$('#no').onclick=()=>$('#confirmBox').innerHTML=''};
+}
+
+/* ===== כרטיס אדם — כל החומר במקום אחד ===== */
+const personRecs=k=>R.filter(r=>personKey(r)===k).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||0)-(a.createdAt||0));
+const uniq=a=>[...new Set(a.filter(Boolean))];
+function personSummary(recs){const x={...recs[0]};FIELDS.forEach(([k])=>{if(!x[k]){const f=recs.find(r=>r[k]);if(f)x[k]=f[k]}});
+  const dec={};recs.forEach(r=>(r.deceased||[]).forEach(d=>{const k=(d.name||'').trim();if(k&&!dec[k])dec[k]={...d}}));
+  return {x,prayNames:uniq(recs.map(r=>r.prayName)),deceased:Object.values(dec),scans:recs.filter(r=>r.scanUrl).map(r=>({url:r.scanUrl,date:r.date,id:r.id})),
+    dons:recs.filter(r=>r.donation&&r.donation.type&&r.donation.type!=='none'),review:recs.filter(r=>r.review).length}}
+function openPerson(k){curPerson=k;go('person')}
+function renderPerson(){const recs=personRecs(curPerson);if(!recs.length)return go('people');
+  const P=personSummary(recs),x=P.x,first=recs[recs.length-1],last=recs[0];
+  const row=(k,v)=>v?`<dt>${k}</dt><dd>${v}</dd>`:'';
+  $('#main').innerHTML=`<section>
+  <div class="row"><button class="btn sm" id="back">→ לכל האנשים</button><span class="spacer"></span>
+    <button class="btn" id="pNew">+ בקשה חדשה לאדם זה</button><button class="btn" id="pEdit">עריכת הפרטים</button>
+    ${x.email?`<a class="btn" href="mailto:${esc(x.email)}">שלח מייל</a>`:''}<button class="btn gold" id="pPrint">הדפסה</button><button class="btn" id="pWord">פתח בוורד</button></div>
+  <div class="pcard"><div><div class="pname">${esc(fullName(x))}</div><div class="muted">${esc(P.prayNames.join(' · '))}</div></div>
+    <div class="pstats"><span><b>${recs.length}</b> ביקורים</span><span>ראשון: ${dual(first.date)}</span><span>אחרון: ${dual(last.date)}</span>${P.review?`<span class="pill rev">${P.review} לבדיקה</span>`:''}</div></div>
+  <div class="view">
+    <div class="card"><h3>כל הביקורים והבקשות</h3>
+      <div class="timeline">${recs.map(r=>`<div class="tl ${r.review?'rev':''}"><div class="row"><b>${dual(r.date)}</b><span class="pill ${r.status}">${STATUS[r.status]||''}</span>${r.review?'<span class="pill rev">לבדיקה</span>':''}${(r.tags||[]).map(t=>`<span class="pill tag">${t}</span>`).join('')}<span class="spacer"></span><button class="btn sm" data-open="${r.id}">פתח</button></div>
+        ${r.prayName?`<div><span class="muted small">שם לתפילה:</span> <b>${esc(r.prayName)}</b></div>`:''}
+        <div class="req" style="margin-top:6px">${esc(r.request)||'<span class="muted">לא נרשמה בקשה</span>'}</div>
+        ${r.deceased?.length?`<div class="small" style="margin-top:6px"><span class="muted">לעילוי נשמת:</span> ${r.deceased.map(d=>esc(d.name)).join(' · ')}</div>`:''}
+        ${S.features.finance&&r.donation&&r.donation.type&&r.donation.type!=='none'?`<div class="small" style="margin-top:4px"><span class="muted">תרומה:</span> ${DON[r.donation.type]} ${FIN?money(r.donation.amount):''}</div>`:''}
+        ${r.notes?`<div class="small muted" style="margin-top:4px">${esc(r.notes)}</div>`:''}</div>`).join('')}</div>
+      ${P.scans.length?`<h3>דפים סרוקים (${P.scans.length})</h3><div class="gallery">${P.scans.map(s=>`<figure><img src="${esc(s.url)}" alt="דף מתאריך ${esc(greg(s.date))}" data-big><figcaption>${dual(s.date)}</figcaption></figure>`).join('')}</div>`:''}
+    </div>
+    <div class="card"><h3>פרטים אישיים</h3><dl>
+      ${row('שם',esc(fullName(x)))}${row('תאריך לידה',freeDate(x.birth))}${row('בן/בת זוג',esc(x.spouseName))}${row('לידת בן/בת זוג',freeDate(x.spouseBirth))}
+      ${row('מצב משפחתי',esc([x.marital,x.children?x.children+' ילדים':''].filter(Boolean).join(', ')))}
+      ${row('כתובת',esc([x.address,x.city,x.zip].filter(Boolean).join(', ')))}
+      ${row('נייד',x.mobile?`<span class="ltr">${esc(x.mobile)}</span>`:'')}${row('טלפון בבית',x.homePhone?`<span class="ltr">${esc(x.homePhone)}</span>`:'')}
+      ${row('מקום עבודה',esc([x.work,x.workPhone].filter(Boolean).join(' · ')))}${row('מייל',x.email?`<span class="ltr">${esc(x.email)}</span>`:'')}
+    </dl>
+    ${P.deceased.length?`<h3>לעילוי נשמת</h3><table><thead><tr><th>שם ושם האבא</th><th>קירבה</th><th>יום ושנה</th></tr></thead><tbody>${P.deceased.map(d=>{const k=daysUntil(hebDayMonth(d.date),30);return `<tr><td>${esc(d.name)}</td><td>${esc(d.rel)}</td><td>${freeDate(d.date)}${k>=0?`<div class="small" style="color:var(--warn)">${k===0?'היום':'בעוד '+k+' ימים'}</div>`:''}</td></tr>`}).join('')}</tbody></table>`:''}
+    ${S.features.finance&&P.dons.length?`<h3>תרומות</h3>${FIN?`<table><tbody>${P.dons.map(r=>`<tr><td>${dual(r.date)}</td><td>${DON[r.donation.type]}</td><td class="num">${money(r.donation.amount)}${r.donation.type==='standing'?' לחודש':''}</td></tr>`).join('')}</tbody></table><p class="small"><b>סה״כ חד־פעמי: ${money(P.dons.filter(r=>r.donation.type!=='standing').reduce((s,r)=>s+(+r.donation.amount||0),0))||'₪0'}</b></p>`:`<div class="lock">${P.dons.length} תרומות רשומות. הסכומים בסיסמת כספים.</div>`}`:''}
+    </div></div></section>`;
+  $('#back').onclick=()=>go('people');
+  $$('[data-open]').forEach(b=>b.onclick=()=>go('view',byId(b.dataset.open)));
+  $$('[data-big]').forEach(i=>i.onclick=()=>i.closest('figure').classList.toggle('big'));
+  $('#pEdit').onclick=()=>go('edit',last);
+  $('#pNew').onclick=()=>{const p={date:todayISO(),donation:{type:'none'},status:'wait',tags:[]};FIELDS.forEach(([k])=>{if(k!=='request')p[k]=x[k]||''});p.deceased=P.deceased.map(d=>({...d}));pendingPre=p;go('new')};
+  $('#pPrint').onclick=()=>saveDoc('כרטיס '+fullName(x),docPerson(curPerson),'print');
+  $('#pWord').onclick=()=>saveDoc('כרטיס '+fullName(x),docPerson(curPerson),'word');
+}
+
+/* ===== מסמכים: וורד והדפסה ===== */
+const DOC_CSS=`body{direction:rtl;font-family:'David','Frank Ruhl Libre','Times New Roman',serif;font-size:13pt;color:#000;margin:24px;line-height:1.5}
+h1{font-size:19pt;text-align:center;margin:2px 0}h2{font-size:14pt;border-bottom:1.5px solid #6b3416;color:#4a2410;margin:16px 0 6px;padding-bottom:2px}
+.hd{text-align:center;margin-bottom:14px}.hd .bsd{text-align:right;font-size:10pt}.hd .sub{font-size:11pt}.hd img{height:90px}
+table{width:100%;border-collapse:collapse;margin:4px 0}td,th{border:1px solid #888;padding:5px 8px;text-align:right;vertical-align:top}th{background:#efe6d6}
+td.l{color:#444;width:32%;background:#faf6ef}.big{font-size:17pt;font-weight:bold}.box{border:1px solid #888;padding:8px 10px;min-height:60px;white-space:pre-wrap}
+.line{border-bottom:1px solid #000;min-width:160px;display:inline-block;height:1.2em}.pb{page-break-after:always}.foot{margin-top:28px;font-size:10pt;color:#555;text-align:center}
+.sig{margin-top:40px;display:flex;justify-content:space-between}`;
+const crestSrc=()=>{const i=$('.top-in img');return i?new URL(i.getAttribute('src'),location.href).href:''};
+const docHead=(title,img=true)=>`<div class="hd"><div class="bsd">בס״ד</div>${img?`<img src="${crestSrc()}" alt="">`:''}<h1>מרכז חסידי ביאלא בני ברק</h1><div class="sub">בנשיאות כ״ק מרן האדמו״ר שליט״א · 03-619-6555 · BIALEBNEIBRAK@GMAIL.COM</div>${title?`<h2 style="text-align:center;border:0;font-size:16pt">${esc(title)}</h2>`:''}</div>`;
+const tdate=iso=>iso?`${heb(iso)} (${greg(iso)})`:'';
+const tfree=t=>{const d=parseGreg(t);return d?`${hebOf(d)} (${esc(t)})`:esc(t)};
+function docRequest(x){const r=(k,v)=>`<tr><td class="l">${k}</td><td>${v||''}</td></tr>`;
+  return `${docHead('בקשת ברכה מכ״ק מרן האדמו״ר מביאלא שליט״א')}<table>
+  ${r('תאריך',tdate(x.date))}${r('שם',esc(x.first))}${r('שם משפחה',esc(x.last))}${r('תאריך לידה',tfree(x.birth))}
+  ${r('שם להתפלל בקברי צדיקים','<b>'+esc(x.prayName)+'</b>')}${r('שם בן / בת הזוג',esc(x.spouseName))}${r('תאריך לידה בן / בת הזוג',tfree(x.spouseBirth))}
+  ${r('כתובת',esc(x.address))}${r('עיר / מיקוד',esc([x.city,x.zip].filter(Boolean).join(' / ')))}${r('טלפון בבית',esc(x.homePhone))}${r('נייד',esc(x.mobile))}
+  ${r('מקום העבודה / טלפון',esc([x.work,x.workPhone].filter(Boolean).join(' / ')))}${r('כתובת מייל',esc(x.email))}${r('מצב משפחתי',esc([x.marital,x.children?'+ '+x.children:''].filter(Boolean).join(' ')))}</table>
+  <h2>תפילות ולימוד בישיבה לעילוי נשמת יקיריכם שנפטרו</h2><table><tr><th>שם ושם האבא</th><th>קירבה</th><th>יום ושנה</th></tr>${(x.deceased?.length?x.deceased:[{},{},{}]).map(d=>`<tr><td>${esc(d.name)}&nbsp;</td><td>${esc(d.rel)}</td><td>${esc(d.date)}</td></tr>`).join('')}</table>
+  <h2>בקשה אישית מהאדמו״ר</h2><div class="box">${esc(x.request)}</div>`}
+function docBlank(){const L=t=>`<tr><td class="l">${t}</td><td>&nbsp;</td></tr>`;
+  return `${docHead('בקשת ברכה מכ״ק מרן האדמו״ר מביאלא שליט״א')}<table>${['תאריך','שם','שם משפחה','תאריך לידה','שם להתפלל בקברי צדיקים','שם בן / בת הזוג','תאריך לידה בן / בת הזוג','כתובת','עיר','מיקוד','מס׳ טלפון בבית','מס׳ נייד','מקום העבודה','מס׳ טלפון העבודה','כתובת מייל','מצב משפחתי'].map(L).join('')}</table>
+  <h2>תפילות ולימוד בישיבה לעילוי נשמת יקיריכם שנפטרו</h2><table><tr><th style="width:55%">שם ושם האבא</th><th>קירבה</th><th>יום ושנה</th></tr>${'<tr><td>&nbsp;</td><td></td><td></td></tr>'.repeat(4)}</table>
+  <h2>בקשה אישית מהאדמו״ר</h2><div class="box" style="min-height:110px"></div>`}
+function docPerson(k){const recs=personRecs(k),P=personSummary(recs),x=P.x;const r=(a,b)=>b?`<tr><td class="l">${a}</td><td>${b}</td></tr>`:'';
+  return `${docHead('כרטיס אישי')}<p class="big" style="text-align:center">${esc(fullName(x))}</p><table>
+  ${r('שמות לתפילה',esc(P.prayNames.join(' · ')))}${r('תאריך לידה',tfree(x.birth))}${r('בן / בת הזוג',esc(x.spouseName))}${r('לידת בן / בת הזוג',tfree(x.spouseBirth))}
+  ${r('מצב משפחתי',esc([x.marital,x.children?x.children+' ילדים':''].filter(Boolean).join(', ')))}${r('כתובת',esc([x.address,x.city,x.zip].filter(Boolean).join(', ')))}
+  ${r('נייד',esc(x.mobile))}${r('טלפון בבית',esc(x.homePhone))}${r('מקום עבודה',esc([x.work,x.workPhone].filter(Boolean).join(' · ')))}${r('מייל',esc(x.email))}${r('מספר ביקורים',String(recs.length))}</table>
+  ${P.deceased.length?`<h2>לעילוי נשמת</h2><table><tr><th>שם ושם האבא</th><th>קירבה</th><th>יום ושנה</th></tr>${P.deceased.map(d=>`<tr><td>${esc(d.name)}</td><td>${esc(d.rel)}</td><td>${tfree(d.date)}</td></tr>`).join('')}</table>`:''}
+  <h2>ביקורים ובקשות</h2><table><tr><th style="width:24%">תאריך</th><th>בקשה</th><th style="width:16%">סטטוס</th></tr>${recs.map(v=>`<tr><td>${tdate(v.date)}</td><td>${v.prayName?'<b>'+esc(v.prayName)+'</b><br>':''}${esc(v.request)}</td><td>${STATUS[v.status]||''}</td></tr>`).join('')}</table>
+  ${FIN&&P.dons.length?`<h2>תרומות</h2><table>${P.dons.map(v=>`<tr><td>${tdate(v.date)}</td><td>${DON[v.donation.type]}</td><td>${money(v.donation.amount)}</td></tr>`).join('')}</table>`:''}
+  <div class="foot">הופק ממערכת קבלת הקהל · ${hebOf(new Date())}</div>`}
+function docNames(list,title){const pray=uniq(list.map(r=>r.prayName)),dec=uniq(list.flatMap(r=>(r.deceased||[]).map(d=>d.name)));
+  return `${docHead(title)}<h2>לרפואה ולברכה (${pray.length})</h2><div style="column-count:2;font-size:14pt;line-height:1.9">${pray.map(esc).join('<br>')}</div>
+  <h2>לעילוי נשמת (${dec.length})</h2><div style="column-count:2;font-size:14pt;line-height:1.9">${dec.map(esc).join('<br>')}</div>`}
+function docQueue(date){const list=R.filter(r=>r.date===date).sort((a,b)=>(a.queueNo||999)-(b.queueNo||999));
+  return `${docHead('תור קבלת קהל · '+heb(date))}<table><tr><th>מס׳</th><th>שם</th><th>שם לתפילה</th><th>בקשה</th><th>נייד</th></tr>${list.map((x,i)=>`<tr><td>${x.queueNo||i+1}</td><td>${esc(fullName(x))}</td><td><b>${esc(x.prayName)}</b></td><td>${esc(x.request)}</td><td>${esc(x.mobile)}</td></tr>`).join('')}</table>`}
+function docKvittels(list){return list.map((x,i)=>`<div class="${i<list.length-1?'pb':''}">${docHead('',false)}<div style="text-align:center;margin-top:30px"><div style="font-size:26pt;font-weight:bold">${esc(x.prayName||fullName(x))}</div>${x.spouseName?`<div style="font-size:15pt">בן/בת הזוג: ${esc(x.spouseName)}</div>`:''}<div style="font-size:17pt;margin-top:24px;white-space:pre-wrap">${esc(x.request)}</div>${x.deceased?.length?`<div style="margin-top:24px;font-size:14pt">לעילוי נשמת: ${x.deceased.map(d=>esc(d.name)).join(' · ')}</div>`:''}<div style="margin-top:30px;font-size:11pt;color:#555">${tdate(x.date)}</div></div></div>`).join('')}
+function docReport(list,title){return `${docHead(title)}<table><tr><th>תאריך</th><th>שם</th><th>שם לתפילה</th><th>עיר</th><th>נייד</th><th>בקשה</th><th>סטטוס</th></tr>${list.map(x=>`<tr><td>${tdate(x.date)}</td><td>${esc(fullName(x))}</td><td>${esc(x.prayName)}</td><td>${esc(x.city)}</td><td>${esc(x.mobile)}</td><td>${esc(x.request)}</td><td>${STATUS[x.status]||''}</td></tr>`).join('')}</table><p>סה״כ: ${list.length} בקשות</p>`}
+function fillTpl(t,x,extra={}){const d=x?.donation||{};const map={'{שם}':fullName(x||{}),'{שם_פרטי}':x?.first||'','{משפחה}':x?.last||'','{כתובת}':x?.address||'','{עיר}':x?.city||'','{תאריך}':hebOf(new Date()),'{סכום}':d.amount?money(d.amount):'','{אופן}':DON[d.type]||'','{קבלה}':d.receipt||'','{חודשים}':d.months||'','{שם_לתפילה}':x?.prayName||'','{נפטר}':x?.deceased?.[0]?.name||'','{יום_זיכרון}':x?.deceased?.[0]?.date||'',...extra};
+  return esc(t).replace(/\{[^}]+\}/g,m=>esc(map[m]??m)).split('\n').map(l=>l.trim()?`<p>${l}</p>`:'<p>&nbsp;</p>').join('')}
+const DEF_TPL={thanks:`{תאריך}\n\nלכבוד\n{שם}\n{כתובת} {עיר}\n\nשלום וברכה,\n\nבשם מרכז חסידי ביאלא בני ברק, ברצוננו להודות לך מקרב לב על תרומתך הנדיבה בסך {סכום}.\n\nתרומתך מסייעת להחזקת המוסדות ולפעילות התורה והחסד.\n\nבברכה ובהוקרה,\nהנהלת המרכז`,
+  receipt:`קבלה מס׳ {קבלה}\n\nתאריך: {תאריך}\n\nהתקבל מאת: {שם}\nכתובת: {כתובת} {עיר}\n\nסכום: {סכום}\nאופן התשלום: {אופן}\n\nעבור: תרומה למרכז חסידי ביאלא בני ברק\n\nבתודה,\nהגזבר`,
+  standing:`{תאריך}\n\nלכבוד\n{שם}\n\nהנדון: אישור הוראת קבע\n\nהננו לאשר כי נרשמה הוראת קבע על סך {סכום} לחודש, למשך {חודשים} חודשים.\n\nתודה רבה על השותפות הקבועה.\n\nבברכה,\nהנהלת המרכז`,
+  letter:`{תאריך}\n\nלכבוד\n{שם}\n\n\nשלום רב,\n\n\n\nבברכה,\nהנהלת המרכז`,
+  yahr:`{תאריך}\n\nלכבוד\n{שם}\n{כתובת} {עיר}\n\nשלום וברכה,\n\nהננו להזכיר כי בקרוב יחול יום הזיכרון של {נפטר}, ב־{יום_זיכרון}.\n\nהשם נמסר לתפילות וללימוד בישיבה לעילוי נשמה.\n\nבברכה,\nהנהלת המרכז`};
+const DOCTYPES=[['blank','טופס בקשה ריק להדפסה','none'],['request','טופס בקשה ממולא','rec'],['person','כרטיס אדם מלא','person'],['kvittel','קוויטלים להדפסה (דף לכל בקשה)','range'],['names','רשימת שמות לתפילה','range'],['queue','תור היום','day'],['report','דוח בקשות לתקופה','range'],
+  ['labels','מדבקות כתובת למעטפות','range'],['letter','מכתב חופשי על נייר המרכז','person'],['yahr','מכתב תזכורת יום זיכרון','rec'],['thanks','מכתב תודה לתורם','rec',1],['receipt','קבלה על תרומה','rec',1],['standing','אישור הוראת קבע','rec',1]];
+let docState={type:'blank',rec:'',person:'',from:'',to:'',day:''};
+function renderDocs(){const t=DOCTYPES.find(d=>d[0]===docState.type)||DOCTYPES[0];
+  if(!docState.from){docState.from=docState.to=docState.day=todayISO()}
+  const recOpts=R.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(r=>`<option value="${r.id}" ${docState.rec===r.id?'selected':''}>${esc(fullName(r))} · ${esc(heb(r.date))}</option>`).join('');
+  const ppl={};R.forEach(r=>{const k=personKey(r);if(!ppl[k])ppl[k]=fullName(r)});
+  $('#main').innerHTML=`<section><h2>מסמכים והדפסות</h2><p class="muted">בוחרים מסמך, עורכים את הטקסט ישירות על הדף, ואז מדפיסים או מורידים לוורד לעריכה נוספת.</p>
+  <div class="docs"><aside class="card doclist">${DOCTYPES.map(d=>`<button class="${d[0]===t[0]?'on':''}" data-dt="${d[0]}" ${d[3]&&!S.features.finance?'hidden':''}>${d[1]}${d[3]?' <span class="g">(כספים)</span>':''}</button>`).join('')}</aside>
+  <div style="min-width:0;display:grid;gap:10px">
+    <div class="toolbar" style="margin:0">
+      ${t[2]==='rec'?`<select id="dRec" style="flex:1;min-width:200px"><option value="">— בחר בקשה —</option>${recOpts}</select>`:''}
+      ${t[2]==='person'?`<select id="dPer" style="flex:1;min-width:200px"><option value="">— בחר אדם —</option>${Object.entries(ppl).map(([k,n])=>`<option value="${esc(k)}" ${docState.person===k?'selected':''}>${esc(n)}</option>`).join('')}</select>`:''}
+      ${t[2]==='range'?`<label class="row small">מתאריך <input type="date" id="dFrom" value="${docState.from}"></label><label class="row small">עד <input type="date" id="dTo" value="${docState.to}"></label>`:''}
+      ${t[2]==='day'?`<input type="date" id="dDay" value="${docState.day}">`:''}
+    </div>
+    <div class="edbar"><button data-cmd="bold"><b>B</b></button><button data-cmd="italic"><i>I</i></button><button data-cmd="underline"><u>U</u></button>
+      <button data-cmd="justifyRight">ימין</button><button data-cmd="justifyCenter">מרכז</button><button data-cmd="fontSize" data-v="5">גדול</button><button data-cmd="fontSize" data-v="3">רגיל</button>
+      <span class="spacer"></span><button class="btn sm gold" id="dPrint">הדפס</button><button class="btn sm primary" id="dWord">הורד לוורד</button><button class="btn sm" id="dReset">אפס שינויים</button></div>
+    <div class="paper" id="paper" contenteditable="true" spellcheck="false"></div>
+    <p class="small muted">אפשר לכתוב, למחוק ולשנות כל דבר בדף לפני ההורדה. "הורד לוורד" שומר קובץ שנפתח ב־Word לעריכה והדפסה. "הדפס" פותח מיד את חלון ההדפסה (שם אפשר גם לשמור כ־PDF).</p>
+  </div></div></section>`;
+  $$('[data-dt]').forEach(b=>b.onclick=()=>{if(DOCTYPES.find(d=>d[0]===b.dataset.dt)[3]&&!FIN){gate('fin','מסמכי כספים',()=>{docState.type=b.dataset.dt;go('docs')});return}docState.type=b.dataset.dt;renderDocs()});
+  const bind=(id,k)=>{if($(id))$(id).onchange=e=>{docState[k]=e.target.value;fillPaper()}};bind('#dRec','rec');bind('#dPer','person');bind('#dFrom','from');bind('#dTo','to');bind('#dDay','day');
+  $$('.edbar [data-cmd]').forEach(b=>b.onmousedown=e=>{e.preventDefault();document.execCommand(b.dataset.cmd,false,b.dataset.v||null)});
+  $('#dReset').onclick=fillPaper;
+  const nm=()=>(DOCTYPES.find(d=>d[0]===docState.type)||[])[1]||'מסמך';
+  $('#dPrint').onclick=()=>saveDoc(nm(),$('#paper').innerHTML,'print');$('#dWord').onclick=()=>saveDoc(nm(),$('#paper').innerHTML,'word');
+  fillPaper();
+}
+function fillPaper(){const t=docState.type,rec=byId(docState.rec),inRange=R.filter(r=>(!docState.from||r.date>=docState.from)&&(!docState.to||r.date<=docState.to));let h='';
+  const need=m=>`<p style="text-align:center;color:#888;margin-top:60px">${m}</p>`;
+  if(t==='blank')h=docBlank();else if(t==='request')h=rec?docRequest(rec):need('בחר בקשה מהרשימה למעלה');
+  else if(t==='person')h=docState.person?docPerson(docState.person):need('בחר אדם מהרשימה למעלה');
+  else if(t==='kvittel')h=inRange.length?docKvittels(inRange):need('אין בקשות בטווח התאריכים');
+  else if(t==='names')h=docNames(inRange,'רשימת שמות לתפילה');else if(t==='queue')h=docQueue(docState.day);else if(t==='report')h=docReport(inRange,'דוח בקשות');
+  else if(t==='labels'){const seen=new Set(),L=inRange.filter(r=>{const k=personKey(r);if(seen.has(k)||!(r.address||r.city))return false;seen.add(k);return true});
+    h=L.length?`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">${L.map(r=>`<div style="border:1px dashed #bbb;padding:14px 10px;min-height:36mm;font-size:12.5pt;line-height:1.5"><b>לכבוד ${esc(fullName(r))}</b><br>${esc(r.address)}<br>${esc([r.city,r.zip].filter(Boolean).join(' '))}</div>`).join('')}</div>`:need('אין אנשים עם כתובת בטווח התאריכים')}
+  else if(t==='letter'){const recs=docState.person?personRecs(docState.person):[];h=docHead('')+fillTpl((S.templates||{}).letter||DEF_TPL.letter,recs[0])}
+  else{h=rec?docHead('')+fillTpl((S.templates||{})[t]||DEF_TPL[t],rec):need('בחר בקשה עם תרומה מהרשימה למעלה')}
+  $('#paper').innerHTML=`<style>${DOC_CSS.replace(/body\{/,'.paperin{')}</style><div class="paperin">${h}</div>`}
+async function saveDoc(name,html,kind){
+  const body=html.replace(/^<style>[\s\S]*?<\/style>/,'');const word=kind==='word';
+  const clean=word?body.replace(/<img[^>]*>/g,''):body;
+  if(!word){printHTML(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>${esc(name)}</title><style>${DOC_CSS}@page{margin:14mm}@media print{body{margin:0}}</style></head><body>${clean}</body></html>`);return}
+  const full=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${esc(name)}</title><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:BidiVisual/></w:WordDocument></xml><![endif]--><style>${DOC_CSS}</style></head><body dir="rtl" lang="he">${clean}</body></html>`;
+  downloadBlob(name.replace(/[\\/:*?"<>|]/g,'')+'.doc',new Blob(['\ufeff'+full],{type:'application/msword'}));toast('קובץ הוורד ירד לתיקיית ההורדות. פתח אותו ב־Word')}
+
+/* ===== תור היום ===== */
+function renderQueue(){const t=$('#qd')?.value||todayISO();
+  const list=R.filter(r=>r.date===t).sort((a,b)=>(a.queueNo||999)-(b.queueNo||999)||(a.createdAt||0)-(b.createdAt||0));
+  const next=list.find(r=>r.status==='wait');
+  $('#main').innerHTML=`<section><div class="row"><h2>תור קבלת קהל</h2><input type="date" id="qd" value="${t}" class="btn"><span class="hd">${heb(t)}</span><span class="spacer"></span>
+     <button class="btn" id="qPrint">הדפסת התור</button><button class="btn gold" id="nextBtn" ${next?'':'disabled'}>הבא בתור${next?': '+esc(fullName(next)):''}</button></div>
+  <div class="stats"><div class="stat"><b>${list.length}</b><span>בתור</span></div><div class="stat"><b>${list.filter(r=>r.status==='wait').length}</b><span>ממתינים</span></div><div class="stat"><b>${list.filter(r=>r.status!=='wait').length}</b><span>נכנסו</span></div></div>
+  <div class="queue">${list.length?list.map((x,i)=>`<div class="qi ${x.status==='wait'&&x===next?'cur':''} ${x.status==='done'?'done':''}"><span class="no">${x.queueNo||i+1}</span>
+    <div><b>${esc(fullName(x))}</b> <span class="muted small">${esc(x.prayName)}</span><div class="small">${esc((x.request||'').slice(0,60))}</div></div>
+    <div class="row"><span class="pill ${x.status}">${STATUS[x.status]}</span><button class="btn sm" data-open="${x.id}">פתח</button>${x.status==='wait'?`<button class="btn sm gold" data-in="${x.id}">נכנס</button>`:x.status==='in'?`<button class="btn sm" data-done="${x.id}">טופל</button>`:''}</div></div>`).join(''):'<div class="empty card">אין אנשים בתור בתאריך הזה. בקשות שנקלטות היום נכנסות לתור אוטומטית.</div>'}</div></section>`;
+  $('#qd').onchange=renderQueue;$('#qPrint').onclick=()=>saveDoc('תור '+heb(t),docQueue(t),'print');
+  const set=async(id,s)=>{const r=byId(id);r.status=s;await putRec(r);renderQueue()};
+  $$('[data-in]').forEach(b=>b.onclick=()=>set(b.dataset.in,'in'));$$('[data-done]').forEach(b=>b.onclick=()=>set(b.dataset.done,'done'));$$('[data-open]').forEach(b=>b.onclick=()=>go('view',byId(b.dataset.open)));
+  if(next)$('#nextBtn').onclick=()=>set(next.id,'in');
+}
+
+/* ===== קוויטל ===== */
+let kvList=null, kvIdx=null;
+function renderKvittel(){
+  if(!kvList){kvList=R.filter(r=>r.status!=='done').sort((a,b)=>(a.date||'').localeCompare(b.date||'')||(a.queueNo||0)-(b.queueNo||0)).map(r=>r.id)}
+  const ids=kvList.filter(byId);if(kvIdx==null)kvIdx=0;kvIdx=Math.max(0,Math.min(kvIdx,ids.length-1));const x=byId(ids[kvIdx]);
+  $('#main').innerHTML=`<section><div class="row" style="margin-bottom:12px"><h2>מסך קוויטל</h2><span class="spacer"></span>
+    <button class="btn sm" id="kvAll">כל הממתינים</button><button class="btn sm" id="kvToday">רק היום</button></div>
+  ${x?`<div class="kv"><div class="sub">${dual(x.date)} · ${kvIdx+1} מתוך ${ids.length}</div>
+    <div class="nm">${esc(x.prayName||fullName(x))}</div>
+    ${x.spouseName?`<div class="sub">בן/בת הזוג: ${esc(x.spouseName)}</div>`:''}
+    <div class="rq">${esc(x.request)||''}</div>
+    ${x.deceased?.length?`<div><div class="sub">לעילוי נשמת</div>${x.deceased.map(d=>`<div class="dec">${esc(d.name)}${d.rel?` <span class="g">(${esc(d.rel)})</span>`:''}</div>`).join('')}</div>`:''}
+  </div>
+  <div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="kvPrev" ${kvIdx>0?'':'disabled'}>→ הקודם</button>
+    <button class="btn gold" id="kvIn">${x.status==='wait'?'סמן שנכנס':'סמן טופל'}</button><button class="btn" id="kvNext" ${kvIdx<ids.length-1?'':'disabled'}>הבא ←</button>
+    <button class="btn sm" id="kvFs">מסך מלא</button></div>`:'<div class="empty card">אין בקשות להצגה.</div>'}</section>`;
+  $('#kvAll').onclick=()=>{kvList=null;kvIdx=0;renderKvittel()};$('#kvToday').onclick=()=>{kvList=R.filter(r=>r.date===todayISO()).sort((a,b)=>(a.queueNo||0)-(b.queueNo||0)).map(r=>r.id);kvIdx=0;renderKvittel()};
+  if(!x)return;$('#kvPrev').onclick=()=>{kvIdx--;renderKvittel()};$('#kvNext').onclick=()=>{kvIdx++;renderKvittel()};
+  $('#kvIn').onclick=async()=>{x.status=x.status==='wait'?'in':'done';await putRec(x);toast('עודכן');if(kvIdx<ids.length-1)kvIdx++;renderKvittel()};
+  $('#kvFs').onclick=()=>{const el=$('.kv');el.requestFullscreen?.().catch(()=>toast('מסך מלא לא זמין כאן'))};
+}
+document.addEventListener('keydown',e=>{if(view!=='kvittel'||e.target.matches('input,textarea,select'))return;if(e.key==='ArrowLeft')$('#kvNext')?.click();if(e.key==='ArrowRight')$('#kvPrev')?.click()});
+
+/* ===== שמות לתפילה ===== */
+function renderNames(){const from=$('#nf')?.value||'',to=$('#nt')?.value||'',st=$('#ns')?.value||'';
+  const list=R.filter(r=>(!from||r.date>=from)&&(!to||r.date<=to)&&(!st||r.status===st));
+  const pray=[...new Set(list.map(r=>r.prayName).filter(Boolean))],dec=[...new Set(list.flatMap(r=>(r.deceased||[]).map(d=>d.name)).filter(Boolean))];
+  $('#main').innerHTML=`<section><h2>רשימת שמות לתפילה</h2><p class="muted">לקברי צדיקים ולעילוי נשמה, לפי טווח תאריכים.</p>
+  <div class="toolbar"><label class="row small">מתאריך <input type="date" id="nf" value="${from}"></label><label class="row small">עד <input type="date" id="nt" value="${to}"></label>
+    <select id="ns"><option value="">כל הסטטוסים</option>${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${st===k?'selected':''}>${v}</option>`).join('')}</select></div>
+  <div class="cols"><div class="card"><div class="row"><h3>שמות לרפואה ולברכה (${pray.length})</h3><span class="spacer"></span><button class="btn sm gold" id="cp1">העתק</button><button class="btn sm" id="npr">הדפסה</button><button class="btn sm" id="nwd">וורד</button></div>
+    <div class="req" style="font-family:var(--display);font-size:1.15rem;line-height:1.9">${pray.map(esc).join('<br>')||'<span class="muted">אין שמות</span>'}</div></div>
+  <div class="card"><div class="row"><h3>לעילוי נשמת (${dec.length})</h3><span class="spacer"></span><button class="btn sm gold" id="cp2">העתק</button></div>
+    <div class="req" style="font-family:var(--display);font-size:1.15rem;line-height:1.9">${dec.map(esc).join('<br>')||'<span class="muted">אין שמות</span>'}</div></div></div>
+  <textarea class="code" id="cpBox" hidden style="direction:rtl"></textarea></section>`;
+  ['#nf','#nt','#ns'].forEach(s=>$(s).onchange=renderNames);
+  $('#cp1').onclick=()=>copy(pray.join('\n'),'השמות הועתקו');$('#npr').onclick=()=>saveDoc('שמות לתפילה',docNames(list,'רשימת שמות לתפילה'),'print');$('#nwd').onclick=()=>saveDoc('שמות לתפילה',docNames(list,'רשימת שמות לתפילה'),'word');$('#cp2').onclick=()=>copy(dec.join('\n'),'השמות הועתקו');
+}
+function copy(txt,msg){const fb=()=>{const b=$('#cpBox')||$('#bk');if(b){b.hidden=false;b.value=txt;b.select()}toast('סמן והעתק מהתיבה (Ctrl+C)')};try{navigator.clipboard.writeText(txt).then(()=>toast(msg),fb)}catch(e){fb()}}
+
+/* ===== ימי זיכרון והולדת ===== */
+function renderDates(){const days=+($('#dd')?.value||30);
+  const y=S.features.yahr?upcomingYahr(days):[],b=S.features.birthdays?upcomingBirthdays(days):[];
+  const all=[];R.forEach(x=>(x.deceased||[]).forEach(d=>all.push({...d,by:x})));
+  $('#main').innerHTML=`<section><div class="row"><h2>ימי זיכרון וימי הולדת</h2><span class="spacer"></span><label class="row small">לטווח של <select id="dd">${[7,14,30,60].map(n=>`<option ${n===days?'selected':''}>${n}</option>`).join('')}</select> ימים</label></div>
+  <p class="muted small">החישוב לפי הלוח העברי, מתוך התאריכים שנרשמו. תאריך שלא ניתן לפענח לא מופיע כאן.</p>
+  <div class="cols">
+  ${S.features.yahr?`<div class="card"><h3>ימי זיכרון קרובים</h3><table><tbody>${y.map(v=>`<tr class="click" data-id="${v.by.id}"><td><b>${esc(v.name)}</b> <span class="g">${esc(v.rel)}</span><div class="small muted">${esc(v.date)} · נמסר ע״י ${esc(fullName(v.by))}</div></td><td class="num">${v.days===0?'היום':'בעוד '+v.days}</td></tr>`).join('')||'<tr><td class="empty">אין</td></tr>'}</tbody></table></div>`:''}
+  ${S.features.birthdays?`<div class="card"><h3>ימי הולדת עבריים קרובים</h3><table><tbody>${b.map(v=>`<tr class="click" data-id="${v.by.id}"><td><b>${esc(v.name)}</b></td><td class="num">${v.days===0?'היום':'בעוד '+v.days}</td></tr>`).join('')||'<tr><td class="empty">אין</td></tr>'}</tbody></table></div>`:''}
+  </div>
+  ${S.features.yahr?`<h3 style="margin:18px 0 8px">כל הנפטרים לעילוי נשמה (${all.length})</h3><div class="toolbar"><input type="search" id="yq" placeholder="חיפוש לפי שם או חודש, למשל: אייר"></div>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>שם ושם האבא</th><th>קירבה</th><th>יום ושנה</th><th>נמסר על ידי</th></tr></thead><tbody id="yrows"></tbody></table></div>`:''}</section>`;
+  $('#dd').onchange=renderDates;bindRows('#main');
+  if($('#yq')){const fill=()=>{const q=$('#yq').value.trim();const l=all.filter(d=>!q||[d.name,d.date,d.rel].join(' ').includes(q));
+    $('#yrows').innerHTML=l.map(d=>`<tr class="click" data-id="${d.by.id}"><td><b>${esc(d.name)}</b></td><td>${esc(d.rel)}</td><td>${freeDate(d.date)}</td><td>${esc(fullName(d.by))}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">אין רשומות</td></tr>';bindRows('#yrows')};$('#yq').oninput=fill;fill()}
+}
+
+/* ===== אנשים ===== */
+function renderPeople(){const g={};R.forEach(r=>{const k=personKey(r);(g[k]=g[k]||[]).push(r)});
+  const ppl=Object.values(g).map(v=>v.sort((a,b)=>(b.date||'').localeCompare(a.date||''))).sort((a,b)=>b.length-a.length||(b[0].date||'').localeCompare(a[0].date||''));
+  $('#main').innerHTML=`<section><h2>אנשים</h2><p class="muted">כל אדם מופיע פעם אחת, לפי מספר הטלפון. לחיצה פותחת כרטיס עם כל החומר עליו: פרטים, כל הביקורים והבקשות, נפטרים, תרומות והדפים הסרוקים.</p>
+  <div class="toolbar"><input type="search" id="pq" placeholder="חיפוש אדם"></div>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>עיר</th><th>נייד</th><th>ביקורים</th><th>ביקור אחרון</th><th>מייל</th></tr></thead><tbody id="prow"></tbody></table></div></section>`;
+  const fill=()=>{const q=$('#pq').value.trim();$('#prow').innerHTML=ppl.filter(v=>!q||[fullName(v[0]),v[0].mobile,v[0].city].join(' ').includes(q)).map(v=>{const x=v[0];return `<tr class="click" data-key="${esc(personKey(x))}"><td><b>${esc(fullName(x))}</b>${v.some(r=>r.review)?' <span class="pill rev">לבדיקה</span>':''}</td><td>${esc(x.city)}</td><td class="num"><span class="ltr">${esc(x.mobile||x.homePhone)}</span></td><td class="num">${v.length}</td><td>${dual(x.date)}</td><td class="ltr">${esc(x.email)}</td></tr>`}).join('')||'<tr><td colspan="6" class="empty">אין</td></tr>';$$('#prow tr[data-key]').forEach(tr=>tr.onclick=()=>openPerson(tr.dataset.key))};
+  $('#pq').oninput=fill;fill()}
+
+/* ===== כספים ===== */
+const ym=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+const HEB_GREG_M=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+function renderMoney(){const r=R.filter(x=>x.donation&&x.donation.type&&x.donation.type!=='none');
+  const once=r.filter(x=>x.donation.type!=='standing'),st=r.filter(x=>x.donation.type==='standing');const sum=a=>a.reduce((s,x)=>s+(Number(x.donation.amount)||0),0);
+  const months=[...Array(6)].map((_,i)=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-5+i);return d});
+  const curYM=ym(new Date()),paidNow=st.filter(x=>x.payments?.[curYM]);
+  $('#main').innerHTML=`<section><div class="row"><h2>כספים</h2><span class="spacer"></span><button class="btn sm" id="lockFin">נעל כספים</button></div>
+  <div class="stats">
+    <div class="stat"><b>${money(sum(once))||'₪0'}</b><span>תרומות חד־פעמיות (${once.length})</span></div>
+    <div class="stat"><b>${money(sum(once.filter(x=>x.donation.type==='cash')))||'₪0'}</b><span>מזומן</span></div>
+    <div class="stat"><b>${money(sum(st))||'₪0'}</b><span>הוראות קבע לחודש (${st.length})</span></div>
+    <div class="stat ${st.length>paidNow.length?'alert':''}"><b>${paidNow.length}/${st.length}</b><span>נגבו החודש</span></div>
+  </div>
+  <h3 style="margin:8px 0">הוראות קבע — סימון גבייה לפי חודש</h3>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>נייד</th><th>חודשי</th><th>חודשים</th>${months.map(m=>`<th>${HEB_GREG_M[m.getMonth()]}</th>`).join('')}<th>נגבה עד כה</th></tr></thead><tbody>
+  ${st.length?st.map(x=>`<tr><td><a href="#" data-id="${x.id}" class="open">${esc(fullName(x))}</a></td><td class="num"><span class="ltr">${esc(x.mobile)}</span></td><td class="num">${money(x.donation.amount)}</td><td class="num">${esc(x.donation.months)||'∞'}</td>
+    ${months.map(m=>`<td><input type="checkbox" aria-label="נגבה" data-pay="${x.id}" data-m="${ym(m)}" ${x.payments?.[ym(m)]?'checked':''}></td>`).join('')}
+    <td class="num">${money(Object.values(x.payments||{}).filter(Boolean).length*(Number(x.donation.amount)||0))||'₪0'}</td></tr>`).join(''):`<tr><td colspan="${5+months.length}" class="empty">אין הוראות קבע</td></tr>`}
+  </tbody></table></div>
+  <h3 style="margin:18px 0 8px">תרומות חד־פעמיות</h3>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך</th><th>שם</th><th>אופן</th><th>סכום</th><th>מס׳ קבלה</th></tr></thead><tbody>
+  ${once.length?once.sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(x=>`<tr><td>${dual(x.date)}</td><td><a href="#" data-id="${x.id}" class="open">${esc(fullName(x))}</a></td><td><span class="pill tag">${DON[x.donation.type]}</span></td><td class="num">${money(x.donation.amount)}</td>
+    <td>${x.donation.receipt?`<span class="num">${esc(x.donation.receipt)}</span>`:`<button class="btn sm" data-rc="${x.id}">הפק מספר</button>`}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">אין תרומות</td></tr>'}
+  </tbody></table></div></section>`;
+  $('#lockFin').onclick=()=>{FIN=false;ss.del('biala_fin');toast('הכספים ננעלו');go('home')};
+  $$('a.open').forEach(a=>a.onclick=e=>{e.preventDefault();go('view',byId(a.dataset.id))});
+  $$('[data-pay]').forEach(c=>c.onchange=async()=>{const x=byId(c.dataset.pay);x.payments={...(x.payments||{}),[c.dataset.m]:c.checked};await putRec(x);toast(c.checked?'סומן כנגבה':'הסימון הוסר')});
+  $$('[data-rc]').forEach(b=>b.onclick=async()=>{const x=byId(b.dataset.rc);S.nextReceipt=(S.nextReceipt||1000)+1;await putS();x.donation={...x.donation,receipt:String(S.nextReceipt)};await putRec(x);renderMoney()});
+}
+function renderKupa(){const list=[...EXP].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const byM={};list.forEach(e=>{const k=(e.date||'').slice(0,7);byM[k]=byM[k]||{in:0,out:0};byM[k][e.kind]+=Number(e.amount)||0});
+  const mx=Math.max(1,...Object.values(byM).flatMap(v=>[v.in,v.out]));const tin=list.filter(e=>e.kind==='in').reduce((s,e)=>s+(+e.amount||0),0),tout=list.filter(e=>e.kind==='out').reduce((s,e)=>s+(+e.amount||0),0);
+  $('#main').innerHTML=`<section><h2>קופה</h2><p class="muted">הכנסות והוצאות של המשרד שלא קשורות לבקשה מסוימת.</p>
+  <div class="stats"><div class="stat"><b>${money(tin)||'₪0'}</b><span>הכנסות</span></div><div class="stat"><b>${money(tout)||'₪0'}</b><span>הוצאות</span></div><div class="stat"><b>${money(tin-tout)||'₪0'}</b><span>יתרה</span></div></div>
+  <form class="card" id="kf"><h3>רישום חדש</h3><div class="grid">
+    <label class="f">סוג<select id="kk"><option value="in">הכנסה</option><option value="out">הוצאה</option></select></label>
+    <label class="f">תאריך<input type="date" id="kd" value="${todayISO()}"></label><label class="f">סכום (₪)<input type="number" id="ka" min="0" required></label>
+    <label class="f">תיאור<input id="kt" placeholder="למשל: הדפסת טפסים"></label></div><div class="row"><button class="btn primary">הוסף</button></div></form>
+  ${Object.keys(byM).length?`<div class="card" style="margin-top:14px"><h3>לפי חודשים</h3><div class="bars">${Object.entries(byM).sort().reverse().slice(0,8).map(([k,v])=>`<div class="bar"><span class="num">${k?HEB_GREG_M[+k.slice(5)-1]+' '+k.slice(0,4):''}</span><span style="display:grid;gap:2px"><i style="width:${v.in/mx*100}%"></i><i class="out" style="width:${v.out/mx*100}%"></i></span><span class="num small">${money(v.in)||'₪0'} / ${money(v.out)||'₪0'}</span></div>`).join('')}</div><p class="small muted">זהב = הכנסות, אדום = הוצאות</p></div>`:''}
+  <div class="tablewrap" style="margin-top:14px"><table class="wide"><thead><tr><th>תאריך</th><th>סוג</th><th>תיאור</th><th>סכום</th><th>נרשם ע״י</th><th></th></tr></thead><tbody>
+  ${list.map(e=>`<tr><td>${dual(e.date)}</td><td>${e.kind==='in'?'הכנסה':'הוצאה'}</td><td>${esc(e.desc)}</td><td class="num" style="color:${e.kind==='in'?'var(--ok)':'var(--bad)'}">${money(e.amount)}</td><td>${esc(e.by)}</td><td><button class="btn sm danger" data-x="${e.id}">מחק</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">אין רישומים עדיין</td></tr>'}
+  </tbody></table></div></section>`;
+  $('#kf').onsubmit=async e=>{e.preventDefault();await putExp({id:newId(),kind:$('#kk').value,date:$('#kd').value,amount:Number($('#ka').value),desc:$('#kt').value.trim(),by:ME});toast('נרשם');renderKupa()};
+  $$('[data-x]').forEach(b=>b.onclick=async()=>{await delExp(b.dataset.x);renderKupa()});
+}
+
+/* ===== הוראות ===== */
+function helpHTML(t){return t.split('\n').map(l=>l.startsWith('# ')?`<h3>${esc(l.slice(2))}</h3>`:l.trim()?`<p>${esc(l)}</p>`:'').join('')}
+function renderHelp(){const en=LANG==='en'&&(!S.help||S.help===DEF_HELP);$('#main').innerHTML=`<section><div class="help" ${en?'data-noi18n':''}>${helpHTML(en?DEF_HELP_EN:(S.help||DEF_HELP))}</div><p class="muted small">את ההוראות אפשר לערוך בלשונית "ניהול".</p></section>`}
+
+/* ===== ניהול ===== */
+function renderAdmin(){
+  $('#main').innerHTML=`<section class="form"><div class="row"><h2>ניהול</h2><span class="spacer"></span><button class="btn sm" id="lockAdm">נעל ניהול</button></div>
+  <fieldset><legend>סיסמאות</legend>${MODE==='cloud'?'<p class="muted small" style="margin-top:0">במצב שרת, הכניסה למערכת היא עם המייל והסיסמה של כל גבאי. כאן מחליפים את סיסמאות הכספים והניהול.</p>':''}<div class="grid">
+    <label class="f">איזו סיסמה<select id="pk"><option value="pw">כניסה למערכת</option><option value="fin">כספים</option><option value="adm">ניהול</option></select></label>
+    <label class="f">סיסמה חדשה<input id="p1" type="password"></label><label class="f">שוב סיסמה חדשה<input id="p2" type="password"></label>
+  </div><div class="row" style="margin-top:10px"><button class="btn primary" id="pwBtn">החלף סיסמה</button></div></fieldset>
+  <fieldset><legend>גבאים</legend><p class="muted small" style="margin-top:0">שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה.</p>
+    <label class="f"><textarea id="gb">${esc(S.gabbaim.join('\n'))}</textarea></label><div class="row" style="margin-top:8px"><button class="btn primary" id="gbBtn">שמור גבאים</button></div></fieldset>
+  <fieldset><legend>אפשרויות במערכת</legend><p class="muted small" style="margin-top:0">כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.</p>
+    <div class="grid">${Object.entries(FEATURES).map(([k,v])=>`<label class="row" style="gap:8px"><input type="checkbox" data-ft="${k}" ${S.features[k]?'checked':''}> ${v}</label>`).join('')}</div></fieldset>
+  <fieldset><legend>עריכת ההוראות</legend><p class="muted small" style="margin-top:0">שורה שמתחילה ב־"# " היא כותרת.</p>
+    <label class="f"><textarea id="hl" style="min-height:260px">${esc(S.help||DEF_HELP)}</textarea></label>
+    <div class="row" style="margin-top:8px"><button class="btn primary" id="hlBtn">שמור הוראות</button><button class="btn" id="hlReset">החזר להוראות המקוריות</button></div></fieldset>
+  <fieldset><legend>נוסחי מכתבים</legend><p class="muted small" style="margin-top:0">מילים בסוגריים מסולסלים מתמלאות לבד: {שם} {כתובת} {עיר} {תאריך} {סכום} {אופן} {קבלה} {חודשים} {שם_לתפילה} {נפטר} {יום_זיכרון}</p>
+    <div class="grid">${[['thanks','מכתב תודה לתורם'],['receipt','קבלה על תרומה'],['standing','אישור הוראת קבע'],['letter','מכתב חופשי'],['yahr','תזכורת יום זיכרון']].map(([k,n])=>`<label class="f">${n}<textarea data-tpl="${k}" style="min-height:180px">${esc((S.templates||{})[k]||DEF_TPL[k])}</textarea></label>`).join('')}</div>
+    <div class="row" style="margin-top:8px"><button class="btn primary" id="tplBtn">שמור נוסחים</button></div></fieldset>
+  <fieldset><legend>סריקה אוטומטית (Gemini)</legend>
+    <p class="muted small" style="margin-top:0">הסריקה קוראת את כתב היד בעזרת Gemini של גוגל. צריך מפתח פעם אחת: נכנסים ל־aistudio.google.com/apikey, לוחצים "Create API key" ומעתיקים לכאן. ${MODE==='cloud'?'המפתח נשמר בשרת ומשמש את כל הגבאים.':'המפתח נשמר במחשב הזה.'}</p>
+    <div class="grid"><label class="f">מפתח Gemini<input id="gk" type="password" dir="ltr" value="${esc(S.geminiKey)}" autocomplete="off"></label>
+    <label class="f">דגם<input id="gm" dir="ltr" value="${esc(S.geminiModel||'gemini-3.8-flash')}"></label></div>
+    <p class="small" style="color:var(--warn)">שים לב: בחשבון גוגל חינמי, גוגל רשאית להשתמש בתוכן שנשלח אליה לשיפור השירות. בגלל שבטפסים יש פרטים אישיים, עדיף מפתח מחשבון בתשלום (כמו שעשית בביאלה).</p>
+    <div class="row"><button class="btn primary" id="gkBtn">שמור מפתח</button><button class="btn" id="gkTest">בדוק חיבור</button><span id="gkMsg" class="small"></span></div></fieldset>
+  <fieldset><legend>חיבור לשרת משותף (Supabase)</legend>
+    <p class="muted small" style="margin-top:0">${MODE==='cloud'?'<b style="color:var(--ok)">המערכת מחוברת לשרת.</b> כל הגבאים רואים את אותם נתונים, וכל גבאי נכנס עם מייל וסיסמה משלו.':'כרגע הנתונים במחשב הזה בלבד. כדי שכמה גבאים יעבדו ביחד מכל מחשב: יוצרים פרויקט ב־Supabase, מריצים את קוד ההקמה למטה, ומכניסים כאן את הכתובת והמפתח.'}</p>
+    <div class="grid"><label class="f">כתובת הפרויקט (Project URL)<input id="su" dir="ltr" placeholder="https://xxxx.supabase.co" value="${esc(CONN().url)}"></label>
+    <label class="f">מפתח ציבורי (anon public)<input id="sk" dir="ltr" value="${esc(CONN().key)}" autocomplete="off"></label></div>
+    <div class="row" style="margin-top:8px"><button class="btn primary" id="suBtn">שמור והתחבר</button>${MODE==='cloud'?'<button class="btn" id="suUp">העלה לשרת את הנתונים שבמחשב הזה</button><button class="btn danger" id="suOff">נתק מהשרת במחשב הזה</button>':''}<button class="btn" id="sqlBtn">העתק קוד הקמה</button></div>
+    <details style="margin-top:10px"><summary class="small">איך מוסיפים גבאי בשרת?</summary><p class="small">ב־Supabase: Authentication ← Users ← Add user ← Create new user. מכניסים מייל וסיסמה לגבאי ומסמנים Auto Confirm. אחר כך הוא נכנס למערכת עם המייל והסיסמה האלה. כדי לחסום גבאי — מוחקים אותו משם.</p></details>
+    <textarea class="code" id="sqlBox" hidden></textarea></fieldset>
+  <fieldset><legend>גיבוי, שחזור ואקסל</legend>
+    <p class="muted small" style="margin-top:0">${MODE==='cloud'?'הנתונים שמורים בשרת. בכל זאת מומלץ להוריד קובץ גיבוי פעם בשבוע.':'הנתונים במחשב הזה בלבד. חובה להוריד קובץ גיבוי פעם בשבוע ולשמור אותו בדיסק נוסף או במייל של החברה.'} ${lget('lastBackup','')?'גיבוי אחרון מהמחשב הזה: '+esc(lget('lastBackup','')):'עדיין לא הורד גיבוי מהמחשב הזה.'}</p>
+    <div class="row"><button class="btn gold" id="dlBk">הורד קובץ גיבוי</button><button class="btn" id="dlCsv">הורד טבלה לאקסל</button><button class="btn" id="copyCsv">העתק טבלה לאקסל</button></div>
+    <label class="f" style="margin-top:12px">שחזור מקובץ גיבוי<input type="file" id="bkFile" accept=".json,application/json"></label>
+    <label class="f" style="margin-top:8px">או הדבק כאן טקסט של גיבוי<textarea class="code" id="bk"></textarea></label>
+    <div class="row" style="margin-top:8px"><button class="btn" id="restore">שחזר מהטקסט (מוסיף ומעדכן, לא מוחק)</button></div></fieldset>
+  </section>`;
+  $('#lockAdm').onclick=()=>{ADM=false;ss.del('biala_adm');go('home')};
+  $('#pwBtn').onclick=async()=>{if($('#p1').value.length<4)return toast('לפחות 4 תווים');if($('#p1').value!==$('#p2').value)return toast('הסיסמאות לא זהות');S[$('#pk').value]=await hash($('#p1').value);await putS();toast('הסיסמה הוחלפה');$('#p1').value=$('#p2').value=''};
+  $('#gbBtn').onclick=async()=>{S.gabbaim=$('#gb').value.split('\n').map(s=>s.trim()).filter(Boolean);if(!S.gabbaim.length)S.gabbaim=['גבאי'];await putS();fillGabbai();toast('הגבאים נשמרו')};
+  $$('[data-ft]').forEach(c=>c.onchange=async()=>{S.features={...S.features,[c.dataset.ft]:c.checked};await putS();renderTabs();toast('עודכן')});
+  $('#tplBtn').onclick=async()=>{S.templates={...(S.templates||{})};$$('[data-tpl]').forEach(t=>S.templates[t.dataset.tpl]=t.value);await putS();toast('הנוסחים נשמרו')};
+  $('#hlBtn').onclick=async()=>{S.help=$('#hl').value;await putS();toast('ההוראות נשמרו')};$('#hlReset').onclick=()=>{$('#hl').value=DEF_HELP};
+  const SQL=`-- מערכת קבלת קהל ביאלה — קוד הקמה ל-Supabase (SQL Editor ← New query ← Run)
+create table if not exists kk_records (id text primary key, data jsonb not null, updated_at timestamptz default now());
+create table if not exists kk_kupa (id text primary key, data jsonb not null, updated_at timestamptz default now());
+create table if not exists kk_settings (id text primary key, data jsonb not null, updated_at timestamptz default now());
+alter table kk_records enable row level security;
+alter table kk_kupa enable row level security;
+alter table kk_settings enable row level security;
+-- רק גבאים מחוברים (משתמשים שהוספת ב-Authentication) יכולים לקרוא ולכתוב. מי שאין לו משתמש לא רואה כלום.
+create policy "kk_records_auth" on kk_records for all to authenticated using (true) with check (true);
+create policy "kk_kupa_auth" on kk_kupa for all to authenticated using (true) with check (true);
+create policy "kk_settings_auth" on kk_settings for all to authenticated using (true) with check (true);`;
+  $('#sqlBtn').onclick=()=>{$('#sqlBox').hidden=false;$('#sqlBox').value=SQL;copy(SQL,'קוד ההקמה הועתק. הדבק אותו ב־Supabase ← SQL Editor')};
+  $('#gkBtn').onclick=async()=>{S.geminiKey=$('#gk').value.trim();S.geminiModel=$('#gm').value.trim()||'gemini-3.8-flash';await putS();toast('המפתח נשמר')};
+  $('#gkTest').onclick=async()=>{const m=$('#gkMsg');m.textContent='בודק...';S.geminiKey=$('#gk').value.trim();S.geminiModel=$('#gm').value.trim()||'gemini-3.8-flash';
+    try{const c=document.createElement('canvas');c.width=c.height=40;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,40,40);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.8));await aiReadImage(b);m.style.color='var(--ok)';m.textContent='החיבור תקין ✓'}
+    catch(e){m.style.color='var(--bad)';m.textContent=e.code==='parse'?'החיבור תקין ✓':scanErr(e);if(e.code==='parse')m.style.color='var(--ok)'}};
+  $('#suBtn').onclick=()=>{const u=$('#su').value.trim().replace(/\/+$/,''),k=$('#sk').value.trim();if(u&&!/^https:\/\/.+/.test(u))return toast('הכתובת צריכה להתחיל ב־https://');
+    lset('supaUrl',u);lset('supaKey',k);toast(u?'נשמר. המערכת נטענת מחדש':'החיבור נמחק');setTimeout(()=>location.reload(),900)};
+  if($('#suOff'))$('#suOff').onclick=()=>{lset('supaUrl','');lset('supaKey','');location.reload()};
+  if($('#suUp'))$('#suUp').onclick=async()=>{const lr=(await idb.get('records'))||[],lk=(await idb.get('kupa'))||[];if(!lr.length&&!lk.length)return toast('אין נתונים שמורים במחשב הזה');
+    for(const r of lr)await putRec(r);for(const k of lk)await putExp(k);toast(`הועלו ${lr.length} בקשות לשרת`)};
+  const backupObj=()=>({system:'biala-kabalat-kahal',version:4,date:new Date().toISOString(),records:R,kupa:EXP,settings:{...S,pw:undefined,fin:undefined,adm:undefined,geminiKey:undefined}});
+  $('#dlBk').onclick=()=>{downloadBlob(`גיבוי-קבלת-קהל-${fileStamp()}.json`,new Blob([JSON.stringify(backupObj())],{type:'application/json'}));lset('lastBackup',hebOf(new Date())+' ('+greg(todayISO())+')');toast('קובץ הגיבוי ירד לתיקיית ההורדות')};
+  const csvRows=()=>{const cols=[['date','תאריך'],...FIELDS];return [[...cols.map(c=>c[1]),'תאריך עברי','סטטוס','נושאים','נפטרים','תרומה',FIN?'סכום':''],...R.map(x=>[...cols.map(c=>x[c[0]]??''),heb(x.date),STATUS[x.status],(x.tags||[]).join(', '),(x.deceased||[]).map(d=>d.name+(d.date?' ('+d.date+')':'')).join('; '),DON[x.donation?.type||'none'],FIN?(x.donation?.amount||''):''])]};
+  $('#dlCsv').onclick=()=>{const csv=csvRows().map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""').replace(/\n/g,' ')+'"').join(',')).join('\r\n');downloadBlob(`בקשות-ברכה-${fileStamp()}.csv`,new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));toast('הטבלה ירדה. פתח אותה באקסל')};
+  $('#copyCsv').onclick=()=>copy(csvRows().map(r=>r.map(v=>String(v).replace(/[\t\n]/g,' ')).join('\t')).join('\n'),'הטבלה הועתקה, הדבק באקסל');
+  const doRestore=async o=>{if(!o||!Array.isArray(o.records))throw 0;for(const r of o.records)await putRec(r);for(const e of (o.kupa||[]))await putExp(e);
+    if(o.settings){const keep={pw:S.pw,fin:S.fin,adm:S.adm,geminiKey:S.geminiKey};S=withDefaults({...o.settings,...keep},DEFS);await putS()}toast(`שוחזרו ${o.records.length} בקשות`);go('list')};
+  $('#bkFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{await doRestore(JSON.parse(await f.text()))}catch(x){toast('הקובץ אינו קובץ גיבוי תקין')}};
+  $('#restore').onclick=async()=>{try{await doRestore(JSON.parse($('#bk').value))}catch(e){toast('הטקסט שהודבק אינו גיבוי תקין')}};
+}
+
+boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
+</script>
+
+</body>
+</html>
