@@ -810,10 +810,20 @@ $('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b
 let pendingPre=null, curPerson=null;
 const VIEWS={home:renderHome,list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
   money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
-function go(v,rec){if(!VIEWS[v])v='home';if(!canEdit()&&['new','edit','scan'].includes(v)){toast('יש לך הרשאת צפייה בלבד');return}view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
+function go(v,rec){if(!VIEWS[v])v='home';typing=false;if(!canEdit()&&['new','edit','scan'].includes(v)){toast('יש לך הרשאת צפייה בלבד');return}view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
 let dirty=false;
-function refresh(){if($('#app').hidden)return;renderTabs();if(view==='new'||view==='edit'||$('#gf'))return;if(view==='view'&&current)current=R.find(r=>r.id===current.id)||null;
-  if(view==='list'&&$('#rows')){fillRows();return}VIEWS[view]()}
+/* שומר על מה שהוקלד: עדכון מהשרת לא מוחק שדות שעוד לא נשמרו */
+let typing=false;
+document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#main')&&e.target.matches('input,textarea,select,[contenteditable]'))typing=true},true);
+document.addEventListener('submit',()=>setTimeout(()=>typing=false,50),true);document.addEventListener('click',e=>{if(e.target.closest('#main button.primary,#main button.gold'))setTimeout(()=>typing=false,50)},true);
+function snapFields(){const m={};$$('#main input[id],#main textarea[id],#main select[id]').forEach(el=>{if(el.type==='file'||el.type==='password')return;m[el.id]=el.type==='checkbox'?el.checked:el.value});return m}
+function restoreFields(m){for(const id in m){const el=document.getElementById(id);if(!el)continue;if(el.type==='checkbox')el.checked=m[id];else if(el.value!==m[id])el.value=m[id]}}
+function refresh(){if($('#app').hidden)return;renderTabs();
+  if(view==='new'||view==='edit'||$('#gf')||typing)return;
+  const a=document.activeElement;if(a&&a.closest&&a.closest('#main')&&a.matches('input,textarea,select,[contenteditable]'))return;
+  if(view==='view'&&current)current=R.find(r=>r.id===current.id)||null;
+  if(view==='list'&&$('#rows')){fillRows();return}
+  const keep=snapFields(),y=window.scrollY;VIEWS[view]();restoreFields(keep);window.scrollTo(0,y)}
 const byId=id=>R.find(r=>r.id===id);
 const fullName=x=>[x.first,x.last].filter(Boolean).join(' ')||x.prayName||'ללא שם';
 function bindRows(sel){$$(sel+' tr[data-id]').forEach(tr=>tr.onclick=()=>go('view',byId(tr.dataset.id)))}
