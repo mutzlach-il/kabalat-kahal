@@ -900,7 +900,9 @@ async function afterCloudAuth(user){
   if(u.role!=='owner'){const {data:sys}=await SB.from('kk_system').select('disabled,message').eq('id',1).maybeSingle();if(sys?.disabled){showPending(sys.message||'המערכת מושבתת זמנית.');return false}}
   MYEMAIL=email;ME=u.name||name;ROLE=u.role||'gabbai';
   if(!await ensureKey())return false;
-  try{await loadCloud()}catch(x){showPending('אין גישה לנתונים: '+(x.message||''),true);return false}
+  let lerr=null;for(let i=0;i<2;i++){try{await loadCloud();lerr=null;break}catch(x){lerr=x;await new Promise(r=>setTimeout(r,1500))}}
+  if(lerr){const m=String(lerr?.message||lerr?.code||lerr||'');try{await SB.from('kk_log').insert({action:'שגיאה בטעינת נתונים',target:m.slice(0,200),details:{who:ME,code:lerr?.code||'',hint:String(lerr?.hint||lerr?.details||'').slice(0,200),ua:navigator.userAgent.slice(0,160)}})}catch(e){}
+    showPending('אין גישה לנתונים: '+m+(/fetch|network|load/i.test(m)?' — ייתכן שהסינון (נטפרי וכדומה) חוסם את השרת במחשב הזה.':''),true);return false}
   grantDevices().catch(()=>{});escrowSave();
   if(ROLE==='owner'){FIN=true;ADM=true;ss.set('biala_fin','1');ss.set('biala_adm','1')}
   if(!S.finMig&&isAdm()){S.fin=await hash('123456');S.finMig=1;try{await putS('קוד הכספים עודכן ל־123456')}catch(e){}}
