@@ -214,6 +214,8 @@ textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;fon
 .modal{position:fixed;inset:0;background:rgba(20,10,0,.55);z-index:80;display:grid;place-items:center;padding:16px}.modal-in{background:var(--card,#fff);color:var(--ink,#222);border-radius:14px;padding:18px;width:min(640px,100%);max-height:92vh;overflow:auto;display:grid;gap:12px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .notice.tid{background:#fff4d6;border-color:#c9a227}
 tr.sel td{background:rgba(201,162,39,.18)}
+.gbar{height:14px;background:var(--line,#e5d9c3);border-radius:8px;overflow:hidden;margin:8px 0 4px}.gbar i{display:block;height:100%;background:linear-gradient(90deg,#b8862b,#d9a441);border-radius:8px}.card.goal{margin:8px 0 12px}
+button.pay{min-width:38px;height:28px;border:1px solid var(--line,#ccc);border-radius:6px;background:transparent;color:inherit;cursor:pointer;font:inherit;font-size:.85rem}button.pay.ok{background:var(--ok,#2e7d32);color:#fff;border-color:transparent}button.pay.bad{background:var(--bad,#b3261e);color:#fff;border-color:transparent}
 .todaygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:10px}.card.today{border-inline-start:5px solid var(--warn)}.card.today.ok{border-inline-start-color:var(--ok);opacity:.85}.card.today h3{margin:0}.card.today table{width:100%;margin:6px 0}.card.today td{padding:4px 2px;border-bottom:1px solid var(--line,#ddd)}
 .pubform{max-width:760px;margin:20px auto;padding:0 16px}.pubform form{position:relative}.pfh{text-align:center;margin-bottom:12px}.pfh img{width:84px;height:auto}.pfh h1{font-size:1.35rem;margin:6px 0}.pfh p{margin:0;opacity:.75}
 .qscreen{background:linear-gradient(160deg,#4a2410,#2a1406);color:#f5e6c8;border-radius:16px;padding:28px;margin-top:12px;min-height:70vh;display:grid;gap:20px;align-content:start;text-align:center}
@@ -679,6 +681,27 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 6. בתחתית לשונית "כספים" יש "יומן קבלות" עם כל הקבלות, ומי שעוד לא דווחו. אפשר להוריד אותו לאקסל בשביל רואה החשבון. גם ב"היום שלי" מופיעות קבלות שעוד לא דווחו.
 בהוראת קבע: בשדה "מספר חודשים" אפשר לבחור מהרשימה (6, 12, 24...) או לכתוב כל מספר, ומתחת מופיע הסכום הכולל וחודש הסיום. אם משאירים ריק – ללא הגבלה.
 
+# שליחת קבלה לתורם
+אחרי שמפיקים קבלה, בחלון הקבלה יש "שליחה לתורם":
+- "📧 מייל" – אם חובר EmailJS בניהול, נשלח ישירות. כדי שהקבלה תופיע מעוצבת בתוך המייל, בתבנית ב־EmailJS כותבים {{{message_html}}} (שלושה סוגריים). בלי EmailJS נפתחת תוכנת המייל עם הנוסח מוכן.
+- "וואטסאפ" – נפתח וואטסאפ לנייד של התורם עם נוסח הקבלה (מספר, סכום, מספר דיווח).
+- "⬇ הורד כתמונה" – הקבלה יורדת כתמונה, ואפשר לצרף אותה בוואטסאפ או במייל.
+- "העתק נוסח" – להדבקה בכל מקום.
+
+# צ׳קים
+ברישום תרומה בצ׳ק (בבקשה או ב"רישום תרומה") רושמים תאריך פירעון, מספר צ׳ק ובנק. בלשונית "כספים" יש רשימת צ׳קים לפי תאריך: לוחצים "הופקד ✓" או "חזר". צ׳קים שמגיע זמנם (עד 3 ימים) מסומנים בצבע ומופיעים ב"היום שלי". לא רושמים מספר חשבון בנק.
+
+# יעד גבייה חודשי
+בלשונית "כספים" כותבים יעד גבייה חודשי ולוחצים "שמור יעד". פס ההתקדמות מופיע בכספים, במסך הראשי וב"היום שלי" (רק למי שנכנס לכספים). נספרות תרומות של החודש, הוראות קבע שנגבו החודש, וצ׳קים שזמן פירעונם החודש (חוץ מצ׳קים שחזרו).
+
+# הוראת קבע שחזרה
+בטבלת הגבייה בלשונית "כספים" לוחצים על משבצת החודש: לחיצה ראשונה ✓ (נגבה), שנייה "חזר" (החיוב לא עבר), שלישית מנקה. הוראות קבע שחזרו החודש או בחודש הקודם מופיעות ב"היום שלי" עם כפתור הודעה לתורם (נוסח "הוראת קבע שלא עברה").
+
+# רשימות מיוחדות (שמות לתפילה)
+בלשונית "שמות לתפילה", בתחתית, "רשימות מיוחדות":
+- 🕯 ימי זיכרון בחודש עברי – בוחרים חודש, ומדפיסים רשימה של כל ימי הזיכרון בו לפי הסדר, עם שם המשפחה והטלפון.
+- 📜 רשימה לאירוע – בוחרים או כותבים שם אירוע (ערב ראש השנה, הושענא רבה...), והרשימה מודפסת לפי הסינון שלמעלה (תאריכים, נושא) עם כותרת האירוע.
+
 # סיסמאות ראשוניות
 כניסה: 1234 · כספים: 123456 · ניהול: 123456. אפשר להחליף אותן בלשונית "ניהול" ← "סיסמאות". כדי להחליף קוד צריך להקליד קודם את הקוד הנוכחי, כך שגם מי שקיבל הרשאת מנהל לא יכול להשתלט על המערכת בלי לדעת את הקודים. רק הבעלים (המנהל הראשי) נכנס לכספים ולניהול בלי קוד, ויכול להחליף קוד גם בלי לדעת את הקוד הישן. (במצב שרת הכניסה היא עם חשבון Google של כל גבאי.)`;
 
@@ -844,6 +867,21 @@ You can give the public a link to fill in a blessing request from home, without 
 5. Receipt numbers run automatically and never repeat. A wrong receipt – open it → "Cancel receipt". It stays in the log marked "cancelled" (if reported, cancel it at the Tax Authority too).
 6. At the bottom of "Finances" there is a "Receipts log" with all receipts and those not yet reported; it can be downloaded to Excel for the accountant. "My day" also shows unreported receipts.
 Standing orders: in "Number of months" pick from the list (6, 12, 24...) or type any number; the total and the last month appear below. Leave it empty for no limit.
+
+# Sending a receipt to the donor
+After issuing a receipt, the receipt window has "Send to donor": "📧 Email" (direct via EmailJS if connected – put {{{message_html}}} in the EmailJS template to show the designed receipt; otherwise opens your mail program), "WhatsApp" (opens WhatsApp to the donor's mobile with the receipt text), "⬇ Download as image" (attach it in WhatsApp or email), and "Copy text".
+
+# Checks
+When recording a check donation, enter the due date, check number and bank. "Finances" lists checks by date: click "Deposited ✓" or "Bounced". Checks due within 3 days are highlighted and appear in "My day". Do not enter bank account numbers.
+
+# Monthly collection goal
+In "Finances" type a monthly goal and click "Save goal". The progress bar appears in Finances, Home and "My day" (only for those inside finances). It counts this month's donations, standing orders collected this month, and checks due this month (except bounced ones).
+
+# Bounced standing orders
+In the collection table in "Finances" click a month cell: first click ✓ (collected), second "Bounced", third clears. Standing orders that bounced this month or last appear in "My day" with a message button for the donor.
+
+# Special lists (names for prayer)
+At the bottom of "Names for prayer", "Special lists": 🕯 yahrzeits in a Hebrew month (pick a month and print all yahrzeits in order with family and phone), and 📜 list for an event (pick or type an event – Erev Rosh Hashana, Hoshana Rabba… – printed by the filter above with the event title).
 
 # Initial passwords
 Login: 1234 · Finances: 123456 · Management: 123456. You can change them in "Management" → "Passwords". To change a code you must first type the current code, so even someone with manager permission cannot take over the system without knowing the codes. Only the owner (head manager) enters finances and management without a code, and can change a code without knowing the old one. (In server mode, each gabbai signs in with their own Google account.)`;
@@ -1147,7 +1185,7 @@ $$('.langsw [data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.data
 $('#themeBtn').onclick=()=>{const cur=document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');const n=cur==='dark'?'light':'dark';document.documentElement.dataset.theme=n;lset('theme',n)};
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v==='logout')return logout();go(b.dataset.v)});
 let pendingPre=null, curPerson=null;
-const VIEWS={home:renderHome,list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
+const VIEWS={home:()=>{renderHome();const g=goalBar(),sec=$('#main section');if(g&&sec){const h=sec.querySelector('h2');(h||sec.firstChild).insertAdjacentHTML(h?'afterend':'beforebegin',g)}},list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
   money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,today:renderToday,inbox:renderInbox,tidings:renderTidings,qscreen:renderQScreen,contacts:renderContacts,report:renderReport,donors:()=>FIN&&canFin()?renderDonors():gate('fin','תורמים',renderDonors),admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
 function go(v,rec){if(!VIEWS[v])v='home';typing=false;if(!canEdit()&&['new','edit','scan'].includes(v)){toast('יש לך הרשאת צפייה בלבד');return}view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
 let dirty=false;
@@ -1268,7 +1306,7 @@ function renderForm(rec,prefill){
     ${lockedAmt?`<div class="lock wide" id="wAmount">הוזן סכום. הצפייה והשינוי דורשים סיסמת כספים.</div>`:`<label class="f" id="wAmount">סכום (₪)<input id="damount" type="number" min="0" value="${esc(d.amount)}"></label>`}
     <label class="f" id="wMonths">מספר חודשים<input id="dmonths" type="number" min="0" list="monthsL" placeholder="ללא הגבלה" value="${esc(d.months)}"><datalist id="monthsL"><option value="6"><option value="10"><option value="12"><option value="18"><option value="24"><option value="36"></datalist></label>
     <label class="f" id="wStart">חודש התחלה<input id="dstart" type="month" value="${esc(d.start)}"></label>
-  <div class="small muted wide" id="dHint"></div></div><p class="muted small" style="margin:8px 0 0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p></fieldset>`:''}
+  ${checkFields(d)}<div class="small muted wide" id="dHint"></div></div><p class="muted small" style="margin:8px 0 0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p></fieldset>`:''}
   <fieldset><legend>טיפול</legend><div class="grid">
     <label class="f">סטטוס<select id="status">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${x.status===k?'selected':''}>${v}</option>`).join('')}</select></label>
     <label class="f wide">הערות פנימיות<textarea id="notes" style="min-height:56px">${esc(x.notes)}</textarea></label>
@@ -1292,7 +1330,7 @@ function renderForm(rec,prefill){
   $('#date').oninput=()=>$('[data-h="date"]').textContent=heb($('#date').value);
   ['birth','spouseBirth'].forEach(id=>$('#'+id).addEventListener('input',()=>{const g=parseGreg($('#'+id).value);$(`[data-h="${id}"]`).textContent=g?hebOf(g):''}));
   if($('#dtype')&&$('#damount'))standingHint('#damount','#dmonths','#dstart','#dHint');
-  if($('#dtype')){const dv=()=>{const t=$('#dtype').value;$('#wAmount').hidden=t==='none';$('#wMonths').hidden=$('#wStart').hidden=t!=='standing';const l=$('#wAmount').firstChild;if(l&&l.nodeType===3)l.textContent=t==='standing'?'סכום חודשי (₪)':'סכום (₪)'};$('#dtype').onchange=dv;dv()}
+  if($('#dtype')){const dv=()=>{const t=$('#dtype').value;$('#wAmount').hidden=t==='none';$('#wMonths').hidden=$('#wStart').hidden=t!=='standing';showCheck(t==='check');const l=$('#wAmount').firstChild;if(l&&l.nodeType===3)l.textContent=t==='standing'?'סכום חודשי (₪)':'סכום (₪)'};$('#dtype').onchange=dv;dv()}
   /* זיהוי פונה חוזר לפי שם או טלפון */
   bindReturning(rec,p=>{const prev=p.x;FIELDS.forEach(([k])=>{const el=$('#'+k);if(el&&!el.value&&prev[k]&&k!=='request')el.value=prev[k]});if(!decs.some(o=>o.name)&&personSummary(p.recs).deceased.length){decs.splice(0,decs.length,...personSummary(p.recs).deceased.map(o=>({...o})));drawDec()}$('#dupMsg').hidden=true;toast('הפרטים מולאו מהביקורים הקודמים')});
   if($('#scanFile'))$('#scanFile').onchange=e=>{const f=e.target.files[0];if(f)scanForm(f)};
@@ -1300,7 +1338,7 @@ function renderForm(rec,prefill){
   const collect=()=>{const v=id=>($('#'+id)?.value||'').trim();
     const o={...(rec||{}),id:rec?.id||newId(),date:v('date')};FIELDS.forEach(([k])=>o[k]=v(k));
     o.deceased=decs.filter(d=>d.name||d.date).map(({unsure,...r})=>r);o.tags=$$('input[name=tag]:checked').map(i=>i.value);o.status=v('status');o.notes=v('notes');
-    if(S.features.finance){const old=rec?.donation||{};o.donation={...old,type:v('dtype')||'none',amount:$('#damount')?(v('damount')?Number(v('damount')):''):old.amount,months:v('dmonths'),start:v('dstart')}}
+    if(S.features.finance){const old=rec?.donation||{};o.donation={...old,type:v('dtype')||'none',amount:$('#damount')?(v('damount')?Number(v('damount')):''):old.amount,months:v('dmonths'),start:v('dstart'),...(v('dtype')==='check'?checkVals():{})}}
     if(!rec){o.createdAt=Date.now();o.createdBy=ME;if(o.date===todayISO())o.queueNo=Math.max(0,...R.filter(r=>r.date===o.date).map(r=>r.queueNo||0))+1}
     if(x._scanUrl)o.scanUrl=x._scanUrl;else if(x._scanData&&!rec)o.scanUrl=x._scanData;if(prefill&&!rec&&x.review){o.review=true;o.unsure=x.unsure||[]}
     o.email=fixEmail(o.email);
@@ -2025,7 +2063,7 @@ function renderNames(){const from=$('#nf')?.value||'',to=$('#nt')?.value||'',st=
   ${mode==='topic'?`<div class="cols">${groups.map(([t,n])=>`<div class="card"><div class="row"><h3>${esc(t)} (${n.length})</h3><span class="spacer"></span><button class="btn sm" data-cpt="${esc(t)}">העתק</button></div>${col(n)}</div>`).join('')||'<div class="card muted">אין שמות בטווח הזה.</div>'}
     <div class="card"><div class="row"><h3>לעילוי נשמת (${dec.length})</h3><span class="spacer"></span><button class="btn sm gold" id="cp2">העתק</button></div>${col(dec)}</div></div>`
   :`<div class="cols"><div class="card"><h3>שמות לרפואה ולברכה (${pray.length})</h3>${col(pray)}</div><div class="card"><div class="row"><h3>לעילוי נשמת (${dec.length})</h3><span class="spacer"></span><button class="btn sm gold" id="cp2">העתק</button></div>${col(dec)}</div></div>`}
-  <textarea class="code" id="cpBox" hidden style="direction:rtl"></textarea></section>`;
+  ${eventsCard()}<textarea class="code" id="cpBox" hidden style="direction:rtl"></textarea></section>`;bindEvents(list);
   ['#nf','#nt','#ns','#nm','#ntg'].forEach(s=>$(s).onchange=renderNames);
   const txt=()=>mode==='topic'?groups.map(([t,n])=>`${t}:\n${n.join('\n')}`).join('\n\n'):pray.join('\n');
   $('#cp1').onclick=()=>copy(txt(),'השמות הועתקו');$('#cp2').onclick=()=>copy(dec.join('\n'),'השמות הועתקו');
@@ -2097,11 +2135,11 @@ function renderContacts(){let q='',edit=null;const role=r=>r?`<span class="pill 
 const addMonths=(ymS,n)=>{const [y,m]=ymS.split('-').map(Number);const d=new Date(y,m-1+n,1);return ym(d)};
 function standingInfo(r){const d=r.donation||{};if(d.type!=='standing')return null;const start=d.start||(r.date||'').slice(0,7)||ym(new Date());const n=Number(d.months)||0;const end=n?addMonths(start,n-1):'';const cur=ym(new Date());
   const left=end?((+end.slice(0,4))*12+(+end.slice(5,7)))-((+cur.slice(0,4))*12+(+cur.slice(5,7))):null;
-  return {start,end,left,paid:Object.values(r.payments||{}).filter(Boolean).length,paidNow:!!r.payments?.[cur],state:end&&left<0?'ended':end&&left<=1?'ending':'active'}}
+  return {start,end,left,paid:Object.values(r.payments||{}).filter(v=>v===true).length,paidNow:r.payments?.[cur]===true,bounced:Object.entries(r.payments||{}).filter(([m,v])=>v==='x').map(([m])=>m),state:end&&left<0?'ended':end&&left<=1?'ending':'active'}}
 let donorFilt='all';
 function renderDonors(){const all=donorIndex();const F={all:['כל התורמים',()=>true],standing:['הוראת קבע פעילה',d=>d.monthly>0],ending:['הוראת קבע מסתיימת',d=>d.ending],ended:['הוראת קבע שהסתיימה',d=>d.ended],unpaid:['לא נגבה החודש',d=>d.unpaid],once:['חד־פעמי בלבד',d=>!d.st.length]};
   const list=all.filter(F[donorFilt][1]).sort((a,b)=>b.total-a.total);const yr=String(new Date().getFullYear());
-  const yearSum=donRecs().filter(r=>r.donation.type!=='standing'&&(r.date||'').startsWith(yr)).reduce((s,r)=>s+(+r.donation.amount||0),0)+donRecs().filter(r=>r.donation.type==='standing').reduce((s,r)=>s+Object.entries(r.payments||{}).filter(([m,v])=>v&&m.startsWith(yr)).length*(+r.donation.amount||0),0);
+  const yearSum=donRecs().filter(r=>r.donation.type!=='standing'&&(r.date||'').startsWith(yr)).reduce((s,r)=>s+(+r.donation.amount||0),0)+donRecs().filter(r=>r.donation.type==='standing').reduce((s,r)=>s+Object.entries(r.payments||{}).filter(([m,v])=>v===true&&m.startsWith(yr)).length*(+r.donation.amount||0),0);
   $('#main').innerHTML=`<section><div class="row"><h2>תורמים</h2><span class="spacer"></span>${canEdit()?'<button class="btn gold" id="dNew">💰 רישום תרומה</button>':''}<button class="btn" id="dPrint">הדפסה</button><button class="btn" id="dCsv">הורד לאקסל</button></div>
   <div class="stats"><div class="stat"><b>${all.length}</b><span>תורמים</span></div><div class="stat"><b>${money(all.reduce((s,d)=>s+d.monthly,0))||'₪0'}</b><span>הוראות קבע לחודש</span></div>
     <div class="stat"><b>${money(yearSum)||'₪0'}</b><span>נתרם בשנה הלועזית הנוכחית</span></div><div class="stat ${all.some(d=>d.ending)?'alert':''}"><b>${all.filter(d=>d.ending).length}</b><span>הוראות קבע שמסתיימות</span></div>
@@ -2126,7 +2164,7 @@ function renderReport(){const m=$('#rm')?.value||ym(new Date());const list=R.fil
   const cnt=(arr,f)=>{const o={};arr.forEach(x=>{const k=f(x);if(k)o[k]=(o[k]||0)+1});return Object.entries(o).sort((a,b)=>b[1]-a[1])};
   const tags=cnt(list.flatMap(r=>(r.tags||[]).length?r.tags:['בלי נושא']),t=>t),days=cnt(list,r=>r.date).slice(0,5),by=cnt(list,r=>(r.createdBy||'').replace(' (סריקה)','')),st=cnt(list,r=>STATUS[r.status]);
   const tid=R.filter(r=>(r.tiding?.date||'').startsWith(m));const don=donRecs().filter(r=>(r.date||'').startsWith(m)&&r.donation.type!=='standing');
-  const coll=donRecs().filter(r=>r.donation.type==='standing'&&r.payments?.[m]);const finOk=FIN&&canFin()&&S.features.finance;
+  const coll=donRecs().filter(r=>r.donation.type==='standing'&&r.payments?.[m]===true);const finOk=FIN&&canFin()&&S.features.finance;
   const bars=a=>{const mx=Math.max(1,...a.map(x=>x[1]));return `<div class="bars">${a.map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${v/mx*100}%"></i><span class="num">${v}</span></div>`).join('')||'<span class="muted">אין</span>'}</div>`};
   const [y,mo]=m.split('-').map(Number);const title=`דוח חודשי · ${HEB_GREG_M[mo-1]} ${y} (${hebOf(new Date(y,mo-1,1))} – ${hebOf(new Date(y,mo,0))})`;
   $('#main').innerHTML=`<section><div class="row"><h2>דוח חודשי</h2><input type="month" id="rm" value="${m}" class="btn"><span class="spacer"></span><button class="btn" id="rPrint">הדפסה</button><button class="btn" id="rWord">וורד</button></div>
@@ -2188,7 +2226,7 @@ function allDonations(){const out=[];
   EXP.filter(isDonExp).forEach(e=>out.push({src:'exp',o:e,id:e.id,key:e.pkey||('ext:'+(normPhone(e.phone||'')||e.pname||e.id)),name:e.pname||'',phone:e.phone,email:e.email,date:e.date,d:e.don,payments:e.payments||{},person:e.pkey?(personRecs(e.pkey)[0]||null):null}));
   return out}
 async function saveDon(it){if(it.src==='rec'){it.o.donation=it.d;it.o.payments=it.payments;await putRec(it.o,true)}else{it.o.don=it.d;it.o.payments=it.payments;it.o.amount=it.d.type==='standing'?0:(+it.d.amount||0);await putExp(it.o,true)}}
-const expAmt=e=>isDonExp(e)&&e.don.type==='standing'?Object.values(e.payments||{}).filter(Boolean).length*(+e.don.amount||0):(+e.amount||0);
+const expAmt=e=>isDonExp(e)&&e.don.type==='standing'?Object.values(e.payments||{}).filter(v=>v===true).length*(+e.don.amount||0):(+e.amount||0);
 function donationForm(pre={},after){const ov=document.createElement('div');ov.className='modal';const P=pre.key?personRecs(pre.key)[0]:null;
   ov.innerHTML=`<form class="modal-in" id="dnF"><div class="row"><h3 style="margin:0">💰 רישום תרומה</h3><span class="spacer"></span><button type="button" class="btn sm" id="dnX">✕</button></div>
     <p class="muted small" style="margin:0">תרומה שלא קשורה לבקשת ברכה. אם התורם כבר ביקר – בחר אותו מהרשימה, והתרומה תופיע בכרטיס שלו.</p>
@@ -2199,37 +2237,37 @@ function donationForm(pre={},after){const ov=document.createElement('div');ov.cl
       <label class="f">אופן<select id="dnT">${Object.entries(DON).filter(([k])=>k!=='none').map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label>
       <label class="f"><span id="dnAl">סכום (₪)</span><input id="dnA" type="number" min="1" required></label>
       <label class="f" id="dnMw">מספר חודשים<input id="dnM" type="number" min="0" list="monthsL" placeholder="ללא הגבלה"><datalist id="monthsL"><option value="6"><option value="10"><option value="12"><option value="18"><option value="24"><option value="36"></datalist></label><label class="f" id="dnSw">חודש התחלה<input id="dnS" type="month" value="${ym(new Date())}"></label>
-      <div class="small muted wide" id="dnHint"></div><label class="f wide">הערה<input id="dnNote" placeholder="למשל: לזכות רפואת..."></label></div>
+      ${checkFields({})}<div class="small muted wide" id="dnHint"></div><label class="f wide">הערה<input id="dnNote" placeholder="למשל: לזכות רפואת..."></label></div>
     <p class="muted small" style="margin:0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p>
     <div class="row"><button class="btn primary">שמור תרומה</button></div></form>`;
   document.body.appendChild(ov);const close=()=>ov.remove();$('#dnX').onclick=close;
-  const tv=()=>{const st=$('#dnT').value==='standing';$('#dnMw').hidden=$('#dnSw').hidden=!st;$('#dnAl').textContent=T(st?'סכום חודשי (₪)':'סכום (₪)')};$('#dnT').onchange=tv;tv();standingHint('#dnA','#dnM','#dnS','#dnHint');
+  const tv=()=>{const st=$('#dnT').value==='standing';$('#dnMw').hidden=$('#dnSw').hidden=!st;$('#dnAl').textContent=T(st?'סכום חודשי (₪)':'סכום (₪)');showCheck($('#dnT').value==='check')};$('#dnT').onchange=tv;tv();standingHint('#dnA','#dnM','#dnS','#dnHint');
   $('#dnN').onchange=()=>{const p=peopleIndex().find(p=>fullName(p.x)===$('#dnN').value.trim());if(p){if(!$('#dnP').value)$('#dnP').value=p.x.mobile||'';if(!$('#dnE').value)$('#dnE').value=p.x.email||''}};
   $('#dnF').onsubmit=async e=>{e.preventDefault();const name=$('#dnN').value.trim(),p=pre.key&&P&&fullName(P)===name?{key:pre.key}:peopleIndex().find(p=>fullName(p.x)===name);const t=$('#dnT').value,a=Number($('#dnA').value);
     const o={id:newId(),kind:'in',date:$('#dnD').value,amount:t==='standing'?0:a,desc:`תרומה – ${name}${$('#dnNote').value.trim()?' ('+$('#dnNote').value.trim()+')':''}`,by:ME,pkey:p?.key||'',pname:name,phone:$('#dnP').value.trim(),email:fixEmail($('#dnE').value),
-      don:{type:t,amount:a,months:t==='standing'?$('#dnM').value:'',start:t==='standing'?$('#dnS').value:''},payments:{}};
+      don:{type:t,amount:a,months:t==='standing'?$('#dnM').value:'',start:t==='standing'?$('#dnS').value:'',...(t==='check'?checkVals():{})},payments:{}};
     await putExp(o,true);log('תרומה חדשה',name,{type:DON[t]});toast('התרומה נרשמה');close();after&&after()}}
 
 /* החלפת מסך הכספים כך שיכלול גם תרומות עצמאיות */
 function renderMoney(){const all=allDonations();const once=all.filter(x=>x.d.type!=='standing'),st=all.filter(x=>x.d.type==='standing');const sum=a=>a.reduce((s,x)=>s+(Number(x.d.amount)||0),0);
-  const months=[...Array(6)].map((_,i)=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-5+i);return d});const curYM=ym(new Date()),paidNow=st.filter(x=>x.payments?.[curYM]);
+  const months=[...Array(6)].map((_,i)=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-5+i);return d});const curYM=ym(new Date()),paidNow=st.filter(x=>x.payments?.[curYM]===true);
   $('#main').innerHTML=`<section><div class="row"><h2>כספים</h2><span class="spacer"></span>${canEdit()?'<button class="btn gold" id="newDon">💰 רישום תרומה</button>':''}<button class="btn sm" id="lockFin">נעל כספים</button></div>
   <div class="stats"><div class="stat"><b>${money(sum(once))||'₪0'}</b><span>תרומות חד־פעמיות (${once.length})</span></div><div class="stat"><b>${money(sum(once.filter(x=>x.d.type==='cash')))||'₪0'}</b><span>מזומן</span></div>
     <div class="stat"><b>${money(sum(st))||'₪0'}</b><span>הוראות קבע לחודש (${st.length})</span></div><div class="stat ${st.length>paidNow.length?'alert':''}"><b>${paidNow.length}/${st.length}</b><span>נגבו החודש</span></div></div>
-  <h3 style="margin:8px 0">הוראות קבע — סימון גבייה לפי חודש</h3>
+  ${goalBar()}${goalEditor()}<h3 style="margin:8px 0">הוראות קבע — סימון גבייה לפי חודש</h3><p class="muted small" style="margin:0 0 6px">לחיצה על משבצת: ✓ נגבה ← "חזר" (החיוב לא עבר) ← ריק.</p>
   <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>נייד</th><th>חודשי</th><th>חודשים</th>${months.map(m=>`<th>${HEB_GREG_M[m.getMonth()]}</th>`).join('')}<th>נגבה עד כה</th><th>קבלה שנתית</th></tr></thead><tbody>
   ${st.length?st.map((x,i)=>`<tr><td><a href="#" data-i="${i}" data-s="st" class="open">${esc(x.name)}</a>${x.src==='exp'?' <span class="pill tag">ללא בקשה</span>':''}</td><td class="num"><span class="ltr">${esc(x.phone||'')}</span></td><td class="num">${money(x.d.amount)}</td><td class="num">${esc(x.d.months)||'∞'}</td>
-    ${months.map(m=>`<td><input type="checkbox" aria-label="נגבה" data-pay="${i}" data-m="${ym(m)}" ${x.payments?.[ym(m)]?'checked':''}></td>`).join('')}<td class="num">${money(Object.values(x.payments||{}).filter(Boolean).length*(Number(x.d.amount)||0))||'₪0'}</td><td class="row">${[...new Set(Object.keys(x.payments||{}).filter(k=>x.payments[k]).map(k=>k.slice(0,4)))].sort().slice(-2).map(y=>`<button class="btn sm" data-ry="${i}|${y}">🧾 ${y}${x.d.yrc?.[y]?' ✓':''}</button>`).join('')||'<span class="muted small">אין גבייה</span>'}</td></tr>`).join(''):`<tr><td colspan="${6+months.length}" class="empty">אין הוראות קבע</td></tr>`}
+    ${months.map(m=>{const v=x.payments?.[ym(m)];return `<td><button class="pay ${v===true?'ok':v==='x'?'bad':''}" title="לחיצה: נגבה ← חזר ← ריק" data-pay="${i}" data-m="${ym(m)}">${v===true?'✓':v==='x'?'חזר':''}</button></td>`}).join('')}<td class="num">${money(Object.values(x.payments||{}).filter(v=>v===true).length*(Number(x.d.amount)||0))||'₪0'}</td><td class="row">${[...new Set(Object.keys(x.payments||{}).filter(k=>x.payments[k]===true).map(k=>k.slice(0,4)))].sort().slice(-2).map(y=>`<button class="btn sm" data-ry="${i}|${y}">🧾 ${y}${x.d.yrc?.[y]?' ✓':''}</button>`).join('')||'<span class="muted small">אין גבייה</span>'}</td></tr>`).join(''):`<tr><td colspan="${6+months.length}" class="empty">אין הוראות קבע</td></tr>`}
   </tbody></table></div>
   <h3 style="margin:18px 0 8px">תרומות חד־פעמיות</h3>
   <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך</th><th>שם</th><th>אופן</th><th>סכום</th><th>קבלה</th></tr></thead><tbody>
   ${once.length?once.map((x,i)=>[x,i]).sort((a,b)=>(b[0].date||'').localeCompare(a[0].date||'')).map(([x,i])=>`<tr><td>${dual(x.date)}</td><td><a href="#" data-i="${i}" data-s="once" class="open">${esc(x.name)}</a>${x.src==='exp'?' <span class="pill tag">ללא בקשה</span>':''}</td><td><span class="pill tag">${DON[x.d.type]}</span></td><td class="num">${money(x.d.amount)}</td>
     <td>${x.d.rc||x.d.receipt?`<button class="btn sm" data-rc="${i}">🧾 מס׳ ${esc(x.d.rc?.no||x.d.receipt)}${x.d.rc?.cancelled?' (בוטלה)':''}</button>`:`<button class="btn sm gold" data-rc="${i}">🧾 הפק קבלה</button>`}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">אין תרומות</td></tr>'}
-  </tbody></table></div>${receiptsSection()}</section>`;bindReceipts();
+  </tbody></table></div>${checksSection()}${receiptsSection()}</section>`;bindReceipts();bindChecks();bindGoal();
   $('#lockFin').onclick=()=>{FIN=false;ss.del('biala_fin');toast('הכספים ננעלו');go('home')};if($('#newDon'))$('#newDon').onclick=()=>donationForm({},renderMoney);
   const pick=a=>a.dataset.s==='st'?st[+a.dataset.i]:once[+a.dataset.i];
   $$('a.open').forEach(a=>a.onclick=e=>{e.preventDefault();const x=pick(a);if(x.src==='rec')go('view',x.o);else if(x.person)openPerson(x.key);else toast('תרומה ללא כרטיס אדם')});
-  $$('[data-pay]').forEach(c=>c.onchange=async()=>{const x=st[+c.dataset.pay];x.payments={...(x.payments||{}),[c.dataset.m]:c.checked};await saveDon(x);toast(c.checked?'סומן כנגבה':'הסימון הוסר')});
+  $$('[data-pay]').forEach(c=>c.onclick=async()=>{const x=st[+c.dataset.pay],m=c.dataset.m,v=x.payments?.[m];const nv=v===true?'x':v==='x'?false:true;x.payments={...(x.payments||{}),[m]:nv};if(!nv)delete x.payments[m];await saveDon(x);if(nv==='x')log('הוראת קבע חזרה',x.name,{month:m});toast(nv===true?'סומן כנגבה':nv==='x'?'סומן: החיוב חזר':'הסימון הוסר');renderMoney()});
   $$('[data-rc]').forEach(b=>b.onclick=()=>receiptModal(once[+b.dataset.rc]));$$('[data-ry]').forEach(b=>b.onclick=()=>{const [i,y]=b.dataset.ry.split('|');receiptModal(st[+i],y)})}
 
 function donRecs(){return allDonations().map(it=>it.src==='rec'?it.o:{id:it.id,date:it.date,donation:it.d,payments:it.payments,first:it.name,last:'',mobile:it.phone||'',email:it.email||'',_key:it.key,_exp:true})}
@@ -2243,10 +2281,10 @@ function donorIndex(){const g={};donRecs().forEach(r=>{const k=r._exp?r._key:per
 function renderToday(){const t=todayISO(),cur=ym(new Date());
   const q=R.filter(r=>r.date===t).sort((a,b)=>(a.queueNo||999)-(b.queueNo||999)),waiting=q.filter(r=>r.status==='wait');
   const yahr=S.features.yahr?upcomingYahr(2):[];const rev=R.filter(r=>r.review);const tid=S.features.tidings?R.filter(r=>r.tiding&&!r.tiding.sent):[];
-  const fin=FIN&&canFin()&&S.features.finance;const unpaid=fin?allDonations().filter(x=>x.d.type==='standing'&&!x.payments?.[cur]&&(()=>{const n=+x.d.months||0;if(!n)return true;const s=x.d.start||(x.date||'').slice(0,7);return addMonths(s,n-1)>=cur})()):[];
+  const fin=FIN&&canFin()&&S.features.finance;const unpaid=fin?allDonations().filter(x=>x.d.type==='standing'&&x.payments?.[cur]!==true&&(()=>{const n=+x.d.months||0;if(!n)return true;const s=x.d.start||(x.date||'').slice(0,7);return addMonths(s,n-1)>=cur})()):[];
   const ending=fin?donorIndex().filter(d=>d.ending):[];const inbox=INBOX||[];
   const card=(title,n,body,cls='')=>`<div class="card today ${n?cls:'ok'}"><div class="row"><h3>${title}</h3><span class="spacer"></span><span class="pill ${n?'rev':'done'}">${n||'✓'}</span></div>${n?body:'<p class="muted small">אין כרגע 👍</p>'}</div>`;
-  $('#main').innerHTML=`<section><div class="row"><h2>היום שלי</h2><span class="hd">${hebOf(new Date())}</span><span class="spacer"></span>${canEdit()?'<button class="btn primary" id="tdNew">+ בקשה חדשה</button>':''}</div>
+  $('#main').innerHTML=`<section><div class="row"><h2>היום שלי</h2><span class="hd">${hebOf(new Date())}</span><span class="spacer"></span>${canEdit()?'<button class="btn primary" id="tdNew">+ בקשה חדשה</button>':''}</div>${goalBar()}
   <p class="muted">כל מה שצריך לטפל בו היום, במקום אחד. כשהכל מטופל – כל הכרטיסים ירוקים.</p>
   <div class="todaygrid">
   ${S.features.webform&&canEdit()?card('📥 בקשות שהגיעו מהבית',inbox.length,`<p class="small">הציבור מילא את הטופס באתר. צריך לעבור ולקלוט.</p><button class="btn gold" data-go="inbox">לקליטה</button>`,'alert'):''}
@@ -2256,6 +2294,8 @@ function renderToday(){const t=todayISO(),cur=ym(new Date());
   ${S.features.tidings?card('🎉 בשורות שעוד לא נשלחה עליהן ברכה',tid.length,`<table><tbody>${tid.slice(0,8).map(r=>`<tr><td><b>${esc(fullName(r))}</b><div class="small muted">${esc(r.tiding.kind)} · ${dual(r.tiding.date)}</div></td><td class="row">${S.features.messages&&(r.email||r.mobile)?`<button class="btn sm" data-tm="${r.id}">💬 מזל טוב</button>`:''}<button class="btn sm" data-ts="${r.id}">סמן שנשלח</button></td></tr>`).join('')}</tbody></table>`):''}
   ${fin?card('💳 הוראות קבע שלא נגבו החודש',unpaid.length,`<table><tbody>${unpaid.slice(0,10).map(x=>`<tr><td><b>${esc(x.name)}</b></td><td class="num">${money(x.d.amount)}</td></tr>`).join('')}</tbody></table><button class="btn gold" data-go="money">לסימון גבייה</button>`):''}
   ${fin?(()=>{const u=allReceipts().filter(x=>!x.rc.cancelled&&x.rc.s46&&!x.rc.reportNo);return card('🧾 קבלות שעוד לא דווחו לרשות המסים',u.length,`<table><tbody>${u.slice(0,8).map(x=>`<tr><td><b>${esc(x.rc.name)}</b> <span class="small muted">מס׳ ${esc(x.rc.no)}</span></td><td class="num">${money(x.rc.amount)}</td></tr>`).join('')}</tbody></table><button class="btn gold" data-go="money">ליומן הקבלות</button>`)})():''}
+  ${fin?(()=>{const c=allChecks().filter(x=>dueSoon(x));return card('🏦 צ׳קים להפקדה (עד 3 ימים)',c.length,`<table><tbody>${c.slice(0,8).map(x=>`<tr><td><b>${esc(x.it.name)}</b><div class="small muted">${dual(x.due)}</div></td><td class="num">${money(x.it.d.amount)}</td></tr>`).join('')}</tbody></table><button class="btn gold" data-go="money">לרשימת הצ׳קים</button>`)})():''}
+  ${fin?(()=>{const p=ym(new Date(new Date().getFullYear(),new Date().getMonth()-1,1)),c=ym(new Date());const b=allDonations().filter(x=>x.d.type==='standing'&&(x.payments?.[c]==='x'||x.payments?.[p]==='x'));return card('↩ הוראות קבע שחזרו',b.length,`<table><tbody>${b.slice(0,8).map((x,i)=>`<tr><td><b>${esc(x.name)}</b><div class="small muted">${money(x.d.amount)} לחודש</div></td><td>${S.features.messages&&(x.phone||x.email)?`<button class="btn sm" data-bn="${i}">💬 הודעה</button>`:''}</td></tr>`).join('')}</tbody></table>`)})():''}
   ${fin?card('⏳ הוראות קבע שמסתיימות',ending.length,`<table><tbody>${ending.slice(0,8).map(d=>`<tr><td><b>${esc(fullName(d.x))}</b></td><td>${S.features.messages?`<button class="btn sm" data-rn="${esc(d.key)}">💬 תזכורת לחידוש</button>`:''}</td></tr>`).join('')}</tbody></table>`):''}
   </div></section>`;
   if($('#tdNew'))$('#tdNew').onclick=()=>go('new');
@@ -2263,6 +2303,7 @@ function renderToday(){const t=todayISO(),cur=ym(new Date());
   $$('[data-yh]').forEach(b=>b.onclick=()=>{const [id,name,date]=b.dataset.yh.split('|');const x=byId(id);compose({name:fullName(x),email:x.email,phone:x.mobile},{...x,deceased:[{name,date}]},'yahr')});
   $$('[data-tm]').forEach(b=>b.onclick=()=>{const x=byId(b.dataset.tm);compose({name:fullName(x),email:x.email,phone:x.mobile},x,'tiding')});
   $$('[data-ts]').forEach(b=>b.onclick=async()=>{const x=byId(b.dataset.ts);x.tiding={...x.tiding,sent:Date.now()};await putRec(x,true);renderToday()});
+  {const p=ym(new Date(new Date().getFullYear(),new Date().getMonth()-1,1)),c=ym(new Date());const bl=allDonations().filter(x=>x.d.type==='standing'&&(x.payments?.[c]==='x'||x.payments?.[p]==='x'));$$('[data-bn]').forEach(b=>b.onclick=()=>{const x=bl[+b.dataset.bn];const P=x.person||{};compose({name:x.name,email:P.email||x.email,phone:P.mobile||x.phone},{...P,first:x.name,last:'',donation:x.d},'bounced')})}
   $$('[data-rn]').forEach(b=>b.onclick=()=>{const d=donorIndex().find(o=>o.key===b.dataset.rn);const r=d.v[0];compose({name:fullName(d.x),email:d.x.email,phone:d.x.mobile},{...d.x,donation:r.donation},'remind')})}
 
 /* ---------- טופס בקשה מהבית (לציבור) ---------- */
@@ -2340,7 +2381,7 @@ function allReceipts(){const out=[];allDonations().forEach(it=>{const d=it.d;
   if(d.rc)out.push({it,rc:d.rc,year:null});else if(d.receipt&&d.type!=='standing')out.push({it,rc:{no:d.receipt,date:it.date,amount:+d.amount||0,old:true},year:null});
   Object.entries(d.yrc||{}).forEach(([y,rc])=>out.push({it,rc,year:y}))});
   return out.sort((a,b)=>(+b.rc.no||0)-(+a.rc.no||0))}
-function standingYear(it,y){const m=Object.entries(it.payments||{}).filter(([k,v])=>v&&k.startsWith(y)).map(([k])=>k).sort();return {months:m,amount:m.length*(+it.d.amount||0)}}
+function standingYear(it,y){const m=Object.entries(it.payments||{}).filter(([k,v])=>v===true&&k.startsWith(y)).map(([k])=>k).sort();return {months:m,amount:m.length*(+it.d.amount||0)}}
 function receiptHTML(r){const o=ORG();const big=s=>`<span style="font-size:15pt"><b>${s}</b></span>`;
   return `<div style="border:2px solid #000;padding:18px 22px">
   <div style="text-align:center;line-height:1.35"><div style="text-align:left;font-size:10pt">בס״ד</div>
@@ -2363,6 +2404,7 @@ function receiptHTML(r){const o=ORG();const big=s=>`<span style="font-size:15pt"
 function receiptModal(it,year){const o=ORG(),st=it.d.type==='standing';const P=it.person||{};
   const old=st?(it.d.yrc||{})[year]:it.d.rc||(it.d.receipt?{no:it.d.receipt}:null);const sy=st?standingYear(it,year):null;
   const amt=old?.amount??(st?sy.amount:+it.d.amount||0);
+  const SEND=receiptSendBar(()=>build(),()=>({email:P.email||it.email,phone:P.mobile||it.phone}));
   const ov=document.createElement('div');ov.className='modal';
   ov.innerHTML=`<form class="modal-in" id="rcF"><div class="row"><h3 style="margin:0">🧾 ${old?'קבלה מס׳ '+esc(old.no):'הפקת קבלה'}${st?' – שנת '+year:''}</h3><span class="spacer"></span><button type="button" class="btn sm" id="rcX">✕</button></div>
     ${!o.name||!o.num?`<div class="notice warn">חסרים פרטי העמותה (שם ומספר עמותה). ממלאים אותם בלשונית "ניהול" ← "פרטי העמותה וקבלות".</div>`:''}
@@ -2379,14 +2421,14 @@ function receiptModal(it,year){const o=ORG(),st=it.d.type==='standing';const P=i
     <label class="chk"><input type="checkbox" id="rc46" ${s46Valid()&&(old?old.s46!==false:true)?'checked':''} ${s46Valid()?'':'disabled'}> לכלול בקבלה את שורת סעיף 46</label>
     <div class="notice info small">מאז 1.1.2026 כל תרומה שמקבלת קבלה לפי סעיף 46 צריכה להיות מדווחת במערכת "תרומות ישראל" של רשות המסים, ומספר הדיווח צריך להופיע על הקבלה. לכן: מדווחים שם (צריך את מספר הזהות של התורם), מעתיקים לכאן את מספר הדיווח, ורק אז מדפיסים ושולחים.</div>
     <div class="row" style="flex-wrap:wrap"><button class="btn primary">${old?'שמור והדפס':'הפק קבלה והדפס'}</button>${old?'<button type="button" class="btn" id="rcCopy">הדפס העתק</button>':''}
-      ${old&&S.features.messages?'<button type="button" class="btn" id="rcMail">💬 שלח לתורם</button>':''}${old&&!old.cancelled?'<button type="button" class="btn danger" id="rcCancel">ביטול קבלה</button>':''}</div></form>`;
-  document.body.appendChild(ov);const close=()=>ov.remove();$('#rcX').onclick=close;
+${old&&!old.cancelled?'<button type="button" class="btn danger" id="rcCancel">ביטול קבלה</button>':''}</div>${old?SEND.html:'<p class="small muted" style="margin:0">אחרי ההפקה יופיעו כאן כפתורי שליחה לתורם: מייל, וואטסאפ ותמונה.</p>'}</form>`;
+  document.body.appendChild(ov);const close=()=>ov.remove();$('#rcX').onclick=close;if(old)SEND.bind();
   const build=()=>({no:old?.no,date:$('#rcD').value,name:$('#rcN').value.trim(),idNo:$('#rcI').value.trim(),address:$('#rcA').value.trim(),amount:Number($('#rcS').value),method:$('#rcM').value.trim(),detail:$('#rcDet').value.trim(),reportNo:$('#rcR').value.trim(),s46:$('#rc46').checked,cancelled:old?.cancelled||false,by:old?.by||ME,at:old?.at||Date.now(),...(st?{months:sy.months}:{})});
   const store=async rc=>{const d={...it.d,donorId:rc.idNo||it.d.donorId||''};if(st)d.yrc={...(d.yrc||{}),[year]:rc};else{d.rc=rc;d.receipt=rc.no}it.d=d;await saveDon(it)};
   const print=(rc,copy)=>saveDoc('קבלה '+rc.no,`<div>${receiptHTML({...rc,copy})}</div>`,'print');
   $('#rcF').onsubmit=async e=>{e.preventDefault();const rc=build();if(!rc.no){S.nextReceipt=Math.max(+S.nextReceipt||0,+(ORG().firstNo||1000)-1)+1;rc.no=String(S.nextReceipt);await putS()}
     if(rc.s46&&!rc.idNo&&!confirm(T('לא נרשם מספר זהות של התורם. בלי זה התורם לא יוכל לקבל זיכוי ממס. להמשיך בכל זאת?')))return;
-    await store(rc);log(old?'עדכון קבלה':'הפקת קבלה',rc.name,{no:rc.no});print(rc,false);close();refreshFin()};
+    await store(rc);log(old?'עדכון קבלה':'הפקת קבלה',rc.name,{no:rc.no});print(rc,false);close();refreshFin();if(!old)receiptModal(it,year)};
   if($('#rcCopy'))$('#rcCopy').onclick=()=>print(build(),true);
   if($('#rcMail'))$('#rcMail').onclick=()=>{const rc=build();compose({name:rc.name,email:P.email||it.email,phone:P.mobile||it.phone},{...P,first:rc.name,last:'',donation:{...it.d,amount:rc.amount,receipt:rc.no}},'receipt')};
   if($('#rcCancel'))$('#rcCancel').onclick=async()=>{if(!confirm(T('לבטל את הקבלה? המספר נשאר שמור ומסומן "בוטלה". אם הקבלה דווחה לרשות המסים – צריך לבטל אותה גם שם.')))return;const rc={...build(),cancelled:true};await store(rc);log('ביטול קבלה',rc.name,{no:rc.no});toast('הקבלה סומנה כמבוטלת');close();refreshFin()}}
@@ -2413,6 +2455,71 @@ function bindOrg(){if(!$('#oSave'))return;$('#oSave').onclick=async()=>{S.org={n
 function standingHint(aSel,mSel,sSel,outSel){const f=()=>{const a=+($(aSel)?.value||0),m=+($(mSel)?.value||0),s=$(sSel)?.value||ym(new Date()),o=$(outSel);if(!o)return;
   o.textContent=a&&m?T('סה״כ התחייבות')+': '+money(a*m)+' · '+T('חודש אחרון')+': '+HEB_GREG_M[+addMonths(s,m-1).slice(5)-1]+' '+addMonths(s,m-1).slice(0,4):a?T('ללא הגבלת חודשים – עד שמבטלים'):''};
   [aSel,mSel,sSel].forEach(s=>{const e=$(s);if(e)e.addEventListener('input',f)});f()}
+
+/* =====================================================================
+   תוספות 4: שליחת קבלה (מייל/וואטסאפ/תמונה), צ׳קים, יעד גבייה, הוראות קבע שחזרו, רשימות לאירוע
+   ===================================================================== */
+const isPaid=v=>v===true;
+MSG_TPL.bounced=['הוראת קבע שלא עברה',`שלום {שם},\n\nרצינו לעדכן שהחיוב החודשי של הוראת הקבע שלך למרכז חסידי ביאלא ({סכום}) לא עבר החודש.\nנשמח אם תבדוק מול הבנק או תיצור איתנו קשר כדי להסדיר.\n\nבברכה ובתודה,\nמרכז חסידי ביאלא בני ברק`];
+FIN_TPL.push('bounced');
+
+/* ---------- שליחת קבלה ---------- */
+function receiptText(rc){const o=ORG();return `שלום ${rc.name},\n\nתודה רבה על תרומתך ל${o.name||'מרכז חסידי ביאלא בני ברק'}.\n\nקבלה על תרומה מס׳ ${rc.no}\nתאריך: ${heb(rc.date)} (${greg(rc.date)})\nסכום: ${money(rc.amount)}\nאופן התשלום: ${rc.method||''}${rc.idNo?`\nמספר זהות / ח״פ: ${rc.idNo}`:''}${rc.s46&&o.s46Until?`\nהתרומה מוכרת לזיכוי ממס לפי סעיף 46 (האישור בתוקף עד ${greg(o.s46Until)}).`:''}${rc.reportNo?`\nהתרומה דווחה לרשות המסים – מספר דיווח: ${rc.reportNo}`:''}${rc.cancelled?'\n\n*** קבלה זו בוטלה ***':''}\n\nבברכה,\n${o.signer||'הגזבר'}\n${o.name||'מרכז חסידי ביאלא בני ברק'}`}
+let _h2c=null;const loadH2C=()=>_h2c||(_h2c=new Promise((ok,no)=>{if(window.html2canvas)return ok();const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=ok;s.onerror=()=>{_h2c=null;no(new Error('load'))};document.head.appendChild(s)}));
+async function receiptImage(rc){await loadH2C();const w=document.createElement('div');w.style.cssText='position:fixed;top:0;left:-3000px;width:720px;background:#fff;color:#000;padding:20px;direction:rtl;font-family:David,"Frank Ruhl Libre","Times New Roman",serif;font-size:13pt;line-height:1.5';
+  w.innerHTML=receiptHTML(rc);document.body.appendChild(w);try{const c=await html2canvas(w,{scale:2,backgroundColor:'#ffffff'});return await new Promise(r=>c.toBlob(r,'image/png'))}finally{w.remove()}}
+function receiptSendBar(getRc,to){return {html:`<div class="row" style="flex-wrap:wrap;margin-top:6px"><b class="small">שליחה לתורם:</b>
+    <button type="button" class="btn sm" id="rsMail">📧 מייל</button><button type="button" class="btn sm" id="rsWa">וואטסאפ</button><button type="button" class="btn sm" id="rsImg">⬇ הורד כתמונה</button><button type="button" class="btn sm" id="rsCp">העתק נוסח</button></div><div id="rsMsg" class="small muted"></div>`,
+  bind:()=>{const m=t=>$('#rsMsg').textContent=T(t);
+    $('#rsMail').onclick=async()=>{const rc=getRc();const e=fixEmail(to().email||'');if(!e)return m('אין כתובת מייל לתורם. אפשר להוסיף בכרטיס האדם, או להוריד כתמונה ולשלוח ידנית.');const subj=`קבלה על תרומה מס׳ ${rc.no} – ${ORG().name||'מרכז חסידי ביאלא'}`;
+      if(S.emailjs?.service&&S.emailjs?.template&&S.emailjs?.key){m('שולח…');try{const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:S.emailjs.service,template_id:S.emailjs.template,user_id:S.emailjs.key,template_params:{to_email:e,to_name:rc.name,subject:subj,message:receiptText(rc),message_html:receiptHTML(rc)}})});
+        if(!r.ok)throw new Error(await r.text());log('שליחת קבלה',rc.name,{no:rc.no,channel:'emailjs'});m('הקבלה נשלחה במייל ✓')}catch(x){m('השליחה נכשלה: '+String(x.message||x).slice(0,100))}}
+      else{location.href=`mailto:${encodeURIComponent(e)}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(receiptText(rc))}`;log('שליחת קבלה',rc.name,{no:rc.no,channel:'mail'})}};
+    $('#rsWa').onclick=()=>{const rc=getRc();const p=intlPhone(to().phone||'');if(p.length<10)return m('אין מספר נייד לתורם');window.open(`https://wa.me/${p}?text=${encodeURIComponent(receiptText(rc))}`,'_blank');log('שליחת קבלה',rc.name,{no:rc.no,channel:'whatsapp'});m('נפתח וואטסאפ עם נוסח הקבלה. אם רוצים לצרף גם את הקבלה עצמה – "הורד כתמונה" וגוררים לשיחה.')};
+    $('#rsImg').onclick=async()=>{const rc=getRc();m('מכין תמונה…');try{const b=await receiptImage(rc);downloadBlob(`קבלה-${rc.no}.png`,b);m('התמונה ירדה לתיקיית ההורדות')}catch(x){m('לא הצליח להכין תמונה. אפשר "הדפסה" ← "שמור כ־PDF".')}};
+    $('#rsCp').onclick=()=>copy(receiptText(getRc()),'הנוסח הועתק')}}}
+
+/* ---------- צ׳קים ---------- */
+const CHK_ST={wait:'ממתין להפקדה',dep:'הופקד',bounced:'חזר'};
+function allChecks(){return allDonations().filter(it=>it.d.type==='check').map(it=>({it,due:it.d.checkDue||it.date||'',st:it.d.checkState||'wait'})).sort((a,b)=>a.due.localeCompare(b.due))}
+const dueSoon=(c,days=3)=>c.st==='wait'&&c.due&&c.due<=new Date(Date.now()+days*864e5).toISOString().slice(0,10);
+function checksSection(){const L=allChecks();if(!L.length)return '';const soon=L.filter(c=>dueSoon(c)).length;
+  return `<h3 style="margin:18px 0 8px">צ׳קים (${L.length})${soon?` <span class="pill rev">${soon} להפקדה עכשיו</span>`:''}</h3>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך פירעון</th><th>שם</th><th>סכום</th><th>מס׳ צ׳ק / בנק</th><th>מצב</th><th></th></tr></thead><tbody>
+  ${L.map((c,i)=>`<tr ${dueSoon(c)?'style="background:var(--hl,#fff3d6)"':''}><td>${dual(c.due)}</td><td>${esc(c.it.name)}</td><td class="num">${money(c.it.d.amount)}</td><td class="small">${esc([c.it.d.checkNo,c.it.d.checkBank].filter(Boolean).join(' · '))}</td>
+    <td><span class="pill ${c.st==='dep'?'done':c.st==='bounced'?'rev':'wait'}">${CHK_ST[c.st]}</span></td>
+    <td class="row">${c.st!=='dep'?`<button class="btn sm" data-ck="${i}|dep">הופקד ✓</button>`:''}${c.st!=='bounced'?`<button class="btn sm" data-ck="${i}|bounced">חזר</button>`:''}${c.st!=='wait'?`<button class="btn sm" data-ck="${i}|wait">החזר לממתין</button>`:''}</td></tr>`).join('')}</tbody></table></div>`}
+function bindChecks(){const L=allChecks();$$('[data-ck]').forEach(b=>b.onclick=async()=>{const [i,s]=b.dataset.ck.split('|');const c=L[+i];c.it.d={...c.it.d,checkState:s};await saveDon(c.it);log('צ׳ק – '+CHK_ST[s],c.it.name);refreshFin()})}
+const checkFields=d=>`<label class="f" id="wChk1">תאריך פירעון הצ׳ק<input id="ckDue" type="date" value="${esc(d.checkDue||'')}"></label><label class="f" id="wChk2">מס׳ צ׳ק<input id="ckNo" dir="ltr" maxlength="12" value="${esc(d.checkNo||'')}"></label><label class="f" id="wChk3">בנק / סניף<input id="ckBank" maxlength="40" value="${esc(d.checkBank||'')}"></label>`;
+const checkVals=()=>$('#ckDue')?{checkDue:$('#ckDue').value,checkNo:$('#ckNo').value.trim(),checkBank:$('#ckBank').value.trim()}:{};
+const showCheck=on=>['#wChk1','#wChk2','#wChk3'].forEach(s=>{const e=$(s);if(e)e.hidden=!on});
+
+/* ---------- יעד גבייה ---------- */
+function monthCollected(m=ym(new Date())){return allDonations().reduce((s,it)=>{if(it.d.type==='standing')return s+(isPaid(it.payments?.[m])?+it.d.amount||0:0);
+  if(it.d.type==='check'){if(it.d.checkState==='bounced')return s;return s+(((it.d.checkDue||it.date||'').startsWith(m))?+it.d.amount||0:0)}
+  return s+((it.date||'').startsWith(m)?+it.d.amount||0:0)},0)}
+function goalBar(){if(!(S.features.finance&&FIN&&canFin()&&+S.goal))return '';const g=+S.goal,c=monthCollected(),p=Math.min(100,Math.round(c/g*100));
+  return `<div class="card goal"><div class="row"><b>🎯 יעד הגבייה ל${HEB_GREG_M[new Date().getMonth()]}</b><span class="spacer"></span><span class="num">${money(c)||'₪0'} מתוך ${money(g)} · ${p}%</span></div>
+  <div class="gbar"><i style="width:${p}%"></i></div>${p>=100?'<div class="small" style="color:var(--ok)">היעד הושג! 🎉</div>':`<div class="small muted">חסר עוד ${money(g-c)}</div>`}</div>`}
+function goalEditor(){return `<div class="row small" style="margin:6px 0"><label class="row">יעד גבייה חודשי (₪) <input id="goalIn" type="number" min="0" style="width:120px" value="${esc(S.goal||'')}"></label><button class="btn sm" id="goalSave">שמור יעד</button></div>`}
+function bindGoal(){if($('#goalSave'))$('#goalSave').onclick=async()=>{S.goal=+$('#goalIn').value||0;await putS('יעד גבייה חודשי');toast('היעד נשמר');renderMoney()}}
+
+/* ---------- רשימות שמות לאירוע / ימי זיכרון בחודש עברי ---------- */
+const HM_ORDER=['Tishri','Heshvan','Kislev','Tevet','Shevat','Adar','Adar I','Adar II','Nisan','Iyar','Sivan','Tamuz','Av','Elul'];
+const EVENTS=['ערב ראש השנה','יום הכיפורים','הושענא רבה','חנוכה','ט״ו בשבט','פורים','ערב פסח','ל״ג בעומר','שבועות','יום הילולא','תפילה מיוחדת'];
+function yahrInMonth(mk){const out=[];R.forEach(x=>(x.deceased||[]).forEach(d=>{const dm=hebDayMonth(d.date);if(dm&&monthMatch(dm.m,mk))out.push({...d,day:dm.day,by:x})}));
+  const seen=new Set();return out.filter(o=>{const k=o.name+'|'+o.day;if(seen.has(k))return false;seen.add(k);return true}).sort((a,b)=>a.day-b.day)}
+function docYahrMonth(mk){const L=yahrInMonth(mk);return `${docHead('ימי זיכרון בחודש '+HM[mk])}<table><tr><th>יום</th><th>לעילוי נשמת</th><th>קירבה</th><th>משפחת</th><th>טלפון</th></tr>${L.map(o=>`<tr><td>${gem(o.day)} ${esc(HM[mk])}</td><td><b>${esc(o.name)}</b></td><td>${esc(o.rel||'')}</td><td>${esc(fullName(o.by))}</td><td>${esc(o.by.mobile||o.by.homePhone||'')}</td></tr>`).join('')||'<tr><td colspan="5">אין ימי זיכרון בחודש הזה</td></tr>'}</table>`}
+function eventsCard(){const cur=hparts(new Date());
+  return `<div class="card" style="margin-top:12px"><h3>רשימות מיוחדות</h3><div class="grid">
+    <div><label class="f">🕯 ימי זיכרון בחודש עברי<select id="ymM">${HM_ORDER.map(k=>`<option value="${k}" ${k===cur?.month?'selected':''}>${HM[k]}</option>`).join('')}</select></label>
+      <div class="row" style="margin-top:6px"><button class="btn sm gold" id="ymP">הדפסה</button><button class="btn sm" id="ymW">וורד</button><span class="small muted" id="ymC"></span></div></div>
+    <div><label class="f">📜 רשימה לאירוע (לפי הסינון למעלה)<input id="evT" list="evL" placeholder="למשל: ערב ראש השנה"><datalist id="evL">${EVENTS.map(e=>`<option value="${e}">`).join('')}</datalist></label>
+      <div class="row" style="margin-top:6px"><button class="btn sm gold" id="evP">הדפסה</button><button class="btn sm" id="evW">וורד</button></div></div></div></div>`}
+function bindEvents(list){if(!$('#ymM'))return;const cnt=()=>{$('#ymC').textContent=yahrInMonth($('#ymM').value).length+' '+T('שמות')};$('#ymM').onchange=cnt;cnt();
+  $('#ymP').onclick=()=>saveDoc('ימי זיכרון '+HM[$('#ymM').value],docYahrMonth($('#ymM').value),'print');$('#ymW').onclick=()=>saveDoc('ימי זיכרון '+HM[$('#ymM').value],docYahrMonth($('#ymM').value),'word');
+  const t=()=>'רשימת שמות לתפילה'+($('#evT').value.trim()?' – '+$('#evT').value.trim():'');
+  $('#evP').onclick=()=>saveDoc(t(),docNamesTopic(list,t()),'print');$('#evW').onclick=()=>saveDoc(t(),docNamesTopic(list,t()),'word')}
 
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
 </script>
