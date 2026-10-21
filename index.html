@@ -198,6 +198,10 @@ dd.unsure{color:var(--warn);font-weight:700}
 html[dir=ltr] body{direction:ltr}
 html[dir=ltr] th,html[dir=ltr] td,html[dir=ltr] .doclist button{text-align:left}
 html[lang=en] label.f.unsure::after{content:"To review — unclear handwriting"}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1f1f1f;border:1px solid #dadce0;border-radius:10px;padding:11px 14px;font-weight:700;font-size:1.05rem;cursor:pointer}
+.gbtn:hover{background:#f3f3f3}.or{color:#d9c39b;font-size:.85rem;text-align:center}
+.pending{background:#fff6e5;color:#4a2410;border-radius:10px;padding:12px;display:grid;gap:8px;text-align:center}.pending.bad{background:#ffe3df}
+#usersIn select,#usersIn input:not([type=checkbox]){background:var(--field);border:1px solid var(--line);border-radius:8px;padding:6px 8px;color:var(--ink)}
 #toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--wood);color:#fbefd6;padding:10px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:20;max-width:90vw}
 textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-size:.8rem;direction:ltr;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px}
@@ -215,11 +219,13 @@ textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;fon
     <img src="crest.webp" alt="כתר ביאלה">
     <h1>מערכת קבלת קהל</h1>
     <p>מרכז חסידי ביאלא בני ברק</p>
-    <div id="emailWrap" hidden style="display:grid"><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"></div>
+    <button type="button" class="gbtn" id="gLogin" hidden><svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span>כניסה עם Google</span></button>
+    <div id="emailWrap" hidden style="display:grid;gap:8px"><div class="or">או עם מייל וסיסמה</div><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"></div>
     <input id="pw" type="password" placeholder="סיסמת כניסה" aria-label="סיסמה" autocomplete="current-password">
     <select id="gabbaiSel" aria-label="מי נכנס"></select>
     <button class="btn gold" type="submit">כניסה</button>
     <div class="err" id="loginErr"></div>
+    <div id="pendingBox" hidden class="pending"></div>
   </form>
 </div>
 
@@ -360,6 +366,33 @@ const I18N={
 'קובץ הגיבוי ירד לתיקיית ההורדות':'The backup file was downloaded to your Downloads folder','הטבלה ירדה. פתח אותה באקסל':'The table was downloaded. Open it in Excel','הטבלה הועתקה, הדבק באקסל':'The table was copied, paste it in Excel',
 'הקובץ אינו קובץ גיבוי תקין':'The file is not a valid backup file','הטקסט שהודבק אינו גיבוי תקין':'The pasted text is not a valid backup','סמן והעתק מהתיבה (Ctrl+C)':'Select and copy from the box (Ctrl+C)',
 'השמירה במחשב נכשלה':'Saving on the computer failed',
+'כניסה עם Google':'Sign in with Google','או עם מייל וסיסמה':'or with email and password','עובר לגוגל...':'Going to Google...','יציאה מהחשבון':'Sign out of the account',
+'הכניסה עם Google לא הופעלה עדיין בשרת. מנהל המערכת צריך להפעיל אותה ב־Supabase.':'Google sign-in is not enabled on the server yet. The system manager needs to enable it in Supabase.',
+'אין חיבור לרשימת המשתמשים בשרת. ודא שקוד ההקמה הורץ ב־Supabase.':'No connection to the users list on the server. Make sure the setup code was run in Supabase.',
+'המשתמש שלך חסום. פנה למנהל המערכת.':'Your user is blocked. Contact the system manager.','בחר את השם שלך מהרשימה':'Choose your name from the list','הסיסמה האישית שלך':'Your personal password',
+'הסיסמה שגויה. אם שכחת — מנהל המערכת יכול לאפס לך סיסמה בלשונית "ניהול".':'Wrong password. If you forgot it, the system manager can reset it in the "Management" tab.',
+'יש לך הרשאת צפייה בלבד':'You have view-only permission','מנהל':'Manager','גבאי + כספים':'Gabbai + finances','צפייה בלבד':'View only',
+'אין לך הרשאה לאזור הזה. מנהל המערכת יכול לשנות את ההרשאה שלך בלשונית "ניהול" ← "משתמשים והרשאות".':'You do not have permission for this area. The system manager can change your permission in "Management" → "Users & permissions".',
+'משתמשים והרשאות':'Users & permissions','יומן פעולות':'Activity log','גבאים (בלי סיסמה אישית)':'Gabbaim (without a personal password)',
+'שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה. עדיף להוסיף משתמשים עם סיסמה אישית למעלה, כדי שיהיה ידוע מי עשה מה.':'One name per line. The names appear on the sign-in screen. It is better to add users with a personal password above, so it is known who did what.',
+'מנהל — הכל, כולל משתמשים ויומן. גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.':'Manager — everything, including users and the log. Gabbai + finances — also finances and the cash box. Gabbai — receiving, editing, scanning and printing. View only — sees but does not change.',
+'עדיין אין משתמשים, ולכן כולם נכנסים עם סיסמה משותפת אחת. הוסף משתמשים עם סיסמה אישית, כדי שיהיה ידוע מי נכנס ומה עשה.':'There are no users yet, so everyone signs in with one shared password. Add users with a personal password, so it is known who signed in and what they did.',
+'המשתמש הראשון שתוסיף יהיה מנהל.':'The first user you add will be the manager.','הרשאה':'Permission','מצב':'Status','כניסה אחרונה':'Last sign-in','עוד לא נכנס':'Not signed in yet','פעיל':'Active','חסום':'Blocked','בטל חסימה':'Unblock',
+'איפוס סיסמה':'Reset password','(אתה)':'(you)','סיסמה אישית':'Personal password','הוסף משתמש':'Add user','הוסף ואשר':'Add & approve','אשר כניסה':'Approve','דחה':'Reject','להסיר?':'Remove?','כן':'Yes','לא':'No',
+'הוספת משתמש — כתובת Gmail':'Add user — Gmail address','ממתינים לאישור':'waiting for approval','— נכנסו עם Google וביקשו גישה:':'— signed in with Google and asked for access:',
+'מי שתוסיף כאן יוכל להיכנס מיד עם חשבון ה־Google שלו. מי שלא ברשימה — לא יראה כלום, ורק תופיע כאן בקשה שלו לאישור.':'Anyone you add here can sign in right away with their Google account. Anyone not on the list sees nothing; only their request for approval appears here.',
+'המשתמש אושר ויכול להיכנס':'The user was approved and can sign in','הבקשה נדחתה':'The request was rejected','החסימה בוטלה':'Unblocked','המשתמש נחסם':'The user was blocked','המשתמש הוסר':'The user was removed',
+'ההרשאה עודכנה':'Permission updated','השם עודכן':'Name updated','המשתמש נוסף ויכול להיכנס עם Google':'The user was added and can sign in with Google','המשתמש נוסף':'The user was added',
+'נוסף. מעכשיו נכנסים עם שם וסיסמה אישית':'Added. From now on, sign in with a name and personal password','כבר יש משתמש בשם הזה':'There is already a user with this name','חייב להישאר לפחות מנהל אחד':'At least one manager must remain','הסיסמה אופסה':'Password reset',
+'כל כניסה, קליטה, עריכה, מחיקה, צפייה, הדפסה ופתיחת כספים נרשמת כאן עם השם והשעה. אי אפשר למחוק או לשנות את היומן.':'Every sign-in, new request, edit, deletion, view, print and opening of finances is recorded here with the name and time. The log cannot be deleted or changed.',
+'הורד לאקסל':'Download to Excel','רענן':'Refresh','כל המשתמשים':'All users','כל הפעולות':'All actions','מתי':'When','מי':'Who','פעולה':'Action','על מה':'On what','נכנסו היום':'Signed in today','פעולות היום':'Actions today',
+'בקשות שנקלטו היום':'Requests received today','ניסיונות כושלים היום':'Failed attempts today','אין פעולות לפי הסינון':'No actions match the filter',
+'כניסה למערכת':'Signed in','יציאה מהמערכת':'Signed out','בקשה חדשה':'New request','עריכת בקשה':'Edited request','שינוי סטטוס':'Status change','מחיקת בקשה':'Deleted request','צפייה בבקשה':'Viewed request',
+'הדפסה':'Print','הורדה לוורד':'Downloaded to Word','פתיחת אזור הכספים':'Opened finances','פתיחת אזור הניהול':'Opened management','סיסמת כספים שגויה':'Wrong finance password','סיסמת ניהול שגויה':'Wrong management password',
+'ניסיון כניסה שנכשל':'Failed sign-in attempt','רישום בקופה':'Cash box entry','מחיקה מהקופה':'Deleted cash box entry','שינוי הגדרות':'Settings change','הוספת משתמש':'Added user','הסרת משתמש':'Removed user','אישור משתמש':'Approved user',
+'דחיית בקשת כניסה':'Rejected access request','חסימת משתמש':'Blocked user','ביטול חסימה':'Unblocked user','שינוי הרשאה':'Changed permission','שינוי שם משתמש':'Changed user name','הורדת קובץ גיבוי':'Downloaded backup','הורדת טבלה לאקסל':'Downloaded Excel table','הורדת יומן הפעולות':'Downloaded the activity log','שחזור מגיבוי':'Restored from backup','העלאת נתונים לשרת':'Uploaded data to the server',
+'איך מפעילים כניסה עם Google?':'How do I enable Google sign-in?','כתובת ה־Gmail של המנהל הראשי (נכנסת לקוד ההקמה)':'Head manager Gmail address (goes into the setup code)','כתוב קודם את כתובת ה־Gmail של המנהל':'First write the manager Gmail address',
+'כל הגבאים רואים את אותם נתונים. כל אחד נכנס עם חשבון Google משלו, ורק מי שאישרת ברשימת המשתמשים יכול להיכנס.':'All gabbaim see the same data. Each signs in with their own Google account, and only people you approved in the users list can get in.',
 'הנתונים במחשב הזה בלבד.':'The data is on this computer only.','חובה להוריד קובץ גיבוי פעם בשבוע ולשמור אותו בדיסק נוסף או במייל של החברה.':'Download a backup file every week and keep it on another drive or in the company email.',
 'הנתונים שמורים בשרת.':'The data is saved on the server.','בכל זאת מומלץ להוריד קובץ גיבוי פעם בשבוע.':'It is still recommended to download a backup file every week.',
 'הסריקה קוראת את כתב היד בעזרת Gemini של גוגל.':'Scanning reads the handwriting with Google Gemini.','צריך מפתח פעם אחת: נכנסים ל־aistudio.google.com/apikey, לוחצים "Create API key" ומעתיקים לכאן.':'You need a key once: go to aistudio.google.com/apikey, click "Create API key" and copy it here.'
@@ -383,7 +416,11 @@ const I18N_RX=[
 [/^(\d+) תרומות רשומות\. הסכומים בסיסמת כספים\.$/,'$1 donations recorded. The amounts are behind the finance password.'],
 [/^נשמר\. (\d+) שדות לבדיקה$/,'Saved. $1 fields to review'],
 [/^הטופס נקרא\. (\d+) שדות מסומנים בכתום לבדיקה\.$/,'The form was read. $1 fields are marked orange for review.'],
-[/^שוחזרו (\d+) בקשות$/,'Restored $1 requests'],[/^הועלו (\d+) בקשות לשרת$/,'Uploaded $1 requests to the server'],
+[/^שוחזרו (\d+) בקשות$/,'Restored $1 requests'],
+[/^נרשמת כ־(.+)\. הבקשה נשלחה למנהל המערכת, ותוכל להיכנס אחרי שיאשר אותך\.$/,'You registered as $1. The request was sent to the system manager, and you can sign in after approval.'],
+[/^החשבון (.+) עדיין ממתין לאישור מנהל המערכת\.$/,'The account $1 is still waiting for the system manager\'s approval.'],
+[/^(\d+) ממתינים לאישור$/,'$1 waiting for approval'],[/^מוצגות (\d+) מתוך (\d+) פעולות$/,'Showing $1 of $2 actions'],[/^סיסמה חדשה ל־(.+)$/,'New password for $1'],
+[/^מחובר: (.+)$/,(m,a)=>'Signed in: '+a],[/^לא ניתן לטעון (.+)$/,'Could not load $1'],[/^השינוי נכשל: (.*)$/,'The change failed: $1'],[/^ההוספה נכשלה: (.*)$/,'Adding failed: $1'],[/^הועלו (\d+) בקשות לשרת$/,'Uploaded $1 requests to the server'],
 [/^השמירה בשרת נכשלה: (.*)$/,'Saving on the server failed: $1'],[/^המחיקה בשרת נכשלה: (.*)$/,'Deleting on the server failed: $1'],[/^אין גישה לנתונים: (.*)$/,'No access to the data: $1'],
 [/^הסריקה לא הצליחה\. (.*)$/,(m,a)=>'The scan failed. '+T1x(a)],
 [/^גיבוי אחרון מהמחשב הזה: (.*)$/,'Last backup from this computer: $1'],
@@ -461,7 +498,17 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 הכפתורים למעלה מחליפים בין עברית ל־English. ברירת המחדל היא עברית. שמות, בקשות ומכתבים להדפסה נשארים כמו שנכתבו.
 
 # כניסה
-מקלידים את סיסמת הכניסה ובוחרים את שם הגבאי. כל בקשה שנקלטת נרשמת על שם הגבאי שהכניס אותה.
+עם שרת משותף: לוחצים "כניסה עם Google" ובוחרים את החשבון. רק מי שהמנהל הוסיף או אישר יכול להיכנס. מי שלא ברשימה רואה "ממתין לאישור מנהל" ולא רואה שום נתון.
+בלי שרת: בוחרים את השם מהרשימה ומקלידים את הסיסמה האישית. כל בקשה שנקלטת נרשמת על שם מי שהכניס אותה.
+
+# משתמשים והרשאות (ניהול)
+בלשונית "ניהול" ← "משתמשים והרשאות" מוסיפים משתמש (עם שרת: לפי כתובת Gmail; בלי שרת: שם וסיסמה אישית), מאשרים בקשות הצטרפות, חוסמים, מסירים ומאפסים סיסמה.
+יש ארבע הרשאות: מנהל — הכל, כולל משתמשים ויומן. גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.
+המשתמש הראשון שמוסיפים הוא המנהל, ותמיד חייב להישאר לפחות מנהל אחד.
+
+# יומן פעולות (מנהל בלבד)
+כל כניסה ויציאה, בקשה חדשה, עריכה, שינוי סטטוס, מחיקה, צפייה בבקשה, הדפסה, הורדה לוורד ולאקסל, פתיחת כספים, שינוי הגדרות וניסיון כניסה שנכשל — נרשמים עם השם, התאריך והשעה.
+אפשר לסנן לפי משתמש, פעולה ותאריכים, ולהוריד לאקסל. ניסיונות כושלים ומחיקות מסומנים בכתום. אי אפשר למחוק או לשנות את היומן.
 
 # קליטת בקשה חדשה
 לוחצים על "בקשה חדשה" וממלאים לפי הסדר של הטופס. ליד כל תאריך מופיע התאריך העברי.
@@ -514,7 +561,7 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 המערכת מחשבת לפי הלוח העברי מי שיום הזיכרון או יום ההולדת שלו בשבועיים הקרובים.
 
 # ניהול (סיסמת מנהל)
-החלפת שלוש הסיסמאות, רשימת הגבאים, הפעלה וכיבוי של כל אפשרות במערכת, עריכת ההוראות האלה, עריכת נוסחי המכתבים, מפתח הסריקה, חיבור לשרת משותף, גיבוי ושחזור, והורדה לאקסל.
+משתמשים והרשאות, החלפת סיסמאות הכספים והניהול, הפעלה וכיבוי של כל אפשרות במערכת, עריכת ההוראות האלה, עריכת נוסחי המכתבים, מפתח הסריקה, חיבור לשרת משותף, גיבוי ושחזור, והורדה לאקסל.
 
 # איפה הנתונים נשמרים
 בלי חיבור לשרת: הנתונים נשמרים רק במחשב שעליו עובדים. חובה להוריד קובץ גיבוי פעם בשבוע (ניהול ← "הורד קובץ גיבוי").
@@ -536,7 +583,17 @@ The system replaces the paper form "Blessing request from the Biala Rebbe shlita
 The buttons at the top switch between עברית and English. Hebrew is the default. Names, requests and printed letters stay exactly as they were written.
 
 # Signing in
-Type the login password and choose the gabbai's name. Every request that is received is recorded under the gabbai who entered it.
+With a shared server: click "Sign in with Google" and choose the account. Only people the manager added or approved can get in. Anyone not on the list sees "waiting for manager approval" and sees no data.
+Without a server: choose your name from the list and type your personal password. Every request is recorded under the person who entered it.
+
+# Users & permissions (Management)
+In "Management" → "Users & permissions" you add a user (with a server: by Gmail address; without a server: name and personal password), approve join requests, block, remove and reset passwords.
+There are four permissions: Manager — everything, including users and the log. Gabbai + finances — also finances and the cash box. Gabbai — receiving, editing, scanning and printing. View only — sees but does not change.
+The first user you add is the manager, and there must always be at least one manager.
+
+# Activity log (manager only)
+Every sign-in and sign-out, new request, edit, status change, deletion, viewing a request, printing, Word and Excel downloads, opening finances, settings changes and failed sign-in attempts are recorded with the name, date and time.
+You can filter by user, action and dates, and download to Excel. Failed attempts and deletions are marked in orange. The log cannot be deleted or changed.
 
 # Receiving a new request
 Click "New request" and fill it in by the order of the form. Next to every date the Hebrew date appears.
@@ -589,7 +646,7 @@ Never enter credit card or bank account numbers in the system.
 The system calculates by the Hebrew calendar whose yahrzeit or birthday falls in the coming two weeks.
 
 # Management (manager password)
-Changing the three passwords, the list of gabbaim, turning each option on and off, editing these instructions, editing the letter templates, the scanning key, the shared server connection, backup and restore, and downloading to Excel.
+Users & permissions, changing the finance and management passwords, turning each option on and off, editing these instructions, editing the letter templates, the scanning key, the shared server connection, backup and restore, and downloading to Excel.
 
 # Where the data is saved
 Without a server connection: the data is saved only on the computer you work on. Download a backup file every week (Management → "Download backup file").
@@ -618,18 +675,27 @@ const CONN=()=>({url:SUPA_URL||lget('supaUrl',''),key:SUPA_KEY||lget('supaKey','
 const idb={db:null,open(){return new Promise((res,rej)=>{const r=indexedDB.open('biala_kabalat_kahal',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>{this.db=r.result;res()};r.onerror=()=>rej(r.error)})},
   get(k){return new Promise(res=>{try{const t=this.db.transaction('kv').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>res(undefined)}catch(e){res(undefined)}})},
   set(k,v){return new Promise(res=>{try{const t=this.db.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=()=>res(true);t.onerror=()=>{toast('השמירה במחשב נכשלה');res(false)}}catch(e){toast('השמירה במחשב נכשלה');res(false)}})}};
-let SB=null, MODE='local', DEFS=null;
+let SB=null, MODE='local', DEFS=null, ROLE='gabbai', MYEMAIL='', LOG=[];
+const ROLES={admin:'מנהל',finance:'גבאי + כספים',gabbai:'גבאי',view:'צפייה בלבד'};
+/* יומן פעולות: מי עשה מה ומתי */
+const logSeen={};
+async function log(action,target='',details=null){
+  const who=ME||'?',key=action+'|'+target;if(/^צפייה/.test(action)){if(logSeen[key]&&Date.now()-logSeen[key]<10*60000)return;logSeen[key]=Date.now()}
+  const row={at:new Date().toISOString(),who,email:MYEMAIL||'',action,target:String(target||'').slice(0,200),details};
+  if(MODE==='cloud'){try{await SB.from('kk_log').insert({action:row.action,target:row.target,details:{...(details||{}),who}})}catch(e){}}
+  else{LOG.push(row);if(LOG.length>5000)LOG=LOG.slice(-5000);await idb.set('log',LOG)}}
 let R=[], EXP=[], S=null;
 const DEF_S=async()=>({pw:await hash('1234'),fin:await hash('4321'),adm:await hash('123456'),gabbaim:['גבאי ראשי'],features:Object.fromEntries(Object.keys(FEATURES).map(k=>[k,true])),help:DEF_HELP,geminiKey:'',geminiModel:'gemini-3.8-flash',templates:{}});
 function withDefaults(o,d){return {...d,...o,features:{...d.features,...(o?.features||{})}}}
 async function cloudPut(tbl,id,data){const {error}=await SB.from(tbl).upsert({id,data,updated_at:new Date().toISOString()});if(error){toast('השמירה בשרת נכשלה: '+error.message);return false}return true}
 async function cloudDel(tbl,id){const {error}=await SB.from(tbl).delete().eq('id',id);if(error)toast('המחיקה בשרת נכשלה: '+error.message)}
-async function putRec(o){o.updatedAt=Date.now();const i=R.findIndex(r=>r.id===o.id);if(i>=0)R[i]=o;else R.push(o);
+async function putRec(o,quiet){o.updatedAt=Date.now();o.updatedBy=ME;const i=R.findIndex(r=>r.id===o.id);const prev=i>=0?R[i]:null;if(i>=0)R[i]=o;else R.push(o);
+  if(!quiet)log(prev?(prev.status!==o.status&&JSON.stringify({...prev,status:o.status,updatedAt:0,updatedBy:0})===JSON.stringify({...o,updatedAt:0,updatedBy:0})?'שינוי סטטוס':'עריכת בקשה'):'בקשה חדשה',fullName(o),prev&&prev.status!==o.status?{status:STATUS[o.status]}:null);
   if(MODE==='cloud')await cloudPut('kk_records',o.id,o);else await idb.set('records',R)}
-async function delRec(id){R=R.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_records',id);else await idb.set('records',R)}
-async function putExp(o){const i=EXP.findIndex(r=>r.id===o.id);if(i>=0)EXP[i]=o;else EXP.push(o);if(MODE==='cloud')await cloudPut('kk_kupa',o.id,o);else await idb.set('kupa',EXP)}
-async function delExp(id){EXP=EXP.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_kupa',id);else await idb.set('kupa',EXP)}
-async function putS(){if(MODE==='cloud')await cloudPut('kk_settings','main',S);else await idb.set('settings',S)}
+async function delRec(id){const x=R.find(r=>r.id===id);if(x)log('מחיקת בקשה',fullName(x));R=R.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_records',id);else await idb.set('records',R)}
+async function putExp(o,quiet){if(!quiet)log('רישום בקופה',(o.kind==='in'?'הכנסה ':'הוצאה ')+(o.desc||''));const i=EXP.findIndex(r=>r.id===o.id);if(i>=0)EXP[i]=o;else EXP.push(o);if(MODE==='cloud')await cloudPut('kk_kupa',o.id,o);else await idb.set('kupa',EXP)}
+async function delExp(id){log('מחיקה מהקופה',id);EXP=EXP.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_kupa',id);else await idb.set('kupa',EXP)}
+async function putS(what){if(what)log('שינוי הגדרות',what);if(MODE==='cloud')await cloudPut('kk_settings','main',S);else await idb.set('settings',S)}
 async function loadCloud(){
   const [a,b,c]=await Promise.all([SB.from('kk_records').select('id,data'),SB.from('kk_kupa').select('id,data'),SB.from('kk_settings').select('data').eq('id','main').maybeSingle()]);
   if(a.error)throw a.error;
@@ -638,32 +704,57 @@ async function boot(){
   DEFS=await DEF_S();try{await idb.open()}catch(e){}
   const c=CONN();
   if(c.url&&c.key&&window.supabase){try{SB=supabase.createClient(c.url,c.key);MODE='cloud'}catch(e){SB=null}}
-  if(MODE==='local'){S=withDefaults(await idb.get('settings'),DEFS);R=(await idb.get('records'))||[];EXP=(await idb.get('kupa'))||[]}
+  if(MODE==='local'){S=withDefaults(await idb.get('settings'),DEFS);R=(await idb.get('records'))||[];EXP=(await idb.get('kupa'))||[];LOG=(await idb.get('log'))||[]}
   else S=withDefaults(null,DEFS);
-  $('#emailWrap').hidden=MODE!=='cloud';$('#gabbaiSel').hidden=MODE==='cloud';
+  $('#emailWrap').hidden=MODE!=='cloud';$('#gLogin').hidden=MODE!=='cloud';$('#gabbaiSel').hidden=MODE==='cloud';
   $('#pw').placeholder=T(MODE==='cloud'?'סיסמה':'סיסמת כניסה');
   fillGabbai();renderModebar();
   /* רענון אוטומטי כשעובדים כמה גבאים */
   if(MODE==='cloud'){setInterval(()=>{if(!document.hidden&&!$('#app').hidden&&view!=='new'&&view!=='edit')loadCloud().then(refresh).catch(()=>{})},45000);
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!$('#app').hidden)loadCloud().then(refresh).catch(()=>{})});
-    const {data}=await SB.auth.getSession();if(data?.session){ME=data.session.user.user_metadata?.name||data.session.user.email.split('@')[0];try{await loadCloud();return true}catch(e){}}}
+    const {data}=await SB.auth.getSession();if(data?.session){return await afterCloudAuth(data.session.user)}}
   return false}
 function renderModebar(){$('#modebar').innerHTML=MODE==='cloud'?'':`<div>הנתונים נשמרים רק במחשב הזה. כדי שכל הגבאים יעבדו על אותם נתונים, מחברים שרת משותף בלשונית "ניהול".</div>`}
 
 /* ===== כניסה והרשאות ===== */
-let ME=ss.get('biala_me')||'', FIN=ss.get('biala_fin')==='1', ADM=ss.get('biala_adm')==='1';
-function fillGabbai(){const sel=$('#gabbaiSel');if(!sel||!S)return;const cur=sel.value||ME;sel.innerHTML='<option value="">— מי נכנס? —</option>'+S.gabbaim.map(g=>`<option ${g===cur?'selected':''}>${esc(g)}</option>`).join('')}
+let ME=ss.get('biala_me')||'', FIN=ss.get('biala_fin')==='1', ADM=ss.get('biala_adm')==='1';ROLE=ss.get('biala_role')||ROLE;
+function fillGabbai(){const sel=$('#gabbaiSel');if(!sel||!S)return;const cur=sel.value||ME;const users=(S.users||[]).filter(u=>u.active!==false);
+  const names=users.length?users.map(u=>u.name):S.gabbaim;sel.innerHTML='<option value="">— מי נכנס? —</option>'+names.map(g=>`<option ${g===cur?'selected':''}>${esc(g)}</option>`).join('');
+  $('#pw').placeholder=T(MODE==='cloud'?'סיסמה':users.length?'הסיסמה האישית שלך':'סיסמת כניסה')}
+const canFin=()=>ROLE==='admin'||ROLE==='finance', isAdm=()=>ROLE==='admin', canEdit=()=>ROLE!=='view';
 let loginFails=0;
+/* אחרי כניסה לשרת: בודקים שהמשתמש ברשימת המורשים */
+async function afterCloudAuth(user){
+  const email=(user.email||'').toLowerCase(),name=user.user_metadata?.full_name||user.user_metadata?.name||email.split('@')[0];
+  let {data:u,error}=await SB.from('kk_users').select('*').eq('email',email).maybeSingle();
+  if(error){showPending('אין חיבור לרשימת המשתמשים בשרת. ודא שקוד ההקמה הורץ ב־Supabase.',true);return false}
+  if(!u){await SB.from('kk_users').insert({email,name,role:'gabbai',active:false});showPending(`נרשמת כ־${email}. הבקשה נשלחה למנהל המערכת, ותוכל להיכנס אחרי שיאשר אותך.`);return false}
+  if(!u.active){showPending(u.blocked?'המשתמש שלך חסום. פנה למנהל המערכת.':`החשבון ${email} עדיין ממתין לאישור מנהל המערכת.`);return false}
+  MYEMAIL=email;ME=u.name||name;ROLE=u.role||'gabbai';
+  try{await loadCloud()}catch(x){showPending('אין גישה לנתונים: '+(x.message||''),true);return false}
+  SB.rpc('kk_touch',{n:name}).then(()=>{},()=>{});
+  if(!ss.get('biala_logged')){ss.set('biala_logged','1');log('כניסה למערכת','Google')}
+  return true}
+function showPending(msg,isErr){const b=$('#pendingBox');b.hidden=false;b.innerHTML=`<b>${esc(msg)}</b><button type="button" class="btn sm" id="pendOut">יציאה מהחשבון</button>`;b.classList.toggle('bad',!!isErr);
+  $('#pendOut').onclick=async()=>{await SB.auth.signOut();b.hidden=true}}
+$('#gLogin').onclick=async()=>{$('#loginErr').textContent='עובר לגוגל...';
+  const {error}=await SB.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname,queryParams:{prompt:'select_account'}}});
+  if(error)$('#loginErr').textContent='הכניסה עם Google לא הופעלה עדיין בשרת. מנהל המערכת צריך להפעיל אותה ב־Supabase.'};
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('#loginErr');
   if(MODE==='cloud'){err.textContent='מתחבר...';
     const {data,error}=await SB.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
     if(error){err.textContent='המייל או הסיסמה שגויים';return}
-    try{await loadCloud()}catch(x){err.textContent='אין גישה לנתונים: '+(x.message||'');return}
-    ME=data.user.user_metadata?.name||data.user.email.split('@')[0];err.textContent='';ss.set('biala_me',ME);enter();return}
-  if(await hash($('#pw').value)!==S.pw){loginFails++;err.textContent=loginFails>=3?'הסיסמה שגויה. אם שכחת — מנהל המערכת יכול להחליף אותה מהמחשב הראשי.':'הסיסמה שגויה, נסה שוב';$('#pw').select();return}
-  ME=$('#gabbaiSel').value||'גבאי';ss.set('biala_in','1');ss.set('biala_me',ME);enter()});
+    err.textContent='';if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}return}
+  const users=(S.users||[]).filter(u=>u.active!==false);
+  if(users.length){const u=users.find(x=>x.name===$('#gabbaiSel').value);
+    if(!u){err.textContent='בחר את השם שלך מהרשימה';return}
+    if(await hash($('#pw').value)!==u.pw){loginFails++;err.textContent=loginFails>=3?'הסיסמה שגויה. אם שכחת — מנהל המערכת יכול לאפס לך סיסמה בלשונית "ניהול".':'הסיסמה שגויה, נסה שוב';ME=u.name;log('ניסיון כניסה שנכשל',u.name);ME='';$('#pw').select();return}
+    ME=u.name;ROLE=u.role||'gabbai'}
+  else{if(await hash($('#pw').value)!==S.pw){loginFails++;err.textContent=loginFails>=3?'הסיסמה שגויה. אם שכחת — מנהל המערכת יכול להחליף אותה מהמחשב הראשי.':'הסיסמה שגויה, נסה שוב';$('#pw').select();return}
+    ME=$('#gabbaiSel').value||'גבאי';ROLE='admin'}
+  ss.set('biala_in','1');ss.set('biala_me',ME);ss.set('biala_role',ROLE);log('כניסה למערכת');enter()});
 function enter(){$('#login').hidden=true;$('#app').hidden=false;lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person'].includes(v)?v:'')||location.hash.slice(1)||'home')}
-function logout(){['biala_in','biala_fin','biala_adm','biala_me'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
+function logout(){if(ME)log('יציאה מהמערכת');ME='';['biala_in','biala_fin','biala_adm','biala_me','biala_role','biala_logged'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
 /* נעילה אוטומטית אחרי 20 דקות בלי פעילות */
 let lastAct=Date.now();['click','keydown','mousemove','touchstart'].forEach(ev=>document.addEventListener(ev,()=>lastAct=Date.now(),{passive:true}));
 setInterval(()=>{if(S?.features?.autolock&&!$('#app').hidden&&Date.now()-lastAct>20*60000){logout();$('#loginErr').textContent='המערכת ננעלה אחרי 20 דקות ללא פעילות'}},30000);
@@ -674,15 +765,16 @@ function printHTML(html){const f=document.createElement('iframe');f.style.cssTex
 const fileStamp=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 /* שער סיסמה פנימי (כספים / ניהול) */
 function gate(kind,title,onOk){
+  if((kind==='fin'&&!canFin())||(kind==='adm'&&!isAdm())){$('#main').innerHTML=`<section style="display:grid;place-items:center;min-height:40vh"><div class="card" style="text-align:center;max-width:420px"><h2>${title}</h2><p class="muted">אין לך הרשאה לאזור הזה. מנהל המערכת יכול לשנות את ההרשאה שלך בלשונית "ניהול" ← "משתמשים והרשאות".</p></div></section>`;return}
   $('#main').innerHTML=`<section style="display:grid;place-items:center;min-height:50vh"><form class="card" id="gf" style="width:min(380px,100%);text-align:center">
     <h2>${title}</h2><p class="muted" style="margin:0">אזור זה מוגן בסיסמה נוספת.</p>
     <label class="f"><span>סיסמה</span><input id="gp" type="password" autofocus></label>
     <button class="btn primary">פתח</button><div id="ge" style="color:var(--bad);min-height:1.4em"></div></form></section>`;
-  $('#gf').onsubmit=async e=>{e.preventDefault();if(await hash($('#gp').value)===S[kind]){if(kind==='fin'){FIN=true;ss.set('biala_fin','1')}else{ADM=true;ss.set('biala_adm','1')}onOk()}else $('#ge').textContent='הסיסמה שגויה'}}
+  $('#gf').onsubmit=async e=>{e.preventDefault();if(await hash($('#gp').value)===S[kind]){if(kind==='fin'){FIN=true;ss.set('biala_fin','1');log('פתיחת אזור הכספים')}else{ADM=true;ss.set('biala_adm','1');log('פתיחת אזור הניהול')}onOk()}else{$('#ge').textContent='הסיסמה שגויה';log(kind==='fin'?'סיסמת כספים שגויה':'סיסמת ניהול שגויה')}}}
 
 /* ===== ניווט ===== */
 let view='home', current=null, filt={q:'',status:'',date:'',tag:'',rev:false};
-const TABS=()=>[['home','ראשי'],['list','בקשות'],['new','בקשה חדשה'],S.features.scan&&['scan','סריקת דפים'],['people','אנשים'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.finance&&['money','כספים'],S.features.kupa&&['kupa','קופה'],['help','הוראות'],['admin','ניהול'],['logout','יציאה']].filter(Boolean);
+const TABS=()=>[['home','ראשי'],['list','בקשות'],canEdit()&&['new','בקשה חדשה'],S.features.scan&&canEdit()&&['scan','סריקת דפים'],['people','אנשים'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.finance&&canFin()&&['money','כספים'],S.features.kupa&&canFin()&&['kupa','קופה'],['help','הוראות'],isAdm()&&['log','יומן פעולות'],isAdm()&&['admin','ניהול'],['logout','יציאה']].filter(Boolean);
 function renderTabs(){const rev=R.filter(r=>r.review).length;
   $('#tabs').innerHTML=TABS().map(([k,t])=>`<button data-v="${k}" aria-current="${k===(['view','edit'].includes(view)?'list':view==='person'?'people':view)}">${t}${k==='list'&&rev?`<span class="badge">${rev}</span>`:''}</button>`).join('');
   $('#who').textContent=ME?`מחובר: ${ME}`:''}
@@ -692,8 +784,8 @@ $('#themeBtn').onclick=()=>{const cur=document.documentElement.dataset.theme||(m
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v==='logout')return logout();go(b.dataset.v)});
 let pendingPre=null, curPerson=null;
 const VIEWS={home:renderHome,list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
-  money:()=>FIN?renderMoney():gate('fin','כספים',renderMoney),kupa:()=>FIN?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,admin:()=>ADM?renderAdmin():gate('adm','ניהול',renderAdmin)};
-function go(v,rec){if(!VIEWS[v])v='home';view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
+  money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
+function go(v,rec){if(!VIEWS[v])v='home';if(!canEdit()&&['new','edit','scan'].includes(v)){toast('יש לך הרשאת צפייה בלבד');return}view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
 let dirty=false;
 function refresh(){if($('#app').hidden)return;renderTabs();if(view==='new'||view==='edit'||$('#gf'))return;if(view==='view'&&current)current=R.find(r=>r.id===current.id)||null;
   if(view==='list'&&$('#rows')){fillRows();return}VIEWS[view]()}
@@ -913,7 +1005,7 @@ async function runJobs(){if(jobsRunning)return;jobsRunning=true;
 
 /* ===== תצוגת בקשה ===== */
 const personKey=x=>digits(x.mobile)||digits(x.homePhone)||(x.first+' '+x.last).trim();
-function renderView(){const x=current;if(!x)return go('list');const d=x.donation||{type:'none'};const uns=new Set(x.unsure||[]);
+function renderView(){const x=current;if(!x)return go('list');log('צפייה בבקשה',fullName(x));const d=x.donation||{type:'none'};const uns=new Set(x.unsure||[]);
   const row=(k,v,f)=>v?`<dt>${k}</dt><dd class="${f&&uns.has(f)?'unsure':''}">${v}${f&&uns.has(f)?' (לבדיקה)':''}</dd>`:'';
   const hist=R.filter(r=>r.id!==x.id&&personKey(r)===personKey(x)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
   $('#main').innerHTML=`<section>
@@ -1085,7 +1177,7 @@ function fillPaper(){const t=docState.type,rec=byId(docState.rec),inRange=R.filt
   else if(t==='letter'){const recs=docState.person?personRecs(docState.person):[];h=docHead('')+fillTpl((S.templates||{}).letter||DEF_TPL.letter,recs[0])}
   else{h=rec?docHead('')+fillTpl((S.templates||{})[t]||DEF_TPL[t],rec):need('בחר בקשה עם תרומה מהרשימה למעלה')}
   $('#paper').innerHTML=`<style>${DOC_CSS.replace(/body\{/,'.paperin{')}</style><div class="paperin">${h}</div>`}
-async function saveDoc(name,html,kind){
+async function saveDoc(name,html,kind){log(kind==='word'?'הורדה לוורד':'הדפסה',name);
   const body=html.replace(/^<style>[\s\S]*?<\/style>/,'');const word=kind==='word';
   const clean=word?body.replace(/<img[^>]*>/g,''):body;
   if(!word){printHTML(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><title>${esc(name)}</title><style>${DOC_CSS}@page{margin:14mm}@media print{body{margin:0}}</style></head><body>${clean}</body></html>`);return}
@@ -1226,13 +1318,90 @@ function helpHTML(t){return t.split('\n').map(l=>l.startsWith('# ')?`<h3>${esc(l
 function renderHelp(){const en=LANG==='en'&&(!S.help||S.help===DEF_HELP);$('#main').innerHTML=`<section><div class="help" ${en?'data-noi18n':''}>${helpHTML(en?DEF_HELP_EN:(S.help||DEF_HELP))}</div><p class="muted small">את ההוראות אפשר לערוך בלשונית "ניהול".</p></section>`}
 
 /* ===== ניהול ===== */
+/* ===== משתמשים והרשאות ===== */
+async function renderUsers(){const box=$('#usersIn');if(!box)return;
+  const roleSel=(id,cur,dis)=>`<select data-role="${esc(id)}" ${dis?'disabled':''}>${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${cur===k?'selected':''}>${v}</option>`).join('')}</select>`;
+  const roleHelp='<p class="muted small" style="margin:0 0 8px">מנהל — הכל, כולל משתמשים ויומן. גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.</p>';
+  if(MODE==='cloud'){
+    const {data,error}=await SB.from('kk_users').select('*').order('created_at');
+    if(error){box.innerHTML=`<div class="notice">לא ניתן לטעון את המשתמשים: ${esc(error.message)}. ודא שקוד ההקמה העדכני הורץ ב־Supabase.</div>`;return}
+    const pend=data.filter(u=>!u.active&&!u.blocked),act=data.filter(u=>u.active||u.blocked);
+    box.innerHTML=`${roleHelp}
+    ${pend.length?`<div class="notice" style="margin-bottom:10px"><b>${pend.length} ממתינים לאישור</b> — נכנסו עם Google וביקשו גישה:<table style="margin-top:6px"><tbody>${pend.map(u=>`<tr><td><b>${esc(u.name||'')}</b><div class="small ltr">${esc(u.email)}</div></td><td>${roleSel(u.email,'gabbai')}</td><td class="row"><button class="btn sm gold" data-approve="${esc(u.email)}">אשר כניסה</button><button class="btn sm danger" data-reject="${esc(u.email)}">דחה</button></td></tr>`).join('')}</tbody></table></div>`:''}
+    <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>Gmail</th><th>הרשאה</th><th>מצב</th><th>כניסה אחרונה</th><th></th></tr></thead><tbody>
+    ${act.map(u=>{const me=u.email===MYEMAIL;return `<tr><td><input class="uname" data-name="${esc(u.email)}" value="${esc(u.name||'')}" style="width:100%;min-width:110px"></td><td class="ltr small">${esc(u.email)}</td><td>${roleSel(u.email,u.role,me)}</td>
+      <td>${u.blocked?'<span class="pill rev">חסום</span>':'<span class="pill done">פעיל</span>'}</td><td>${u.last_login?dual(u.last_login.slice(0,10))+' <span class="g num">'+u.last_login.slice(11,16)+'</span>':'<span class="muted">עוד לא נכנס</span>'}</td>
+      <td class="row">${me?'<span class="muted small">(אתה)</span>':`<button class="btn sm" data-block="${esc(u.email)}">${u.blocked?'בטל חסימה':'חסום'}</button><button class="btn sm danger" data-del="${esc(u.email)}">הסר</button>`}</td></tr>`}).join('')}
+    </tbody></table></div>
+    <form class="row" id="addU" style="margin-top:12px;align-items:end"><label class="f" style="flex:1;min-width:200px">הוספת משתמש — כתובת Gmail<input id="nuEmail" type="email" dir="ltr" required placeholder="name@gmail.com"></label>
+      <label class="f" style="min-width:150px">שם<input id="nuName"></label><label class="f">הרשאה${roleSel('_new','gabbai')}</label><button class="btn primary">הוסף ואשר</button></form>
+    <p class="muted small">מי שתוסיף כאן יוכל להיכנס מיד עם חשבון ה־Google שלו. מי שלא ברשימה — לא יראה כלום, ורק תופיע כאן בקשה שלו לאישור.</p>`;
+    const upd=async(email,patch,msg,act)=>{const {error}=await SB.from('kk_users').update(patch).eq('email',email);if(error)return toast('השינוי נכשל: '+error.message);log(act,email,patch);toast(msg);renderUsers()};
+    $$('#usersIn [data-approve]').forEach(b=>b.onclick=()=>upd(b.dataset.approve,{active:true,blocked:false,role:$(`#usersIn select[data-role="${b.dataset.approve}"]`).value},'המשתמש אושר ויכול להיכנס','אישור משתמש'));
+    $$('#usersIn [data-reject]').forEach(b=>b.onclick=async()=>{await SB.from('kk_users').delete().eq('email',b.dataset.reject);log('דחיית בקשת כניסה',b.dataset.reject);toast('הבקשה נדחתה');renderUsers()});
+    $$('#usersIn [data-block]').forEach(b=>b.onclick=()=>{const u=data.find(x=>x.email===b.dataset.block);upd(u.email,{blocked:!u.blocked},u.blocked?'החסימה בוטלה':'המשתמש נחסם',u.blocked?'ביטול חסימה':'חסימת משתמש')});
+    $$('#usersIn [data-del]').forEach(b=>b.onclick=()=>{const row=b.closest('td');row.innerHTML=`<span class="small">להסיר?</span><button class="btn sm danger" data-yes>כן</button><button class="btn sm" data-no>לא</button>`;
+      row.querySelector('[data-no]').onclick=renderUsers;row.querySelector('[data-yes]').onclick=async()=>{await SB.from('kk_users').delete().eq('email',b.dataset.del);log('הסרת משתמש',b.dataset.del);toast('המשתמש הוסר');renderUsers()}});
+    $$('#usersIn select[data-role]').forEach(sl=>{if(sl.dataset.role==='_new'||!act.find(u=>u.email===sl.dataset.role))return;sl.onchange=()=>upd(sl.dataset.role,{role:sl.value},'ההרשאה עודכנה','שינוי הרשאה')});
+    $$('#usersIn .uname').forEach(inp=>inp.onchange=()=>upd(inp.dataset.name,{name:inp.value.trim()},'השם עודכן','שינוי שם משתמש'));
+    $('#addU').onsubmit=async e=>{e.preventDefault();const email=$('#nuEmail').value.trim().toLowerCase();
+      const {error}=await SB.from('kk_users').upsert({email,name:$('#nuName').value.trim()||email.split('@')[0],role:$('#usersIn select[data-role="_new"]').value,active:true,blocked:false});
+      if(error)return toast('ההוספה נכשלה: '+error.message);log('הוספת משתמש',email);toast('המשתמש נוסף ויכול להיכנס עם Google');renderUsers()};
+    return}
+  /* מצב מחשב אחד: משתמשים עם סיסמה אישית */
+  const U=S.users||[];
+  box.innerHTML=`${roleHelp}${U.length?'':'<div class="notice info" style="margin-bottom:10px">עדיין אין משתמשים, ולכן כולם נכנסים עם סיסמה משותפת אחת. הוסף משתמשים עם סיסמה אישית, כדי שיהיה ידוע מי נכנס ומה עשה. <b>המשתמש הראשון שתוסיף יהיה מנהל.</b></div>'}
+    ${U.length?`<div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>הרשאה</th><th>מצב</th><th>כניסה אחרונה</th><th></th></tr></thead><tbody>${U.map((u,i)=>{const last=[...LOG].reverse().find(l=>l.who===u.name&&l.action==='כניסה למערכת');return `<tr><td><b>${esc(u.name)}</b></td><td>${roleSel(i,u.role,u.name===ME)}</td><td>${u.active===false?'<span class="pill rev">חסום</span>':'<span class="pill done">פעיל</span>'}</td>
+      <td>${last?dual(last.at.slice(0,10))+' <span class="g num">'+new Date(last.at).toTimeString().slice(0,5)+'</span>':'<span class="muted">עוד לא נכנס</span>'}</td>
+      <td class="row"><button class="btn sm" data-rp="${i}">איפוס סיסמה</button>${u.name===ME?'<span class="muted small">(אתה)</span>':`<button class="btn sm" data-lb="${i}">${u.active===false?'בטל חסימה':'חסום'}</button><button class="btn sm danger" data-ld="${i}">הסר</button>`}</td></tr>`}).join('')}</tbody></table></div>`:''}
+    <form class="row" id="addL" style="margin-top:12px;align-items:end"><label class="f" style="min-width:160px">שם<input id="nlName" required></label><label class="f" style="min-width:150px">סיסמה אישית<input id="nlPw" type="password" required minlength="4"></label>
+      <label class="f">הרשאה${roleSel('_new',U.length?'gabbai':'admin',!U.length)}</label><button class="btn primary">הוסף משתמש</button></form>
+    <div id="rpBox"></div>`;
+  const save=async(msg,act,t)=>{S.users=U;await putS();log(act,t);fillGabbai();renderTabs();toast(msg);U.length===1&&act==='הוספת משתמש'?renderAdmin():renderUsers()};
+  $('#addL').onsubmit=async e=>{e.preventDefault();const name=$('#nlName').value.trim();if(U.some(u=>u.name===name))return toast('כבר יש משתמש בשם הזה');if($('#nlPw').value.length<4)return toast('לפחות 4 תווים');
+    U.push({name,pw:await hash($('#nlPw').value),role:U.length?$('#usersIn select[data-role="_new"]').value:'admin',active:true});if(U.length===1){ME=name;ROLE='admin';ss.set('biala_me',ME);ss.set('biala_role','admin')}
+    save(U.length===1?'נוסף. מעכשיו נכנסים עם שם וסיסמה אישית':'המשתמש נוסף','הוספת משתמש',name)};
+  $$('#usersIn select[data-role]').forEach(sl=>{if(sl.dataset.role==='_new')return;sl.onchange=()=>{const u=U[+sl.dataset.role];if(sl.value!=='admin'&&u.role==='admin'&&U.filter(x=>x.role==='admin'&&x.active!==false).length<2){toast('חייב להישאר לפחות מנהל אחד');sl.value='admin';return}u.role=sl.value;save('ההרשאה עודכנה','שינוי הרשאה',u.name)}});
+  $$('#usersIn [data-lb]').forEach(b=>b.onclick=()=>{const u=U[+b.dataset.lb];u.active=u.active===false;save(u.active?'החסימה בוטלה':'המשתמש נחסם',u.active?'ביטול חסימה':'חסימת משתמש',u.name)});
+  $$('#usersIn [data-ld]').forEach(b=>b.onclick=()=>{const u=U[+b.dataset.ld];if(u.role==='admin'&&U.filter(x=>x.role==='admin').length<2)return toast('חייב להישאר לפחות מנהל אחד');U.splice(+b.dataset.ld,1);save('המשתמש הוסר','הסרת משתמש',u.name)});
+  $$('#usersIn [data-rp]').forEach(b=>b.onclick=()=>{const u=U[+b.dataset.rp];$('#rpBox').innerHTML=`<form class="row" id="rpF" style="margin-top:10px;align-items:end"><label class="f">סיסמה חדשה ל־${esc(u.name)}<input id="rpPw" type="password" minlength="4" required></label><button class="btn primary">שמור</button></form>`;
+    $('#rpF').onsubmit=async e=>{e.preventDefault();u.pw=await hash($('#rpPw').value);save('הסיסמה אופסה','איפוס סיסמה',u.name)}});
+}
+/* ===== יומן פעולות ===== */
+let logFilt={who:'',act:'',from:'',to:''},LOGC=[];
+async function renderLog(){
+  $('#main').innerHTML=`<section><div class="row"><h2>יומן פעולות</h2><span class="spacer"></span><button class="btn sm" id="lgCsv">הורד לאקסל</button><button class="btn sm" id="lgRef">רענן</button></div>
+  <p class="muted">כל כניסה, קליטה, עריכה, מחיקה, צפייה, הדפסה ופתיחת כספים נרשמת כאן עם השם והשעה. אי אפשר למחוק או לשנות את היומן.</p>
+  <div id="lgSum" class="stats"></div>
+  <div class="toolbar"><select id="lgWho"><option value="">כל המשתמשים</option></select><select id="lgAct"><option value="">כל הפעולות</option></select>
+    <label class="row small">מתאריך <input type="date" id="lgFrom" value="${logFilt.from}"></label><label class="row small">עד <input type="date" id="lgTo" value="${logFilt.to}"></label></div>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>מתי</th><th>מי</th><th>פעולה</th><th>על מה</th></tr></thead><tbody id="lgRows"><tr><td colspan="4" class="empty"><span class="spin"></span></td></tr></tbody></table></div><p class="muted small" id="lgCnt"></p></section>`;
+  if(MODE==='cloud'){const {data,error}=await SB.from('kk_log').select('*').order('at',{ascending:false}).limit(2000);
+    if(error){$('#lgRows').innerHTML=`<tr><td colspan="4" class="empty">לא ניתן לטעון את היומן: ${esc(error.message)}</td></tr>`;return}
+    LOGC=data.map(r=>({at:r.at,who:r.details?.who||r.email,email:r.email,action:r.action,target:r.target||'',details:r.details}))}
+  else LOGC=[...LOG].reverse();
+  const opt=(sel,arr,cur)=>{$(sel).innerHTML+=arr.map(v=>`<option ${v===cur?'selected':''}>${esc(v)}</option>`).join('')};
+  opt('#lgWho',[...new Set(LOGC.map(l=>l.who))].sort(),logFilt.who);opt('#lgAct',[...new Set(LOGC.map(l=>l.action))].sort(),logFilt.act);
+  const today=todayISO(),dayOf=l=>{const d=new Date(l.at);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+  const t=LOGC.filter(l=>dayOf(l)===today);
+  $('#lgSum').innerHTML=`<div class="stat"><b>${new Set(t.filter(l=>l.action==='כניסה למערכת').map(l=>l.who)).size}</b><span>נכנסו היום</span></div><div class="stat"><b>${t.length}</b><span>פעולות היום</span></div>
+    <div class="stat"><b>${t.filter(l=>/בקשה חדשה/.test(l.action)).length}</b><span>בקשות שנקלטו היום</span></div><div class="stat ${LOGC.some(l=>/שגויה|נכשל/.test(l.action)&&dayOf(l)===today)?'alert':''}"><b>${t.filter(l=>/שגויה|נכשל/.test(l.action)).length}</b><span>ניסיונות כושלים היום</span></div>`;
+  const fill=()=>{const L=LOGC.filter(l=>(!logFilt.who||l.who===logFilt.who)&&(!logFilt.act||l.action===logFilt.act)&&(!logFilt.from||dayOf(l)>=logFilt.from)&&(!logFilt.to||dayOf(l)<=logFilt.to));
+    $('#lgRows').innerHTML=L.slice(0,800).map(l=>{const d=new Date(l.at);return `<tr class="${/שגויה|נכשל|מחיקת|חסימת/.test(l.action)?'rev':''}"><td>${dual(dayOf(l))} <span class="num">${d.toTimeString().slice(0,5)}</span></td><td><b>${esc(l.who)}</b>${l.email&&l.email!==l.who?`<div class="g ltr">${esc(l.email)}</div>`:''}</td><td>${esc(l.action)}${l.details?.status?` <span class="g">→ ${esc(l.details.status)}</span>`:''}</td><td>${esc(l.target)}</td></tr>`}).join('')||'<tr><td colspan="4" class="empty">אין פעולות לפי הסינון</td></tr>';
+    $('#lgCnt').textContent=`מוצגות ${Math.min(L.length,800)} מתוך ${L.length} פעולות`;return L};
+  [['#lgWho','who'],['#lgAct','act'],['#lgFrom','from'],['#lgTo','to']].forEach(([id,k])=>$(id).onchange=e=>{logFilt[k]=e.target.value;fill()});
+  $('#lgRef').onclick=renderLog;
+  $('#lgCsv').onclick=()=>{const L=fill();const csv=[['תאריך','שעה','מי','מייל','פעולה','על מה'],...L.map(l=>{const d=new Date(l.at);return [greg(dayOf(l)),d.toTimeString().slice(0,5),l.who,l.email||'',l.action,l.target]})].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+    downloadBlob(`יומן-פעולות-${fileStamp()}.csv`,new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));log('הורדת יומן הפעולות')};
+  fill()}
 function renderAdmin(){
   $('#main').innerHTML=`<section class="form"><div class="row"><h2>ניהול</h2><span class="spacer"></span><button class="btn sm" id="lockAdm">נעל ניהול</button></div>
+  <fieldset id="usersBox"><legend>משתמשים והרשאות</legend><div id="usersIn"><span class="spin"></span></div></fieldset>
   <fieldset><legend>סיסמאות</legend>${MODE==='cloud'?'<p class="muted small" style="margin-top:0">במצב שרת, הכניסה למערכת היא עם המייל והסיסמה של כל גבאי. כאן מחליפים את סיסמאות הכספים והניהול.</p>':''}<div class="grid">
     <label class="f">איזו סיסמה<select id="pk"><option value="pw">כניסה למערכת</option><option value="fin">כספים</option><option value="adm">ניהול</option></select></label>
     <label class="f">סיסמה חדשה<input id="p1" type="password"></label><label class="f">שוב סיסמה חדשה<input id="p2" type="password"></label>
   </div><div class="row" style="margin-top:10px"><button class="btn primary" id="pwBtn">החלף סיסמה</button></div></fieldset>
-  <fieldset><legend>גבאים</legend><p class="muted small" style="margin-top:0">שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה.</p>
+  <fieldset ${(S.users||[]).length||MODE==='cloud'?'hidden':''}><legend>גבאים (בלי סיסמה אישית)</legend><p class="muted small" style="margin-top:0">שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה. עדיף להוסיף משתמשים עם סיסמה אישית למעלה, כדי שיהיה ידוע מי עשה מה.</p>
     <label class="f"><textarea id="gb">${esc(S.gabbaim.join('\n'))}</textarea></label><div class="row" style="margin-top:8px"><button class="btn primary" id="gbBtn">שמור גבאים</button></div></fieldset>
   <fieldset><legend>אפשרויות במערכת</legend><p class="muted small" style="margin-top:0">כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.</p>
     <div class="grid">${Object.entries(FEATURES).map(([k,v])=>`<label class="row" style="gap:8px"><input type="checkbox" data-ft="${k}" ${S.features[k]?'checked':''}> ${v}</label>`).join('')}</div></fieldset>
@@ -1249,11 +1418,12 @@ function renderAdmin(){
     <p class="small" style="color:var(--warn)">שים לב: בחשבון גוגל חינמי, גוגל רשאית להשתמש בתוכן שנשלח אליה לשיפור השירות. בגלל שבטפסים יש פרטים אישיים, עדיף מפתח מחשבון בתשלום (כמו שעשית בביאלה).</p>
     <div class="row"><button class="btn primary" id="gkBtn">שמור מפתח</button><button class="btn" id="gkTest">בדוק חיבור</button><span id="gkMsg" class="small"></span></div></fieldset>
   <fieldset><legend>חיבור לשרת משותף (Supabase)</legend>
-    <p class="muted small" style="margin-top:0">${MODE==='cloud'?'<b style="color:var(--ok)">המערכת מחוברת לשרת.</b> כל הגבאים רואים את אותם נתונים, וכל גבאי נכנס עם מייל וסיסמה משלו.':'כרגע הנתונים במחשב הזה בלבד. כדי שכמה גבאים יעבדו ביחד מכל מחשב: יוצרים פרויקט ב־Supabase, מריצים את קוד ההקמה למטה, ומכניסים כאן את הכתובת והמפתח.'}</p>
+    <p class="muted small" style="margin-top:0">${MODE==='cloud'?'<b style="color:var(--ok)">המערכת מחוברת לשרת.</b> כל הגבאים רואים את אותם נתונים. כל אחד נכנס עם חשבון Google משלו, ורק מי שאישרת ברשימת המשתמשים יכול להיכנס.':'כרגע הנתונים במחשב הזה בלבד. כדי שכמה גבאים יעבדו ביחד מכל מחשב: יוצרים פרויקט ב־Supabase, מריצים את קוד ההקמה למטה, ומכניסים כאן את הכתובת והמפתח.'}</p>
     <div class="grid"><label class="f">כתובת הפרויקט (Project URL)<input id="su" dir="ltr" placeholder="https://xxxx.supabase.co" value="${esc(CONN().url)}"></label>
     <label class="f">מפתח ציבורי (anon public)<input id="sk" dir="ltr" value="${esc(CONN().key)}" autocomplete="off"></label></div>
-    <div class="row" style="margin-top:8px"><button class="btn primary" id="suBtn">שמור והתחבר</button>${MODE==='cloud'?'<button class="btn" id="suUp">העלה לשרת את הנתונים שבמחשב הזה</button><button class="btn danger" id="suOff">נתק מהשרת במחשב הזה</button>':''}<button class="btn" id="sqlBtn">העתק קוד הקמה</button></div>
-    <details style="margin-top:10px"><summary class="small">איך מוסיפים גבאי בשרת?</summary><p class="small">ב־Supabase: Authentication ← Users ← Add user ← Create new user. מכניסים מייל וסיסמה לגבאי ומסמנים Auto Confirm. אחר כך הוא נכנס למערכת עם המייל והסיסמה האלה. כדי לחסום גבאי — מוחקים אותו משם.</p></details>
+    <div class="row" style="margin-top:8px"><button class="btn primary" id="suBtn">שמור והתחבר</button>${MODE==='cloud'?'<button class="btn" id="suUp">העלה לשרת את הנתונים שבמחשב הזה</button><button class="btn danger" id="suOff">נתק מהשרת במחשב הזה</button>':''}</div>
+    <div class="row" style="margin-top:8px;align-items:end"><label class="f" style="flex:1;min-width:220px">כתובת ה־Gmail של המנהל הראשי (נכנסת לקוד ההקמה)<input id="admEmail" type="email" dir="ltr" value="${esc(MYEMAIL)}" placeholder="name@gmail.com"></label><button class="btn" id="sqlBtn">העתק קוד הקמה</button></div>
+    <details style="margin-top:10px"><summary class="small">איך מפעילים כניסה עם Google?</summary><p class="small">ב־Supabase: Authentication ← Sign In / Providers ← Google ← Enable. שם מדביקים Client ID ו־Client Secret מ־Google Cloud (APIs & Services ← Credentials ← Create OAuth client ID ← Web application), ובשדה Authorized redirect URIs מדביקים את הכתובת ש־Supabase מציג (Callback URL). אחר כך ב־Supabase: Authentication ← URL Configuration ← Site URL = כתובת המערכת.</p></details>
     <textarea class="code" id="sqlBox" hidden></textarea></fieldset>
   <fieldset><legend>גיבוי, שחזור ואקסל</legend>
     <p class="muted small" style="margin-top:0">${MODE==='cloud'?'הנתונים שמורים בשרת. בכל זאת מומלץ להוריד קובץ גיבוי פעם בשבוע.':'הנתונים במחשב הזה בלבד. חובה להוריד קובץ גיבוי פעם בשבוע ולשמור אותו בדיסק נוסף או במייל של החברה.'} ${lget('lastBackup','')?'גיבוי אחרון מהמחשב הזה: '+esc(lget('lastBackup','')):'עדיין לא הורד גיבוי מהמחשב הזה.'}</p>
@@ -1263,23 +1433,61 @@ function renderAdmin(){
     <div class="row" style="margin-top:8px"><button class="btn" id="restore">שחזר מהטקסט (מוסיף ומעדכן, לא מוחק)</button></div></fieldset>
   </section>`;
   $('#lockAdm').onclick=()=>{ADM=false;ss.del('biala_adm');go('home')};
-  $('#pwBtn').onclick=async()=>{if($('#p1').value.length<4)return toast('לפחות 4 תווים');if($('#p1').value!==$('#p2').value)return toast('הסיסמאות לא זהות');S[$('#pk').value]=await hash($('#p1').value);await putS();toast('הסיסמה הוחלפה');$('#p1').value=$('#p2').value=''};
+  renderUsers();
+  $('#pwBtn').onclick=async()=>{if($('#p1').value.length<4)return toast('לפחות 4 תווים');if($('#p1').value!==$('#p2').value)return toast('הסיסמאות לא זהות');S[$('#pk').value]=await hash($('#p1').value);await putS('החלפת סיסמה: '+$('#pk').selectedOptions[0].text);toast('הסיסמה הוחלפה');$('#p1').value=$('#p2').value=''};
   $('#gbBtn').onclick=async()=>{S.gabbaim=$('#gb').value.split('\n').map(s=>s.trim()).filter(Boolean);if(!S.gabbaim.length)S.gabbaim=['גבאי'];await putS();fillGabbai();toast('הגבאים נשמרו')};
-  $$('[data-ft]').forEach(c=>c.onchange=async()=>{S.features={...S.features,[c.dataset.ft]:c.checked};await putS();renderTabs();toast('עודכן')});
+  $$('[data-ft]').forEach(c=>c.onchange=async()=>{S.features={...S.features,[c.dataset.ft]:c.checked};await putS((c.checked?'הפעלת ':'כיבוי ')+FEATURES[c.dataset.ft]);renderTabs();toast('עודכן')});
   $('#tplBtn').onclick=async()=>{S.templates={...(S.templates||{})};$$('[data-tpl]').forEach(t=>S.templates[t.dataset.tpl]=t.value);await putS();toast('הנוסחים נשמרו')};
   $('#hlBtn').onclick=async()=>{S.help=$('#hl').value;await putS();toast('ההוראות נשמרו')};$('#hlReset').onclick=()=>{$('#hl').value=DEF_HELP};
-  const SQL=`-- מערכת קבלת קהל ביאלה — קוד הקמה ל-Supabase (SQL Editor ← New query ← Run)
+  const mkSQL=adminEmail=>`-- מערכת קבלת קהל ביאלה — קוד הקמה ל-Supabase (SQL Editor ← New query ← Run)
+-- אפשר להריץ שוב בלי לאבד נתונים.
 create table if not exists kk_records (id text primary key, data jsonb not null, updated_at timestamptz default now());
 create table if not exists kk_kupa (id text primary key, data jsonb not null, updated_at timestamptz default now());
 create table if not exists kk_settings (id text primary key, data jsonb not null, updated_at timestamptz default now());
+-- רשימת המורשים: רק מי שנמצא כאן ומאושר יכול להיכנס
+create table if not exists kk_users (email text primary key, name text, role text not null default 'gabbai', active boolean not null default false, blocked boolean not null default false, created_at timestamptz default now(), last_login timestamptz);
+-- יומן פעולות: מי עשה מה ומתי (אי אפשר למחוק או לשנות)
+create table if not exists kk_log (id bigint generated always as identity primary key, at timestamptz not null default now(), email text not null default lower(auth.jwt()->>'email'), action text not null, target text, details jsonb);
+create index if not exists kk_log_at on kk_log(at desc);
+
+create or replace function kk_me() returns text language sql stable as $f$ select lower(coalesce(auth.jwt()->>'email','')) $f$;
+create or replace function kk_active() returns boolean language sql stable security definer set search_path=public as $f$ select exists(select 1 from kk_users where email=kk_me() and active and not blocked) $f$;
+create or replace function kk_admin() returns boolean language sql stable security definer set search_path=public as $f$ select exists(select 1 from kk_users where email=kk_me() and active and not blocked and role='admin') $f$;
+-- רישום שעת הכניסה האחרונה (המשתמש לא יכול לשנות לעצמו הרשאות)
+create or replace function kk_touch(n text) returns void language sql security definer set search_path=public as $f$ update kk_users set last_login=now(), name=coalesce(nullif(name,''),n) where email=kk_me() and active and not blocked $f$;
+create or replace function kk_can_edit() returns boolean language sql stable security definer set search_path=public as $f$ select exists(select 1 from kk_users where email=kk_me() and active and not blocked and role<>'view') $f$;
+
+-- המנהל הראשי
+insert into kk_users(email,name,role,active) values (lower('${adminEmail||'YOUR_GMAIL@gmail.com'}'),'מנהל','admin',true)
+  on conflict (email) do update set role='admin', active=true, blocked=false;
+
 alter table kk_records enable row level security;
 alter table kk_kupa enable row level security;
 alter table kk_settings enable row level security;
--- רק גבאים מחוברים (משתמשים שהוספת ב-Authentication) יכולים לקרוא ולכתוב. מי שאין לו משתמש לא רואה כלום.
-create policy "kk_records_auth" on kk_records for all to authenticated using (true) with check (true);
-create policy "kk_kupa_auth" on kk_kupa for all to authenticated using (true) with check (true);
-create policy "kk_settings_auth" on kk_settings for all to authenticated using (true) with check (true);`;
-  $('#sqlBtn').onclick=()=>{$('#sqlBox').hidden=false;$('#sqlBox').value=SQL;copy(SQL,'קוד ההקמה הועתק. הדבק אותו ב־Supabase ← SQL Editor')};
+alter table kk_users enable row level security;
+alter table kk_log enable row level security;
+drop policy if exists "kk_records_auth" on kk_records; drop policy if exists "kk_kupa_auth" on kk_kupa; drop policy if exists "kk_settings_auth" on kk_settings;
+drop policy if exists kk_r_sel on kk_records; drop policy if exists kk_r_ins on kk_records; drop policy if exists kk_r_upd on kk_records; drop policy if exists kk_r_del on kk_records;
+drop policy if exists kk_k_all on kk_kupa; drop policy if exists kk_s_sel on kk_settings; drop policy if exists kk_s_mod on kk_settings;
+drop policy if exists kk_u_sel on kk_users; drop policy if exists kk_u_req on kk_users; drop policy if exists kk_u_adm on kk_users;
+drop policy if exists kk_l_ins on kk_log; drop policy if exists kk_l_sel on kk_log;
+create policy kk_r_sel on kk_records for select to authenticated using (kk_active());
+create policy kk_r_ins on kk_records for insert to authenticated with check (kk_can_edit());
+create policy kk_r_upd on kk_records for update to authenticated using (kk_can_edit()) with check (kk_can_edit());
+create policy kk_r_del on kk_records for delete to authenticated using (kk_can_edit());
+create policy kk_k_all on kk_kupa for all to authenticated using (kk_active()) with check (kk_can_edit());
+create policy kk_s_sel on kk_settings for select to authenticated using (kk_active());
+create policy kk_s_mod on kk_settings for all to authenticated using (kk_can_edit()) with check (kk_can_edit());
+-- משתמש רואה את עצמו; מנהל רואה ומנהל את כולם; חדש יכול רק לבקש הצטרפות (לא מאושר)
+create policy kk_u_sel on kk_users for select to authenticated using (email=kk_me() or kk_admin());
+create policy kk_u_req on kk_users for insert to authenticated with check ((email=kk_me() and active=false and role='gabbai') or kk_admin());
+create policy kk_u_adm on kk_users for all to authenticated using (kk_admin()) with check (kk_admin());
+-- כל משתמש מאושר רושם ביומן רק בשם עצמו; רק מנהל קורא את היומן
+create policy kk_l_ins on kk_log for insert to authenticated with check (kk_active() and email=kk_me());
+create policy kk_l_sel on kk_log for select to authenticated using (kk_admin());`;
+  const SQL=mkSQL('');
+  $('#sqlBtn').onclick=()=>{const ae=($('#admEmail').value||MYEMAIL).trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(ae)){toast('כתוב קודם את כתובת ה־Gmail של המנהל');$('#admEmail').focus();return}
+    const q=mkSQL(ae);$('#sqlBox').hidden=false;$('#sqlBox').value=q;copy(q,'קוד ההקמה הועתק. הדבק אותו ב־Supabase ← SQL Editor')};
   $('#gkBtn').onclick=async()=>{S.geminiKey=$('#gk').value.trim();S.geminiModel=$('#gm').value.trim()||'gemini-3.8-flash';await putS();toast('המפתח נשמר')};
   $('#gkTest').onclick=async()=>{const m=$('#gkMsg');m.textContent='בודק...';S.geminiKey=$('#gk').value.trim();S.geminiModel=$('#gm').value.trim()||'gemini-3.8-flash';
     try{const c=document.createElement('canvas');c.width=c.height=40;const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,40,40);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.8));await aiReadImage(b);m.style.color='var(--ok)';m.textContent='החיבור תקין ✓'}
@@ -1288,14 +1496,14 @@ create policy "kk_settings_auth" on kk_settings for all to authenticated using (
     lset('supaUrl',u);lset('supaKey',k);toast(u?'נשמר. המערכת נטענת מחדש':'החיבור נמחק');setTimeout(()=>location.reload(),900)};
   if($('#suOff'))$('#suOff').onclick=()=>{lset('supaUrl','');lset('supaKey','');location.reload()};
   if($('#suUp'))$('#suUp').onclick=async()=>{const lr=(await idb.get('records'))||[],lk=(await idb.get('kupa'))||[];if(!lr.length&&!lk.length)return toast('אין נתונים שמורים במחשב הזה');
-    for(const r of lr)await putRec(r);for(const k of lk)await putExp(k);toast(`הועלו ${lr.length} בקשות לשרת`)};
-  const backupObj=()=>({system:'biala-kabalat-kahal',version:4,date:new Date().toISOString(),records:R,kupa:EXP,settings:{...S,pw:undefined,fin:undefined,adm:undefined,geminiKey:undefined}});
-  $('#dlBk').onclick=()=>{downloadBlob(`גיבוי-קבלת-קהל-${fileStamp()}.json`,new Blob([JSON.stringify(backupObj())],{type:'application/json'}));lset('lastBackup',hebOf(new Date())+' ('+greg(todayISO())+')');toast('קובץ הגיבוי ירד לתיקיית ההורדות')};
+    for(const r of lr)await putRec(r,true);for(const k of lk)await putExp(k,true);log('העלאת נתונים לשרת',lr.length+' בקשות');toast(`הועלו ${lr.length} בקשות לשרת`)};
+  const backupObj=()=>({system:'biala-kabalat-kahal',version:4,date:new Date().toISOString(),records:R,kupa:EXP,settings:{...S,pw:undefined,fin:undefined,adm:undefined,geminiKey:undefined,users:undefined}});
+  $('#dlBk').onclick=()=>{log('הורדת קובץ גיבוי');downloadBlob(`גיבוי-קבלת-קהל-${fileStamp()}.json`,new Blob([JSON.stringify(backupObj())],{type:'application/json'}));lset('lastBackup',hebOf(new Date())+' ('+greg(todayISO())+')');toast('קובץ הגיבוי ירד לתיקיית ההורדות')};
   const csvRows=()=>{const cols=[['date','תאריך'],...FIELDS];return [[...cols.map(c=>c[1]),'תאריך עברי','סטטוס','נושאים','נפטרים','תרומה',FIN?'סכום':''],...R.map(x=>[...cols.map(c=>x[c[0]]??''),heb(x.date),STATUS[x.status],(x.tags||[]).join(', '),(x.deceased||[]).map(d=>d.name+(d.date?' ('+d.date+')':'')).join('; '),DON[x.donation?.type||'none'],FIN?(x.donation?.amount||''):''])]};
-  $('#dlCsv').onclick=()=>{const csv=csvRows().map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""').replace(/\n/g,' ')+'"').join(',')).join('\r\n');downloadBlob(`בקשות-ברכה-${fileStamp()}.csv`,new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));toast('הטבלה ירדה. פתח אותה באקסל')};
+  $('#dlCsv').onclick=()=>{log('הורדת טבלה לאקסל');const csv=csvRows().map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""').replace(/\n/g,' ')+'"').join(',')).join('\r\n');downloadBlob(`בקשות-ברכה-${fileStamp()}.csv`,new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));toast('הטבלה ירדה. פתח אותה באקסל')};
   $('#copyCsv').onclick=()=>copy(csvRows().map(r=>r.map(v=>String(v).replace(/[\t\n]/g,' ')).join('\t')).join('\n'),'הטבלה הועתקה, הדבק באקסל');
-  const doRestore=async o=>{if(!o||!Array.isArray(o.records))throw 0;for(const r of o.records)await putRec(r);for(const e of (o.kupa||[]))await putExp(e);
-    if(o.settings){const keep={pw:S.pw,fin:S.fin,adm:S.adm,geminiKey:S.geminiKey};S=withDefaults({...o.settings,...keep},DEFS);await putS()}toast(`שוחזרו ${o.records.length} בקשות`);go('list')};
+  const doRestore=async o=>{if(!o||!Array.isArray(o.records))throw 0;for(const r of o.records)await putRec(r,true);for(const e of (o.kupa||[]))await putExp(e,true);log('שחזור מגיבוי',o.records.length+' בקשות');
+    if(o.settings){const keep={pw:S.pw,fin:S.fin,adm:S.adm,geminiKey:S.geminiKey,users:S.users};S=withDefaults({...o.settings,...keep},DEFS);await putS()}toast(`שוחזרו ${o.records.length} בקשות`);go('list')};
   $('#bkFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{await doRestore(JSON.parse(await f.text()))}catch(x){toast('הקובץ אינו קובץ גיבוי תקין')}};
   $('#restore').onclick=async()=>{try{await doRestore(JSON.parse($('#bk').value))}catch(e){toast('הטקסט שהודבק אינו גיבוי תקין')}};
 }
