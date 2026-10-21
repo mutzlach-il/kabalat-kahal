@@ -214,6 +214,8 @@ textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;fon
 .modal{position:fixed;inset:0;background:rgba(20,10,0,.55);z-index:80;display:grid;place-items:center;padding:16px}.modal-in{background:var(--card,#fff);color:var(--ink,#222);border-radius:14px;padding:18px;width:min(640px,100%);max-height:92vh;overflow:auto;display:grid;gap:12px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .notice.tid{background:#fff4d6;border-color:#c9a227}
 tr.sel td{background:rgba(201,162,39,.18)}
+.todaygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:10px}.card.today{border-inline-start:5px solid var(--warn)}.card.today.ok{border-inline-start-color:var(--ok);opacity:.85}.card.today h3{margin:0}.card.today table{width:100%;margin:6px 0}.card.today td{padding:4px 2px;border-bottom:1px solid var(--line,#ddd)}
+.pubform{max-width:760px;margin:20px auto;padding:0 16px}.pubform form{position:relative}.pfh{text-align:center;margin-bottom:12px}.pfh img{width:84px;height:auto}.pfh h1{font-size:1.35rem;margin:6px 0}.pfh p{margin:0;opacity:.75}
 .qscreen{background:linear-gradient(160deg,#4a2410,#2a1406);color:#f5e6c8;border-radius:16px;padding:28px;margin-top:12px;min-height:70vh;display:grid;gap:20px;align-content:start;text-align:center}
 .qscreen:fullscreen{border-radius:0;padding:5vh 5vw;align-content:center}.qsh{display:flex;align-items:center;justify-content:center;gap:16px}.qsh img{height:70px}.qsh b{display:block;font-size:2rem}.qsh span{opacity:.8}
 .qsnow span,.qsnext>span{font-size:1.4rem;opacity:.85}.qsnow b{display:block;font-size:min(30vw,14rem);line-height:1;color:#ffd77a;font-variant-numeric:tabular-nums}.qsn{font-size:2rem}
@@ -513,7 +515,7 @@ const STATUS={wait:'ממתין',in:'הוכנס לאדמו״ר',done:'טופל'};
 const DON={none:'ללא',cash:'מזומן',standing:'הוראת קבע',check:'צ׳ק',transfer:'העברה בנקאית'};
 const MARITAL=['נשוי','נשואה','רווק','רווקה','אלמן','אלמנה','גרוש','גרושה'];
 const TAGS=['רפואה','פרנסה','זיווג','הצלחה','שלום בית','נחת','דירה','הצלה','לימוד','אחר'];
-const FEATURES={scan:'סריקת טופס אוטומטית',queue:'תור קבלת קהל',kvittel:'מסך קוויטל לאדמו״ר',finance:'כספים והוראות קבע',kupa:'קופה (הכנסות והוצאות)',yahr:'ימי זיכרון',birthdays:'ימי הולדת עבריים',names:'רשימת שמות לתפילה',autolock:'נעילה אוטומטית אחרי 20 דקות ללא פעילות',showGreg:'הצג תאריך לועזי קטן ליד העברי',tidings:'בשורות טובות',qscreen:'מסך תור לחדר ההמתנה',donors:'ניהול תורמים',contacts:'אנשי קשר',messages:'שליחת הודעות (מייל, וואטסאפ, SMS)',report:'דוח חודשי',autobackup:'גיבוי שבועי אוטומטי (למנהלים)'};
+const FEATURES={scan:'סריקת טופס אוטומטית',queue:'תור קבלת קהל',kvittel:'מסך קוויטל לאדמו״ר',finance:'כספים והוראות קבע',kupa:'קופה (הכנסות והוצאות)',yahr:'ימי זיכרון',birthdays:'ימי הולדת עבריים',names:'רשימת שמות לתפילה',autolock:'נעילה אוטומטית אחרי 20 דקות ללא פעילות',showGreg:'הצג תאריך לועזי קטן ליד העברי',tidings:'בשורות טובות',qscreen:'מסך תור לחדר ההמתנה',donors:'ניהול תורמים',contacts:'אנשי קשר',messages:'שליחת הודעות (מייל, וואטסאפ, SMS)',report:'דוח חודשי',autobackup:'גיבוי שבועי אוטומטי (למנהלים)',today:'מסך "היום שלי" לגבאי',webform:'טופס בקשה מהבית (קישור לציבור)'};
 const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 המערכת מחליפה את טופס הנייר "בקשת ברכה מכ״ק מרן האדמו״ר מביאלא שליט״א". כל מה שרשום בטופס נרשם כאן, ואפשר לחפש, לסדר תור ולהכין את השמות לאדמו״ר.
 
@@ -651,6 +653,22 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 שכח סיסמה? כותב את המייל ולוחץ "שכחתי סיסמה". מגיע אליו מייל עם קישור לבחירת סיסמה חדשה.
 כמו בכניסה עם Google, גם כאן רק מי שאישרת ברשימת המשתמשים רואה נתונים.
 בלשונית "ניהול" ← "הצפנת הנתונים" המנהל הראשי יכול להחליף את מפתח הארגון (למשל כשגבאי עוזב) וליצור קוד שחזור חדש.
+
+# היום שלי
+לשונית "היום שלי" מרכזת את כל מה שצריך לטפל בו היום: מי ממתין בתור, ימי זיכרון היום ומחר (עם כפתור לשליחת תזכורת למשפחה), בקשות לבדיקה, בשורות טובות שעוד לא נשלחה עליהן ברכה, ולמי שבתוך הכספים – הוראות קבע שלא נגבו החודש והוראות קבע שמסתיימות. כרטיס ירוק = אין מה לעשות. כשנשלחת ברכת "מזל טוב" מתוך המערכת, הבשורה מסומנת אוטומטית כ"נשלח".
+
+# רישום תרומה בלי בקשה
+1. נכנסים לכרטיס האדם (לשונית "אנשים") ולוחצים "💰 רישום תרומה", או בלשונית "כספים" / "תורמים" לוחצים "רישום תרומה".
+2. בוחרים את התורם מהרשימה (או כותבים שם חדש), אופן התשלום והסכום. בהוראת קבע – הסכום החודשי, מספר החודשים וחודש ההתחלה.
+3. שומרים. התרומה מופיעה בכספים, בתורמים, בקופה (כהכנסה) ובכרטיס האדם. גביית הוראת קבע מסמנים בלשונית "כספים" כרגיל.
+לא רושמים מספרי כרטיס אשראי או חשבון בנק.
+
+# טופס בקשה מהבית
+אפשר לתת לציבור קישור, שבו ממלאים בקשת ברכה מהבית, בלי כניסה למערכת.
+1. בלשונית "בקשות מהבית" מופיע הקישור. לוחצים "העתק קישור" ושולחים אותו (וואטסאפ, מייל, מודעה).
+2. מי שממלא את הטופס – הפרטים מוצפנים כבר אצלו במחשב, ורק גבאים מאושרים יכולים לפתוח אותם. בשרת נשמר רק ג'יבריש.
+3. בקשה שהגיעה מופיעה בלשונית "בקשות מהבית" (עם מספר אדום). בודקים ולוחצים "קלוט לרשימה" – היא נכנסת לבקשות עם סימון "לבדיקה". אם האדם כבר ביקר בעבר, המערכת מראה זאת ומשלימה את הפרטים החסרים. אפשר גם למחוק.
+4. כדי לסגור את הטופס לציבור – מכבים בלשונית "ניהול" את "טופס בקשה מהבית". מי שייכנס לקישור יראה שהטופס סגור.
 
 # סיסמאות ראשוניות
 כניסה: 1234 · כספים: 123456 · ניהול: 123456. אפשר להחליף אותן בלשונית "ניהול" ← "סיסמאות". כדי להחליף קוד צריך להקליד קודם את הקוד הנוכחי, כך שגם מי שקיבל הרשאת מנהל לא יכול להשתלט על המערכת בלי לדעת את הקודים. רק הבעלים (המנהל הראשי) נכנס לכספים ולניהול בלי קוד, ויכול להחליף קוד גם בלי לדעת את הקוד הישן. (במצב שרת הכניסה היא עם חשבון Google של כל גבאי.)`;
@@ -792,6 +810,22 @@ Without Gmail: type your email, type a password you choose (at least 8 character
 Forgot your password? Type your email and click "I forgot my password". An email with a link to choose a new password arrives.
 As with Google sign-in, only people you approved in the users list see any data.
 In "Management" → "Data encryption" the owner can change the organization key (for example when a gabbai leaves) and create a new recovery code.
+
+# My day
+The "My day" tab gathers everything to handle today: who is waiting in the queue, yahrzeits today and tomorrow (with a button to send the family a reminder), requests to review, good tidings not yet congratulated, and – inside finances – standing orders not collected this month and standing orders that are ending. A green card means nothing to do. Sending a "Mazal tov" message from the system marks the tiding as sent.
+
+# Recording a donation without a request
+1. Open the person card ("People" tab) and click "💰 Record donation", or click "Record donation" in the "Finances" / "Donors" tab.
+2. Pick the donor from the list (or type a new name), the payment method and amount. For a standing order – the monthly amount, number of months and start month.
+3. Save. The donation appears in Finances, Donors, the Cash box (as income) and the person card. Mark standing-order collection in "Finances" as usual.
+Do not record credit card or bank account numbers.
+
+# Request form from home
+You can give the public a link to fill in a blessing request from home, without signing in.
+1. The link appears in the "Requests from home" tab. Click "Copy link" and send it (WhatsApp, email, a notice).
+2. The details are encrypted on the sender's own computer, and only approved gabbaim can open them. The server only holds gibberish.
+3. A new request appears in "Requests from home" (with a red number). Check it and click "Add to list" – it enters the requests marked "To review". If the person visited before, the system shows it and fills in missing details. You can also delete it.
+4. To close the form to the public, turn off "Request form from home" in "Management". Anyone opening the link will see that the form is closed.
 
 # Initial passwords
 Login: 1234 · Finances: 123456 · Management: 123456. You can change them in "Management" → "Passwords". To change a code you must first type the current code, so even someone with manager permission cannot take over the system without knowing the codes. Only the owner (head manager) enters finances and management without a code, and can change a code without knowing the old one. (In server mode, each gabbai signs in with their own Google account.)`;
@@ -948,7 +982,7 @@ async function putRec(o,quiet){o.updatedAt=Date.now();o.updatedBy=ME;const i=R.f
 async function delRec(id){const x=R.find(r=>r.id===id);if(x)log('מחיקת בקשה',fullName(x));R=R.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_records',id);else await idb.set('records',R)}
 async function putExp(o,quiet){if(!quiet)log('רישום בקופה',(o.kind==='in'?'הכנסה ':'הוצאה ')+(o.desc||''));const i=EXP.findIndex(r=>r.id===o.id);if(i>=0)EXP[i]=o;else EXP.push(o);if(MODE==='cloud')await cloudPut('kk_kupa',o.id,o);else await idb.set('kupa',EXP)}
 async function delExp(id){log('מחיקה מהקופה',id);EXP=EXP.filter(r=>r.id!==id);if(MODE==='cloud')await cloudDel('kk_kupa',id);else await idb.set('kupa',EXP)}
-async function putS(what){if(what)log('שינוי הגדרות',what);if(MODE==='cloud')await cloudPut('kk_settings','main',S);else await idb.set('settings',S)}
+async function putS(what){if(what)log('שינוי הגדרות',what);if(MODE==='cloud'){await cloudPut('kk_settings','main',S);ensureInboxKey().catch(()=>{})}else await idb.set('settings',S)}
 /* טעינת טבלה: קודם בבת אחת; אם החיבור נכשל (למשל סינון שחוסם תשובה גדולה) – טוענים שורה אחרי שורה, כדי שכמה שיותר ייטען ונדע מה נחסם */
 let LOADBAD=[];
 async function fetchTable(tbl){
@@ -968,6 +1002,7 @@ async function loadCloud(){LOADBAD=[];
   try{const cd=await fetchTable('kk_contacts');C=(await Promise.all(cd.map(x=>open('kk_contacts',x)))).filter(Boolean)}catch(e){C=C||[]}
   let sd=c.data?.data||null;if(sd){if(typeof sd.enc!=='string')plain.push(['kk_settings','main',sd]);try{sd=await openData(sd)}catch(e){sd=null}}
   S=withDefaults(sd,DEFS);
+  await loadInbox();
   /* נתונים ישנים שנשמרו לפני ההצפנה – מצפינים אותם עכשיו בשרת */
   if(DEK&&plain.length&&canEdit()){for(const [t,id,d] of plain){await cloudPut(t,id,t==='kk_settings'?d:{...d,id})}log('הצפנה',`הוצפנו ${plain.length} רשומות ישנות בשרת`)}}
 async function boot(){
@@ -980,6 +1015,7 @@ async function boot(){
   $('#pw').placeholder=T(MODE==='cloud'?'סיסמה':'סיסמת כניסה');
   fillGabbai();renderModebar();initGoogle();
   /* רענון אוטומטי כשעובדים כמה גבאים */
+  if(MODE==='cloud'&&/^#bakasha/.test(location.hash)){renderPublicForm();return false}
   if(MODE==='cloud'){setInterval(()=>{if(!document.hidden&&!$('#app').hidden){grantDevices().catch(()=>{});if(view!=='new'&&view!=='edit')loadCloud().then(refresh).catch(()=>{})}},45000);
     setInterval(async()=>{if($('#app').hidden||isOwner()||!MYEMAIL)return;const [{data:sys},{data:me}]=await Promise.all([SB.from('kk_system').select('disabled,message').eq('id',1).maybeSingle(),SB.from('kk_users').select('active,blocked').eq('email',MYEMAIL).maybeSingle()]);
       const msg=sys?.disabled?(sys.message||'המערכת מושבתת זמנית.'):(!me||me.blocked||!me.active)?'המשתמש שלך הושבת. פנה לבעל המערכת.':'';if(msg){R=[];EXP=[];logout();$('#loginErr').textContent=T(msg)}},20000);
@@ -1010,7 +1046,7 @@ async function afterCloudAuth(user){
   let lerr=null;for(let i=0;i<2;i++){try{await loadCloud();lerr=null;break}catch(x){lerr=x;await new Promise(r=>setTimeout(r,1500))}}
   if(lerr){const m=String(lerr?.message||lerr?.code||lerr||'');try{await SB.from('kk_log').insert({action:'שגיאה בטעינת נתונים',target:m.slice(0,200),details:{who:ME,code:lerr?.code||'',hint:String(lerr?.hint||lerr?.details||'').slice(0,200),ua:navigator.userAgent.slice(0,160)}})}catch(e){}
     showPending('אין גישה לנתונים: '+m+(/fetch|network|load/i.test(m)?' — ייתכן שהסינון (נטפרי וכדומה) חוסם את השרת במחשב הזה.':''),true);return false}
-  grantDevices().catch(()=>{});escrowSave();
+  grantDevices().catch(()=>{});escrowSave();ensureInboxKey().then(()=>loadInbox()).then(()=>{if(!$('#app').hidden)renderTabs()}).catch(()=>{});
   if(LOADBAD.length)setTimeout(()=>toast(T('חלק מהנתונים לא נטענו במחשב הזה')+' ('+LOADBAD.length+'). '+T('ייתכן שהסינון חוסם אותם.')),1500);
   if(ROLE==='owner'){FIN=true;ADM=true;ss.set('biala_fin','1');ss.set('biala_adm','1')}
   if(!S.finMig&&isAdm()){S.fin=await hash('123456');S.finMig=1;try{await putS('קוד הכספים עודכן ל־123456')}catch(e){}}
@@ -1084,9 +1120,9 @@ function gate(kind,title,onOk){
 
 /* ===== ניווט ===== */
 let view='home', current=null, filt={q:'',status:'',date:'',tag:'',rev:false};
-const TABS=()=>[['home','ראשי'],['list','בקשות'],canEdit()&&['new','בקשה חדשה'],S.features.scan&&canEdit()&&['scan','סריקת דפים'],['people','אנשים'],S.features.contacts&&['contacts','אנשי קשר'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.tidings&&['tidings','בשורות טובות'],S.features.finance&&canFin()&&['money','כספים'],S.features.finance&&S.features.donors&&canFin()&&['donors','תורמים'],S.features.report&&canEdit()&&['report','דוח חודשי'],S.features.kupa&&canFin()&&['kupa','קופה'],['help','הוראות'],isAdm()&&['log','יומן פעולות'],isAdm()&&['admin','ניהול'],['logout','יציאה']].filter(Boolean);
+const TABS=()=>[['home','ראשי'],S.features.today&&['today','היום שלי'],MODE==='cloud'&&S.features.webform&&canEdit()&&['inbox','בקשות מהבית'],['list','בקשות'],canEdit()&&['new','בקשה חדשה'],S.features.scan&&canEdit()&&['scan','סריקת דפים'],['people','אנשים'],S.features.contacts&&['contacts','אנשי קשר'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.tidings&&['tidings','בשורות טובות'],S.features.finance&&canFin()&&['money','כספים'],S.features.finance&&S.features.donors&&canFin()&&['donors','תורמים'],S.features.report&&canEdit()&&['report','דוח חודשי'],S.features.kupa&&canFin()&&['kupa','קופה'],['help','הוראות'],isAdm()&&['log','יומן פעולות'],isAdm()&&['admin','ניהול'],['logout','יציאה']].filter(Boolean);
 function renderTabs(){const rev=R.filter(r=>r.review).length;
-  $('#tabs').innerHTML=TABS().map(([k,t])=>`<button data-v="${k}" aria-current="${k===(['view','edit'].includes(view)?'list':view==='person'?'people':view)}">${t}${k==='list'&&rev?`<span class="badge">${rev}</span>`:''}</button>`).join('');
+  $('#tabs').innerHTML=TABS().map(([k,t])=>`<button data-v="${k}" aria-current="${k===(['view','edit'].includes(view)?'list':view==='person'?'people':view)}">${t}${k==='list'&&rev?`<span class="badge">${rev}</span>`:''}${k==='inbox'&&INBOX.length?`<span class="badge">${INBOX.length}</span>`:''}</button>`).join('');
   $('#who').textContent=ME?`מחובר: ${ME}`:''}
 (()=>{const t=lget('theme','');if(t)document.documentElement.dataset.theme=t})();
 $$('.langsw [data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===LANG)));
@@ -1094,7 +1130,7 @@ $('#themeBtn').onclick=()=>{const cur=document.documentElement.dataset.theme||(m
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v==='logout')return logout();go(b.dataset.v)});
 let pendingPre=null, curPerson=null;
 const VIEWS={home:renderHome,list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
-  money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,tidings:renderTidings,qscreen:renderQScreen,contacts:renderContacts,report:renderReport,donors:()=>FIN&&canFin()?renderDonors():gate('fin','תורמים',renderDonors),admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
+  money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,today:renderToday,inbox:renderInbox,tidings:renderTidings,qscreen:renderQScreen,contacts:renderContacts,report:renderReport,donors:()=>FIN&&canFin()?renderDonors():gate('fin','תורמים',renderDonors),admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
 function go(v,rec){if(!VIEWS[v])v='home';typing=false;if(!canEdit()&&['new','edit','scan'].includes(v)){toast('יש לך הרשאת צפייה בלבד');return}view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
 let dirty=false;
 /* שומר על מה שהוקלד: עדכון מהשרת לא מוחק שדות שעוד לא נשמרו */
@@ -1105,7 +1141,7 @@ function snapFields(){const m={};$$('#main input[id],#main textarea[id],#main se
 function restoreFields(m){for(const id in m){const el=document.getElementById(id);if(!el)continue;if(el.type==='checkbox')el.checked=m[id];else if(el.value!==m[id])el.value=m[id]}}
 function refresh(){if($('#app').hidden)return;renderTabs();
   /* מסכי עבודה לא מצוירים מחדש לבד — רק מסכי תצוגה */
-  if(!['home','list','people','person','queue','kvittel','names','dates','view','tidings','contacts','donors','report'].includes(view)||$('#gf')||typing)return;
+  if(!['home','list','people','person','queue','kvittel','names','dates','view','tidings','contacts','donors','report','today','inbox','money'].includes(view)||$('#gf')||typing)return;
   const a=document.activeElement;if(a&&a.closest&&a.closest('#main')&&a.matches('input,textarea,select,[contenteditable]'))return;
   if(view==='view'&&current)current=R.find(r=>r.id===current.id)||null;
   if(view==='list'&&$('#rows')){fillRows();return}
@@ -1378,7 +1414,7 @@ function renderPerson(){const recs=personRecs(curPerson);if(!recs.length)return 
   const row=(k,v)=>v?`<dt>${k}</dt><dd>${v}</dd>`:'';
   $('#main').innerHTML=`<section>
   <div class="row"><button class="btn sm" id="back">→ לכל האנשים</button><span class="spacer"></span>
-    <button class="btn" id="pNew">+ בקשה חדשה לאדם זה</button><button class="btn" id="pEdit">עריכת הפרטים</button>
+    <button class="btn" id="pNew">+ בקשה חדשה לאדם זה</button>${S.features.finance&&canFin()&&canEdit()?'<button class="btn gold" id="pDon">💰 רישום תרומה</button>':''}<button class="btn" id="pEdit">עריכת הפרטים</button>
     ${S.features.messages&&(x.email||x.mobile)?'<button class="btn" id="pMsg">💬 הודעה</button>':x.email?`<a class="btn" href="mailto:${esc(x.email)}">שלח מייל</a>`:''}<button class="btn gold" id="pPrint">הדפסה</button><button class="btn" id="pWord">פתח בוורד</button></div>
   <div class="pcard"><div><div class="pname">${esc(fullName(x))}</div><div class="muted">${esc(P.prayNames.join(' · '))}</div></div>
     <div class="pstats"><span><b>${recs.length}</b> ביקורים</span><span>ראשון: ${dual(first.date)}</span><span>אחרון: ${dual(last.date)}</span>${P.review?`<span class="pill rev">${P.review} לבדיקה</span>`:''}</div></div>
@@ -1390,6 +1426,7 @@ function renderPerson(){const recs=personRecs(curPerson);if(!recs.length)return 
         ${r.deceased?.length?`<div class="small" style="margin-top:6px"><span class="muted">לעילוי נשמת:</span> ${r.deceased.map(d=>esc(d.name)).join(' · ')}</div>`:''}
         ${S.features.finance&&r.donation&&r.donation.type&&r.donation.type!=='none'?`<div class="small" style="margin-top:4px"><span class="muted">תרומה:</span> ${DON[r.donation.type]} ${FIN?money(r.donation.amount):''}</div>`:''}
         ${r.notes?`<div class="small muted" style="margin-top:4px">${esc(r.notes)}</div>`:''}</div>`).join('')}</div>
+      ${S.features.finance&&FIN&&canFin()&&EXP.some(e=>isDonExp(e)&&e.pkey===curPerson)?`<h3>תרומות שנרשמו בלי בקשה</h3><table><tbody>${EXP.filter(e=>isDonExp(e)&&e.pkey===curPerson).sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(e=>`<tr><td>${dual(e.date)}</td><td><span class="pill tag">${DON[e.don.type]}</span></td><td class="num">${money(e.don.amount)}${e.don.type==='standing'?' לחודש':''}</td></tr>`).join('')}</tbody></table>`:''}
       ${P.scans.length?`<h3>דפים סרוקים (${P.scans.length})</h3><div class="gallery">${P.scans.map(s=>`<figure><img src="${esc(s.url)}" alt="דף מתאריך ${esc(greg(s.date))}" data-big><figcaption>${dual(s.date)}</figcaption></figure>`).join('')}</div>`:''}
     </div>
     <div class="card"><h3>פרטים אישיים</h3><dl>
@@ -1408,6 +1445,7 @@ function renderPerson(){const recs=personRecs(curPerson);if(!recs.length)return 
   $$('[data-open]').forEach(b=>b.onclick=()=>go('view',byId(b.dataset.open)));
   $$('[data-big]').forEach(i=>i.onclick=()=>i.closest('figure').classList.toggle('big'));
   $('#pEdit').onclick=()=>go('edit',last);
+  if($('#pDon'))$('#pDon').onclick=()=>donationForm({key:curPerson},renderPerson);
   $('#pNew').onclick=()=>{const p={date:todayISO(),donation:{type:'none'},status:'wait',tags:[]};FIELDS.forEach(([k])=>{if(k!=='request')p[k]=x[k]||''});p.deceased=P.deceased.map(d=>({...d}));pendingPre=p;go('new')};
   if($('#pMsg'))$('#pMsg').onclick=()=>compose({name:fullName(x),email:x.email,phone:x.mobile},x,'free');
   $('#pPrint').onclick=()=>saveDoc('כרטיס '+fullName(x),docPerson(curPerson),'print');
@@ -1580,36 +1618,9 @@ function renderPeople(){const g={};R.forEach(r=>{const k=personKey(r);(g[k]=g[k]
 /* ===== כספים ===== */
 const ym=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
 const HEB_GREG_M=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-function renderMoney(){const r=R.filter(x=>x.donation&&x.donation.type&&x.donation.type!=='none');
-  const once=r.filter(x=>x.donation.type!=='standing'),st=r.filter(x=>x.donation.type==='standing');const sum=a=>a.reduce((s,x)=>s+(Number(x.donation.amount)||0),0);
-  const months=[...Array(6)].map((_,i)=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-5+i);return d});
-  const curYM=ym(new Date()),paidNow=st.filter(x=>x.payments?.[curYM]);
-  $('#main').innerHTML=`<section><div class="row"><h2>כספים</h2><span class="spacer"></span><button class="btn sm" id="lockFin">נעל כספים</button></div>
-  <div class="stats">
-    <div class="stat"><b>${money(sum(once))||'₪0'}</b><span>תרומות חד־פעמיות (${once.length})</span></div>
-    <div class="stat"><b>${money(sum(once.filter(x=>x.donation.type==='cash')))||'₪0'}</b><span>מזומן</span></div>
-    <div class="stat"><b>${money(sum(st))||'₪0'}</b><span>הוראות קבע לחודש (${st.length})</span></div>
-    <div class="stat ${st.length>paidNow.length?'alert':''}"><b>${paidNow.length}/${st.length}</b><span>נגבו החודש</span></div>
-  </div>
-  <h3 style="margin:8px 0">הוראות קבע — סימון גבייה לפי חודש</h3>
-  <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>נייד</th><th>חודשי</th><th>חודשים</th>${months.map(m=>`<th>${HEB_GREG_M[m.getMonth()]}</th>`).join('')}<th>נגבה עד כה</th></tr></thead><tbody>
-  ${st.length?st.map(x=>`<tr><td><a href="#" data-id="${x.id}" class="open">${esc(fullName(x))}</a></td><td class="num"><span class="ltr">${esc(x.mobile)}</span></td><td class="num">${money(x.donation.amount)}</td><td class="num">${esc(x.donation.months)||'∞'}</td>
-    ${months.map(m=>`<td><input type="checkbox" aria-label="נגבה" data-pay="${x.id}" data-m="${ym(m)}" ${x.payments?.[ym(m)]?'checked':''}></td>`).join('')}
-    <td class="num">${money(Object.values(x.payments||{}).filter(Boolean).length*(Number(x.donation.amount)||0))||'₪0'}</td></tr>`).join(''):`<tr><td colspan="${5+months.length}" class="empty">אין הוראות קבע</td></tr>`}
-  </tbody></table></div>
-  <h3 style="margin:18px 0 8px">תרומות חד־פעמיות</h3>
-  <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך</th><th>שם</th><th>אופן</th><th>סכום</th><th>מס׳ קבלה</th></tr></thead><tbody>
-  ${once.length?once.sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(x=>`<tr><td>${dual(x.date)}</td><td><a href="#" data-id="${x.id}" class="open">${esc(fullName(x))}</a></td><td><span class="pill tag">${DON[x.donation.type]}</span></td><td class="num">${money(x.donation.amount)}</td>
-    <td>${x.donation.receipt?`<span class="num">${esc(x.donation.receipt)}</span>`:`<button class="btn sm" data-rc="${x.id}">הפק מספר</button>`}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">אין תרומות</td></tr>'}
-  </tbody></table></div></section>`;
-  $('#lockFin').onclick=()=>{FIN=false;ss.del('biala_fin');toast('הכספים ננעלו');go('home')};
-  $$('a.open').forEach(a=>a.onclick=e=>{e.preventDefault();go('view',byId(a.dataset.id))});
-  $$('[data-pay]').forEach(c=>c.onchange=async()=>{const x=byId(c.dataset.pay);x.payments={...(x.payments||{}),[c.dataset.m]:c.checked};await putRec(x);toast(c.checked?'סומן כנגבה':'הסימון הוסר')});
-  $$('[data-rc]').forEach(b=>b.onclick=async()=>{const x=byId(b.dataset.rc);S.nextReceipt=(S.nextReceipt||1000)+1;await putS();x.donation={...x.donation,receipt:String(S.nextReceipt)};await putRec(x);renderMoney()});
-}
 function renderKupa(){const list=[...EXP].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  const byM={};list.forEach(e=>{const k=(e.date||'').slice(0,7);byM[k]=byM[k]||{in:0,out:0};byM[k][e.kind]+=Number(e.amount)||0});
-  const mx=Math.max(1,...Object.values(byM).flatMap(v=>[v.in,v.out]));const tin=list.filter(e=>e.kind==='in').reduce((s,e)=>s+(+e.amount||0),0),tout=list.filter(e=>e.kind==='out').reduce((s,e)=>s+(+e.amount||0),0);
+  const byM={};list.forEach(e=>{const k=(e.date||'').slice(0,7);byM[k]=byM[k]||{in:0,out:0};byM[k][e.kind]+=expAmt(e)});
+  const mx=Math.max(1,...Object.values(byM).flatMap(v=>[v.in,v.out]));const tin=list.filter(e=>e.kind==='in').reduce((s,e)=>s+expAmt(e),0),tout=list.filter(e=>e.kind==='out').reduce((s,e)=>s+(+e.amount||0),0);
   $('#main').innerHTML=`<section><h2>קופה</h2><p class="muted">הכנסות והוצאות של המשרד שלא קשורות לבקשה מסוימת.</p>
   <div class="stats"><div class="stat"><b>${money(tin)||'₪0'}</b><span>הכנסות</span></div><div class="stat"><b>${money(tout)||'₪0'}</b><span>הוצאות</span></div><div class="stat"><b>${money(tin-tout)||'₪0'}</b><span>יתרה</span></div></div>
   <form class="card" id="kf"><h3>רישום חדש</h3><div class="grid">
@@ -1842,6 +1853,18 @@ create policy kk_d_upd on kk_devices for update to authenticated using (kk_admin
 create policy kk_d_del on kk_devices for delete to authenticated using (email=kk_me() or kk_admin());
 -- אנשי קשר (מוצפנים כמו כל הנתונים)
 create table if not exists kk_contacts (id text primary key, data jsonb not null, updated_at timestamptz default now());
+create table if not exists kk_public (id text primary key, data jsonb not null, updated_at timestamptz default now());
+alter table kk_public enable row level security;
+drop policy if exists kk_pub_read on kk_public; drop policy if exists kk_pub_write on kk_public;
+create policy kk_pub_read on kk_public for select to anon, authenticated using (true);
+create policy kk_pub_write on kk_public for all to authenticated using (kk_admin()) with check (kk_admin());
+create table if not exists kk_inbox (id bigint generated always as identity primary key, data jsonb not null, created_at timestamptz default now());
+alter table kk_inbox enable row level security;
+drop policy if exists kk_in_ins on kk_inbox; drop policy if exists kk_in_sel on kk_inbox; drop policy if exists kk_in_del on kk_inbox;
+create policy kk_in_ins on kk_inbox for insert to anon, authenticated with check (octet_length(data::text) < 20000 and exists (select 1 from kk_public p where p.id='form' and (p.data->>'open')::boolean));
+create policy kk_in_sel on kk_inbox for select to authenticated using (kk_active());
+create policy kk_in_del on kk_inbox for delete to authenticated using (kk_can_edit());
+grant insert on kk_inbox to anon; grant select on kk_public to anon;
 alter table kk_contacts enable row level security;
 drop policy if exists kk_c_all on kk_contacts;
 create policy kk_c_all on kk_contacts for all to authenticated using (kk_active()) with check (kk_can_edit());
@@ -2008,7 +2031,7 @@ function compose(to,x,tplKey){if(!S.features.messages)return toast('שליחת �
       <button class="btn" id="mWa">וואטסאפ</button><button class="btn" id="mSms">SMS</button><button class="btn" id="mCp">העתק</button></div><div id="mMsg" class="small muted"></div></div>`;
   document.body.appendChild(ov);const close=()=>ov.remove();$('#mX').onclick=close;ov.onclick=e=>{if(e.target===ov)close()};
   $('#mT').onchange=()=>{$('#mB').value=body($('#mT').value);$('#mS').value=MSG_TPL[$('#mT').value][0]+' – מרכז חסידי ביאלא'};
-  const done=ch=>log('שליחת הודעה',to.name||'',{channel:ch,tpl:$('#mT').value});
+  const done=ch=>{log('שליחת הודעה',to.name||'',{channel:ch,tpl:$('#mT').value});if($('#mT').value==='tiding'&&x?.id&&x.tiding&&byId(x.id)&&!x.tiding.sent){const r=byId(x.id);r.tiding={...r.tiding,sent:Date.now()};putRec(r,true).catch(()=>{})}};
   $('#mMail').onclick=()=>{const e=$('#mE').value.trim();if(!e)return $('#mMsg').textContent=T('אין כתובת מייל');location.href=`mailto:${encodeURIComponent(e)}?subject=${encodeURIComponent($('#mS').value)}&body=${encodeURIComponent($('#mB').value.slice(0,1800))}`;done('mail')};
   if($('#mSend'))$('#mSend').onclick=async()=>{const e=$('#mE').value.trim();if(!/.+@.+\..+/.test(e))return $('#mMsg').textContent=T('אין כתובת מייל תקינה');$('#mMsg').textContent=T('שולח…');
     try{const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:S.emailjs.service,template_id:S.emailjs.template,user_id:S.emailjs.key,template_params:{to_email:e,to_name:to.name||'',subject:$('#mS').value,message:$('#mB').value}})});
@@ -2054,16 +2077,11 @@ const addMonths=(ymS,n)=>{const [y,m]=ymS.split('-').map(Number);const d=new Dat
 function standingInfo(r){const d=r.donation||{};if(d.type!=='standing')return null;const start=d.start||(r.date||'').slice(0,7)||ym(new Date());const n=Number(d.months)||0;const end=n?addMonths(start,n-1):'';const cur=ym(new Date());
   const left=end?((+end.slice(0,4))*12+(+end.slice(5,7)))-((+cur.slice(0,4))*12+(+cur.slice(5,7))):null;
   return {start,end,left,paid:Object.values(r.payments||{}).filter(Boolean).length,paidNow:!!r.payments?.[cur],state:end&&left<0?'ended':end&&left<=1?'ending':'active'}}
-function donorIndex(){const g={};R.filter(r=>r.donation&&r.donation.type&&r.donation.type!=='none').forEach(r=>{const k=personKey(r);(g[k]=g[k]||[]).push(r)});
-  return Object.entries(g).map(([k,v])=>{const recs=personRecs(k),x=personSummary(recs).x;const once=v.filter(r=>r.donation.type!=='standing'),st=v.filter(r=>r.donation.type==='standing').map(r=>({r,i:standingInfo(r)}));
-    return {key:k,x,v,once,st,total:once.reduce((s,r)=>s+(+r.donation.amount||0),0)+st.reduce((s,o)=>s+o.i.paid*(+o.r.donation.amount||0),0),
-      monthly:st.filter(o=>o.i.state!=='ended').reduce((s,o)=>s+(+o.r.donation.amount||0),0),last:v.map(r=>r.date).sort().slice(-1)[0]||'',
-      ending:st.some(o=>o.i.state==='ending'),ended:st.length&&st.every(o=>o.i.state==='ended'),unpaid:st.some(o=>o.i.state!=='ended'&&!o.i.paidNow)}})}
 let donorFilt='all';
 function renderDonors(){const all=donorIndex();const F={all:['כל התורמים',()=>true],standing:['הוראת קבע פעילה',d=>d.monthly>0],ending:['הוראת קבע מסתיימת',d=>d.ending],ended:['הוראת קבע שהסתיימה',d=>d.ended],unpaid:['לא נגבה החודש',d=>d.unpaid],once:['חד־פעמי בלבד',d=>!d.st.length]};
   const list=all.filter(F[donorFilt][1]).sort((a,b)=>b.total-a.total);const yr=String(new Date().getFullYear());
-  const yearSum=R.filter(r=>r.donation&&r.donation.type&&r.donation.type!=='none'&&r.donation.type!=='standing'&&(r.date||'').startsWith(yr)).reduce((s,r)=>s+(+r.donation.amount||0),0)+R.filter(r=>r.donation?.type==='standing').reduce((s,r)=>s+Object.entries(r.payments||{}).filter(([m,v])=>v&&m.startsWith(yr)).length*(+r.donation.amount||0),0);
-  $('#main').innerHTML=`<section><div class="row"><h2>תורמים</h2><span class="spacer"></span><button class="btn" id="dPrint">הדפסה</button><button class="btn" id="dCsv">הורד לאקסל</button></div>
+  const yearSum=donRecs().filter(r=>r.donation.type!=='standing'&&(r.date||'').startsWith(yr)).reduce((s,r)=>s+(+r.donation.amount||0),0)+donRecs().filter(r=>r.donation.type==='standing').reduce((s,r)=>s+Object.entries(r.payments||{}).filter(([m,v])=>v&&m.startsWith(yr)).length*(+r.donation.amount||0),0);
+  $('#main').innerHTML=`<section><div class="row"><h2>תורמים</h2><span class="spacer"></span>${canEdit()?'<button class="btn gold" id="dNew">💰 רישום תרומה</button>':''}<button class="btn" id="dPrint">הדפסה</button><button class="btn" id="dCsv">הורד לאקסל</button></div>
   <div class="stats"><div class="stat"><b>${all.length}</b><span>תורמים</span></div><div class="stat"><b>${money(all.reduce((s,d)=>s+d.monthly,0))||'₪0'}</b><span>הוראות קבע לחודש</span></div>
     <div class="stat"><b>${money(yearSum)||'₪0'}</b><span>נתרם בשנה הלועזית הנוכחית</span></div><div class="stat ${all.some(d=>d.ending)?'alert':''}"><b>${all.filter(d=>d.ending).length}</b><span>הוראות קבע שמסתיימות</span></div>
     <div class="stat ${all.some(d=>d.unpaid)?'alert':''}"><b>${all.filter(d=>d.unpaid).length}</b><span>לא נגבו החודש</span></div></div>
@@ -2073,9 +2091,9 @@ function renderDonors(){const all=donorIndex();const F={all:['כל התורמי�
     <td>${d.st.map(o=>`<div class="small">${money(o.r.donation.amount)} לחודש · ${o.i.end?'עד '+HEB_GREG_M[+o.i.end.slice(5)-1]+' '+o.i.end.slice(0,4):'ללא הגבלה'} · נגבו ${o.i.paid}</div>`).join('')||'<span class="muted">—</span>'}</td><td>${dual(d.last)}</td>
     <td>${d.ending?'<span class="pill rev">מסתיימת בקרוב</span>':''}${d.ended?'<span class="pill">הסתיימה</span>':''}${d.unpaid?'<span class="pill wait">לא נגבה החודש</span>':''}</td>
     <td class="row">${S.features.messages?`<button class="btn sm" data-m="${esc(d.key)}">💬 הודעה</button>`:''}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">אין תורמים ברשימה הזאת.</td></tr>'}</tbody></table></div>
-  <p class="muted small">תרומות נרשמות בתוך הבקשה (חלק "תרומה / פדיון"). גביית הוראות קבע מסמנים בלשונית "כספים". אפשר לשלוח לכל תורם תודה, קבלה, אישור הוראת קבע או תזכורת לחידוש.</p></section>`;
+  <p class="muted small">תרומות נרשמות בתוך הבקשה (חלק "תרומה / פדיון"), או בכפתור "רישום תרומה" – לתרומה בלי בקשה. גביית הוראות קבע מסמנים בלשונית "כספים". אפשר לשלוח לכל תורם תודה, קבלה, אישור הוראת קבע או תזכורת לחידוש.</p></section>`;
   $$('[name=dfl]').forEach(r=>r.onchange=()=>{donorFilt=r.value;renderDonors()});
-  $$('[data-p]').forEach(a=>a.onclick=e=>{e.preventDefault();openPerson(a.dataset.p)});
+  $$('[data-p]').forEach(a=>a.onclick=e=>{e.preventDefault();if(personRecs(a.dataset.p).length)openPerson(a.dataset.p);else toast('לתורם הזה אין עדיין כרטיס (לא הגיש בקשה)')});if($('#dNew'))$('#dNew').onclick=()=>donationForm({},renderDonors);
   $$('[data-m]').forEach(b=>b.onclick=()=>{const d=all.find(o=>o.key===b.dataset.m);const r=d.v.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];compose({name:fullName(d.x),email:d.x.email,phone:d.x.mobile},{...d.x,donation:r.donation},d.ending?'remind':'thanks')});
   const doc=()=>`${docHead('רשימת תורמים – '+F[donorFilt][0])}<table><tr><th>תורם</th><th>טלפון</th><th>סה״כ</th><th>הוראת קבע לחודש</th><th>תרומה אחרונה</th></tr>${list.map(d=>`<tr><td>${esc(fullName(d.x))}</td><td>${esc(d.x.mobile||'')}</td><td>${money(d.total)}</td><td>${d.monthly?money(d.monthly):''}</td><td>${tdate(d.last)}</td></tr>`).join('')}</table>`;
   $('#dPrint').onclick=()=>saveDoc('תורמים',doc(),'print');
@@ -2086,8 +2104,8 @@ function renderReport(){const m=$('#rm')?.value||ym(new Date());const list=R.fil
   const before=new Set(R.filter(r=>(r.date||'')<m+'-01').map(personKey));const newP=uniq(list.map(personKey)).filter(k=>!before.has(k));
   const cnt=(arr,f)=>{const o={};arr.forEach(x=>{const k=f(x);if(k)o[k]=(o[k]||0)+1});return Object.entries(o).sort((a,b)=>b[1]-a[1])};
   const tags=cnt(list.flatMap(r=>(r.tags||[]).length?r.tags:['בלי נושא']),t=>t),days=cnt(list,r=>r.date).slice(0,5),by=cnt(list,r=>(r.createdBy||'').replace(' (סריקה)','')),st=cnt(list,r=>STATUS[r.status]);
-  const tid=R.filter(r=>(r.tiding?.date||'').startsWith(m));const don=list.filter(r=>r.donation&&r.donation.type&&!['none','standing'].includes(r.donation.type));
-  const coll=R.filter(r=>r.donation?.type==='standing'&&r.payments?.[m]);const finOk=FIN&&canFin()&&S.features.finance;
+  const tid=R.filter(r=>(r.tiding?.date||'').startsWith(m));const don=donRecs().filter(r=>(r.date||'').startsWith(m)&&r.donation.type!=='standing');
+  const coll=donRecs().filter(r=>r.donation.type==='standing'&&r.payments?.[m]);const finOk=FIN&&canFin()&&S.features.finance;
   const bars=a=>{const mx=Math.max(1,...a.map(x=>x[1]));return `<div class="bars">${a.map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${v/mx*100}%"></i><span class="num">${v}</span></div>`).join('')||'<span class="muted">אין</span>'}</div>`};
   const [y,mo]=m.split('-').map(Number);const title=`דוח חודשי · ${HEB_GREG_M[mo-1]} ${y} (${hebOf(new Date(y,mo-1,1))} – ${hebOf(new Date(y,mo,0))})`;
   $('#main').innerHTML=`<section><div class="row"><h2>דוח חודשי</h2><input type="month" id="rm" value="${m}" class="btn"><span class="spacer"></span><button class="btn" id="rPrint">הדפסה</button><button class="btn" id="rWord">וורד</button></div>
@@ -2137,6 +2155,158 @@ async function pdfToImages(file){if(!pdfLib){await loadScript('https://cdnjs.clo
   const pdf=await pdfLib.getDocument({data:await file.arrayBuffer()}).promise;const out=[];
   for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i);const vp=pg.getViewport({scale:2});const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
     const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.9));out.push(new File([b],`${file.name.replace(/\.pdf$/i,'')} – עמוד ${i}.jpg`,{type:'image/jpeg'}))}return out}
+
+/* =====================================================================
+   תוספות 2: תרומה עצמאית, "היום שלי", טופס בקשה מהבית
+   ===================================================================== */
+
+/* ---------- תרומות: מקור אחד לכל התרומות (מתוך בקשה, או תרומה עצמאית בקופה) ---------- */
+const isDonExp=e=>e&&e.don&&e.don.type&&e.don.type!=='none';
+function allDonations(){const out=[];
+  R.filter(r=>r.donation&&r.donation.type&&r.donation.type!=='none').forEach(r=>out.push({src:'rec',o:r,id:r.id,key:personKey(r),name:fullName(r),phone:r.mobile||r.homePhone,email:r.email,date:r.date,d:r.donation,payments:r.payments||{},person:r}));
+  EXP.filter(isDonExp).forEach(e=>out.push({src:'exp',o:e,id:e.id,key:e.pkey||('ext:'+(normPhone(e.phone||'')||e.pname||e.id)),name:e.pname||'',phone:e.phone,email:e.email,date:e.date,d:e.don,payments:e.payments||{},person:e.pkey?(personRecs(e.pkey)[0]||null):null}));
+  return out}
+async function saveDon(it){if(it.src==='rec'){it.o.donation=it.d;it.o.payments=it.payments;await putRec(it.o,true)}else{it.o.don=it.d;it.o.payments=it.payments;it.o.amount=it.d.type==='standing'?0:(+it.d.amount||0);await putExp(it.o,true)}}
+const expAmt=e=>isDonExp(e)&&e.don.type==='standing'?Object.values(e.payments||{}).filter(Boolean).length*(+e.don.amount||0):(+e.amount||0);
+function donationForm(pre={},after){const ov=document.createElement('div');ov.className='modal';const P=pre.key?personRecs(pre.key)[0]:null;
+  ov.innerHTML=`<form class="modal-in" id="dnF"><div class="row"><h3 style="margin:0">💰 רישום תרומה</h3><span class="spacer"></span><button type="button" class="btn sm" id="dnX">✕</button></div>
+    <p class="muted small" style="margin:0">תרומה שלא קשורה לבקשת ברכה. אם התורם כבר ביקר – בחר אותו מהרשימה, והתרומה תופיע בכרטיס שלו.</p>
+    <div class="grid"><label class="f wide">התורם<input id="dnN" list="dnL" required value="${esc(P?fullName(P):pre.name||'')}" placeholder="שם, או בחר מהרשימה"></label>
+      <datalist id="dnL">${peopleIndex().slice(0,800).map(p=>`<option value="${esc(fullName(p.x))}">${esc((p.x.mobile||'')+' '+(p.x.city||''))}</option>`).join('')}</datalist>
+      <label class="f">נייד<input id="dnP" dir="ltr" value="${esc(P?.mobile||pre.phone||'')}"></label><label class="f">מייל<input id="dnE" dir="ltr" value="${esc(P?.email||pre.email||'')}"></label>
+      <label class="f">תאריך<input type="date" id="dnD" value="${todayISO()}"></label>
+      <label class="f">אופן<select id="dnT">${Object.entries(DON).filter(([k])=>k!=='none').map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label>
+      <label class="f"><span id="dnAl">סכום (₪)</span><input id="dnA" type="number" min="1" required></label>
+      <label class="f" id="dnMw">מספר חודשים<input id="dnM" type="number" min="0" placeholder="ללא הגבלה"></label><label class="f" id="dnSw">חודש התחלה<input id="dnS" type="month" value="${ym(new Date())}"></label>
+      <label class="f wide">הערה<input id="dnNote" placeholder="למשל: לזכות רפואת..."></label></div>
+    <p class="muted small" style="margin:0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p>
+    <div class="row"><button class="btn primary">שמור תרומה</button></div></form>`;
+  document.body.appendChild(ov);const close=()=>ov.remove();$('#dnX').onclick=close;
+  const tv=()=>{const st=$('#dnT').value==='standing';$('#dnMw').hidden=$('#dnSw').hidden=!st;$('#dnAl').textContent=T(st?'סכום חודשי (₪)':'סכום (₪)')};$('#dnT').onchange=tv;tv();
+  $('#dnN').onchange=()=>{const p=peopleIndex().find(p=>fullName(p.x)===$('#dnN').value.trim());if(p){if(!$('#dnP').value)$('#dnP').value=p.x.mobile||'';if(!$('#dnE').value)$('#dnE').value=p.x.email||''}};
+  $('#dnF').onsubmit=async e=>{e.preventDefault();const name=$('#dnN').value.trim(),p=pre.key&&P&&fullName(P)===name?{key:pre.key}:peopleIndex().find(p=>fullName(p.x)===name);const t=$('#dnT').value,a=Number($('#dnA').value);
+    const o={id:newId(),kind:'in',date:$('#dnD').value,amount:t==='standing'?0:a,desc:`תרומה – ${name}${$('#dnNote').value.trim()?' ('+$('#dnNote').value.trim()+')':''}`,by:ME,pkey:p?.key||'',pname:name,phone:$('#dnP').value.trim(),email:fixEmail($('#dnE').value),
+      don:{type:t,amount:a,months:t==='standing'?$('#dnM').value:'',start:t==='standing'?$('#dnS').value:''},payments:{}};
+    await putExp(o,true);log('תרומה חדשה',name,{type:DON[t]});toast('התרומה נרשמה');close();after&&after()}}
+
+/* החלפת מסך הכספים כך שיכלול גם תרומות עצמאיות */
+function renderMoney(){const all=allDonations();const once=all.filter(x=>x.d.type!=='standing'),st=all.filter(x=>x.d.type==='standing');const sum=a=>a.reduce((s,x)=>s+(Number(x.d.amount)||0),0);
+  const months=[...Array(6)].map((_,i)=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-5+i);return d});const curYM=ym(new Date()),paidNow=st.filter(x=>x.payments?.[curYM]);
+  $('#main').innerHTML=`<section><div class="row"><h2>כספים</h2><span class="spacer"></span>${canEdit()?'<button class="btn gold" id="newDon">💰 רישום תרומה</button>':''}<button class="btn sm" id="lockFin">נעל כספים</button></div>
+  <div class="stats"><div class="stat"><b>${money(sum(once))||'₪0'}</b><span>תרומות חד־פעמיות (${once.length})</span></div><div class="stat"><b>${money(sum(once.filter(x=>x.d.type==='cash')))||'₪0'}</b><span>מזומן</span></div>
+    <div class="stat"><b>${money(sum(st))||'₪0'}</b><span>הוראות קבע לחודש (${st.length})</span></div><div class="stat ${st.length>paidNow.length?'alert':''}"><b>${paidNow.length}/${st.length}</b><span>נגבו החודש</span></div></div>
+  <h3 style="margin:8px 0">הוראות קבע — סימון גבייה לפי חודש</h3>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>נייד</th><th>חודשי</th><th>חודשים</th>${months.map(m=>`<th>${HEB_GREG_M[m.getMonth()]}</th>`).join('')}<th>נגבה עד כה</th></tr></thead><tbody>
+  ${st.length?st.map((x,i)=>`<tr><td><a href="#" data-i="${i}" data-s="st" class="open">${esc(x.name)}</a>${x.src==='exp'?' <span class="pill tag">ללא בקשה</span>':''}</td><td class="num"><span class="ltr">${esc(x.phone||'')}</span></td><td class="num">${money(x.d.amount)}</td><td class="num">${esc(x.d.months)||'∞'}</td>
+    ${months.map(m=>`<td><input type="checkbox" aria-label="נגבה" data-pay="${i}" data-m="${ym(m)}" ${x.payments?.[ym(m)]?'checked':''}></td>`).join('')}<td class="num">${money(Object.values(x.payments||{}).filter(Boolean).length*(Number(x.d.amount)||0))||'₪0'}</td></tr>`).join(''):`<tr><td colspan="${5+months.length}" class="empty">אין הוראות קבע</td></tr>`}
+  </tbody></table></div>
+  <h3 style="margin:18px 0 8px">תרומות חד־פעמיות</h3>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך</th><th>שם</th><th>אופן</th><th>סכום</th><th>מס׳ קבלה</th></tr></thead><tbody>
+  ${once.length?once.map((x,i)=>[x,i]).sort((a,b)=>(b[0].date||'').localeCompare(a[0].date||'')).map(([x,i])=>`<tr><td>${dual(x.date)}</td><td><a href="#" data-i="${i}" data-s="once" class="open">${esc(x.name)}</a>${x.src==='exp'?' <span class="pill tag">ללא בקשה</span>':''}</td><td><span class="pill tag">${DON[x.d.type]}</span></td><td class="num">${money(x.d.amount)}</td>
+    <td>${x.d.receipt?`<span class="num">${esc(x.d.receipt)}</span>`:`<button class="btn sm" data-rc="${i}">הפק מספר</button>`}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">אין תרומות</td></tr>'}
+  </tbody></table></div></section>`;
+  $('#lockFin').onclick=()=>{FIN=false;ss.del('biala_fin');toast('הכספים ננעלו');go('home')};if($('#newDon'))$('#newDon').onclick=()=>donationForm({},renderMoney);
+  const pick=a=>a.dataset.s==='st'?st[+a.dataset.i]:once[+a.dataset.i];
+  $$('a.open').forEach(a=>a.onclick=e=>{e.preventDefault();const x=pick(a);if(x.src==='rec')go('view',x.o);else if(x.person)openPerson(x.key);else toast('תרומה ללא כרטיס אדם')});
+  $$('[data-pay]').forEach(c=>c.onchange=async()=>{const x=st[+c.dataset.pay];x.payments={...(x.payments||{}),[c.dataset.m]:c.checked};await saveDon(x);toast(c.checked?'סומן כנגבה':'הסימון הוסר')});
+  $$('[data-rc]').forEach(b=>b.onclick=async()=>{const x=once[+b.dataset.rc];S.nextReceipt=(S.nextReceipt||1000)+1;await putS();x.d={...x.d,receipt:String(S.nextReceipt)};await saveDon(x);renderMoney()})}
+
+function donRecs(){return allDonations().map(it=>it.src==='rec'?it.o:{id:it.id,date:it.date,donation:it.d,payments:it.payments,first:it.name,last:'',mobile:it.phone||'',email:it.email||'',_key:it.key,_exp:true})}
+function donorIndex(){const g={};donRecs().forEach(r=>{const k=r._exp?r._key:personKey(r);(g[k]=g[k]||[]).push(r)});
+  return Object.entries(g).map(([k,v])=>{const recs=personRecs(k),x=recs.length?personSummary(recs).x:v[0];const once=v.filter(r=>r.donation.type!=='standing'),st=v.filter(r=>r.donation.type==='standing').map(r=>({r,i:standingInfo(r)}));
+    return {key:k,x,v,once,st,total:once.reduce((s,r)=>s+(+r.donation.amount||0),0)+st.reduce((s,o)=>s+o.i.paid*(+o.r.donation.amount||0),0),
+      monthly:st.filter(o=>o.i.state!=='ended').reduce((s,o)=>s+(+o.r.donation.amount||0),0),last:v.map(r=>r.date).sort().slice(-1)[0]||'',
+      ending:st.some(o=>o.i.state==='ending'),ended:st.length&&st.every(o=>o.i.state==='ended'),unpaid:st.some(o=>o.i.state!=='ended'&&!o.i.paidNow)}})}
+
+/* ---------- היום שלי: מסך עבודה יומי לגבאי ---------- */
+function renderToday(){const t=todayISO(),cur=ym(new Date());
+  const q=R.filter(r=>r.date===t).sort((a,b)=>(a.queueNo||999)-(b.queueNo||999)),waiting=q.filter(r=>r.status==='wait');
+  const yahr=S.features.yahr?upcomingYahr(2):[];const rev=R.filter(r=>r.review);const tid=S.features.tidings?R.filter(r=>r.tiding&&!r.tiding.sent):[];
+  const fin=FIN&&canFin()&&S.features.finance;const unpaid=fin?allDonations().filter(x=>x.d.type==='standing'&&!x.payments?.[cur]&&(()=>{const n=+x.d.months||0;if(!n)return true;const s=x.d.start||(x.date||'').slice(0,7);return addMonths(s,n-1)>=cur})()):[];
+  const ending=fin?donorIndex().filter(d=>d.ending):[];const inbox=INBOX||[];
+  const card=(title,n,body,cls='')=>`<div class="card today ${n?cls:'ok'}"><div class="row"><h3>${title}</h3><span class="spacer"></span><span class="pill ${n?'rev':'done'}">${n||'✓'}</span></div>${n?body:'<p class="muted small">אין כרגע 👍</p>'}</div>`;
+  $('#main').innerHTML=`<section><div class="row"><h2>היום שלי</h2><span class="hd">${hebOf(new Date())}</span><span class="spacer"></span>${canEdit()?'<button class="btn primary" id="tdNew">+ בקשה חדשה</button>':''}</div>
+  <p class="muted">כל מה שצריך לטפל בו היום, במקום אחד. כשהכל מטופל – כל הכרטיסים ירוקים.</p>
+  <div class="todaygrid">
+  ${S.features.webform&&canEdit()?card('📥 בקשות שהגיעו מהבית',inbox.length,`<p class="small">הציבור מילא את הטופס באתר. צריך לעבור ולקלוט.</p><button class="btn gold" data-go="inbox">לקליטה</button>`,'alert'):''}
+  ${card('👥 תור היום',waiting.length,`<p class="small">${waiting.length} ממתינים מתוך ${q.length}. הבא: <b>${esc(fullName(waiting[0]||{}))}</b></p><button class="btn gold" data-go="queue">לתור</button>`)}
+  ${S.features.yahr?card('🕯 ימי זיכרון היום ומחר',yahr.length,`<table><tbody>${yahr.slice(0,8).map(y=>`<tr><td><b>${esc(y.name)}</b> <span class="g">${esc(y.rel)}</span><div class="small muted">${y.days===0?'היום':'מחר'} · משפחת ${esc(fullName(y.by))}</div></td><td>${S.features.messages&&(y.by.email||y.by.mobile)?`<button class="btn sm" data-yh="${esc(y.by.id)}|${esc(y.name)}|${esc(y.date)}">💬 תזכורת</button>`:''}</td></tr>`).join('')}</tbody></table>`):''}
+  ${card('✏️ בקשות לבדיקה',rev.length,`<p class="small">בקשות שנסרקו מכתב יד ועוד לא נבדקו מול הדף.</p><button class="btn gold" data-go="rev">לבדיקה</button>`)}
+  ${S.features.tidings?card('🎉 בשורות שעוד לא נשלחה עליהן ברכה',tid.length,`<table><tbody>${tid.slice(0,8).map(r=>`<tr><td><b>${esc(fullName(r))}</b><div class="small muted">${esc(r.tiding.kind)} · ${dual(r.tiding.date)}</div></td><td class="row">${S.features.messages&&(r.email||r.mobile)?`<button class="btn sm" data-tm="${r.id}">💬 מזל טוב</button>`:''}<button class="btn sm" data-ts="${r.id}">סמן שנשלח</button></td></tr>`).join('')}</tbody></table>`):''}
+  ${fin?card('💳 הוראות קבע שלא נגבו החודש',unpaid.length,`<table><tbody>${unpaid.slice(0,10).map(x=>`<tr><td><b>${esc(x.name)}</b></td><td class="num">${money(x.d.amount)}</td></tr>`).join('')}</tbody></table><button class="btn gold" data-go="money">לסימון גבייה</button>`):''}
+  ${fin?card('⏳ הוראות קבע שמסתיימות',ending.length,`<table><tbody>${ending.slice(0,8).map(d=>`<tr><td><b>${esc(fullName(d.x))}</b></td><td>${S.features.messages?`<button class="btn sm" data-rn="${esc(d.key)}">💬 תזכורת לחידוש</button>`:''}</td></tr>`).join('')}</tbody></table>`):''}
+  </div></section>`;
+  if($('#tdNew'))$('#tdNew').onclick=()=>go('new');
+  $$('[data-go]').forEach(b=>b.onclick=()=>{if(b.dataset.go==='rev'){filt={q:'',status:'',date:'',tag:'',rev:true};go('list')}else go(b.dataset.go)});
+  $$('[data-yh]').forEach(b=>b.onclick=()=>{const [id,name,date]=b.dataset.yh.split('|');const x=byId(id);compose({name:fullName(x),email:x.email,phone:x.mobile},{...x,deceased:[{name,date}]},'yahr')});
+  $$('[data-tm]').forEach(b=>b.onclick=()=>{const x=byId(b.dataset.tm);compose({name:fullName(x),email:x.email,phone:x.mobile},x,'tiding')});
+  $$('[data-ts]').forEach(b=>b.onclick=async()=>{const x=byId(b.dataset.ts);x.tiding={...x.tiding,sent:Date.now()};await putRec(x,true);renderToday()});
+  $$('[data-rn]').forEach(b=>b.onclick=()=>{const d=donorIndex().find(o=>o.key===b.dataset.rn);const r=d.v[0];compose({name:fullName(d.x),email:d.x.email,phone:d.x.mobile},{...d.x,donation:r.donation},'remind')})}
+
+/* ---------- טופס בקשה מהבית (לציבור) ---------- */
+/* הציבור ממלא טופס בקישור. הפרטים מוצפנים בדפדפן שלו במפתח הציבורי של הארגון, כך שרק גבאים מאושרים יכולים לפתוח אותם.
+   בשרת יש תיבת דואר שאפשר רק להכניס אליה (לא לקרוא), ובה רק ג'יבריש. */
+let INBOX=[],INKEY=null;
+const WEBFORM_URL=()=>location.origin+location.pathname+'#bakasha';
+let _ikP=null;function ensureInboxKey(){if(!_ikP)_ikP=_ensureInboxKey().finally(()=>{_ikP=null});return _ikP}
+async function _ensureInboxKey(){if(MODE!=='cloud'||!DEK||!isAdm())return;try{
+  const {data:pub}=await SB.from('kk_public').select('data').eq('id','form').maybeSingle();
+  const {data:pk}=await SB.from('kk_settings').select('data').eq('id','inboxkey').maybeSingle();
+  if(pub?.data?.pub&&pk?.data?.enc){if(!!pub.data.open!==!!S.features.webform)await SB.from('kk_public').upsert({id:'form',data:{...pub.data,open:!!S.features.webform}});return}
+  const kp=await crypto.subtle.generateKey({name:'RSA-OAEP',modulusLength:2048,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['encrypt','decrypt']);
+  const pubJ=await crypto.subtle.exportKey('jwk',kp.publicKey),priv=kb64(await crypto.subtle.exportKey('pkcs8',kp.privateKey));
+  await SB.from('kk_settings').upsert({id:'inboxkey',data:{enc:await encStr(priv)},updated_at:new Date().toISOString()});
+  await SB.from('kk_public').upsert({id:'form',data:{pub:pubJ,open:!!S.features.webform},updated_at:new Date().toISOString()});log('טופס מהבית','נוצר מפתח לטופס')}catch(e){}}
+async function loadInbox(){if(MODE!=='cloud'||!DEK||!S.features.webform||!canEdit()){INBOX=[];return}try{
+  if(!INKEY){const {data}=await SB.from('kk_settings').select('data').eq('id','inboxkey').maybeSingle();if(!data?.data?.enc)return;INKEY=await crypto.subtle.importKey('pkcs8',kub(await decStr(data.data.enc)),{name:'RSA-OAEP',hash:'SHA-256'},false,['decrypt'])}
+  const {data,error}=await SB.from('kk_inbox').select('id,data,created_at').order('created_at',{ascending:true});if(error)return;
+  const out=[];for(const r of data||[]){try{const k=await importDek(new Uint8Array(await crypto.subtle.decrypt({name:'RSA-OAEP'},INKEY,kub(r.data.k))));const iv=kub(r.data.iv);
+    const o=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},k,kub(r.data.c))));out.push({id:r.id,at:r.created_at,o})}catch(e){out.push({id:r.id,at:r.created_at,bad:true})}}
+  INBOX=out}catch(e){}}
+function renderInbox(){const list=INBOX||[];
+  $('#main').innerHTML=`<section><div class="row"><h2>📥 בקשות מהבית</h2><span class="spacer"></span><button class="btn" id="ibRef">רענן</button></div>
+  <p class="muted">בקשות שהציבור מילא בטופס שבאתר. בודקים, וקולטים לרשימת הבקשות (הן נכנסות עם סימון "לבדיקה"), או מוחקים.</p>
+  <div class="notice info" style="margin:10px 0">הקישור לטופס לשליחה לציבור: <b class="ltr">${esc(WEBFORM_URL())}</b> <button class="btn sm" id="ibCp">העתק קישור</button></div>
+  ${list.length?list.map(it=>it.bad?`<div class="card"><b>בקשה שלא ניתן לפתוח</b> <button class="btn sm danger" data-del="${it.id}">מחק</button></div>`:`<div class="card" style="margin-bottom:10px"><div class="row"><h3 style="margin:0">${esc([it.o.first,it.o.last].join(' '))}</h3><span class="muted small">${new Date(it.at).toLocaleString('he-IL')}</span><span class="spacer"></span>${(it.o.tags||[]).map(t=>`<span class="pill tag">${esc(t)}</span>`).join('')}</div>
+    <dl>${[['שם לתפילה',it.o.prayName],['בן/בת זוג',it.o.spouseName],['נייד',it.o.mobile],['מייל',it.o.email],['עיר',it.o.city],['כתובת',it.o.address],['בקשה',it.o.request],['לעילוי נשמת',(it.o.deceased||[]).map(d=>[d.name,d.rel,d.date].filter(Boolean).join(' · ')).join(' | ')]].filter(r=>r[1]).map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+    ${matchPeople(it.o.mobile||'',1).length?`<div class="small" style="color:var(--warn)">כבר ביקר בעבר: ${esc(fullName(matchPeople(it.o.mobile,1)[0].x))}</div>`:''}
+    <div class="row" style="margin-top:8px"><button class="btn gold" data-acc="${it.id}">קלוט לרשימה</button><button class="btn danger" data-del="${it.id}">מחק</button></div></div>`).join(''):'<div class="card empty">אין בקשות חדשות מהבית.</div>'}</section>`;
+  $('#ibRef').onclick=async()=>{await loadInbox();renderInbox();renderTabs()};$('#ibCp').onclick=()=>copy(WEBFORM_URL(),'הקישור הועתק');
+  const drop=async id=>{const {error}=await SB.from('kk_inbox').delete().eq('id',id);if(error)toast('המחיקה נכשלה: '+error.message);INBOX=INBOX.filter(x=>x.id!==id)};
+  $$('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm(T('למחוק את הבקשה?')))return;await drop(b.dataset.del);log('מחיקת בקשה מהבית');renderInbox();renderTabs()});
+  $$('[data-acc]').forEach(b=>b.onclick=async()=>{const it=INBOX.find(x=>x.id==b.dataset.acc);const f=it.o;const prev=matchPeople(f.mobile||'',1)[0];
+    const o={id:newId(),date:todayISO(),status:'wait',tags:(f.tags||[]).filter(t=>TAGS.includes(t)),deceased:(f.deceased||[]).filter(d=>d&&d.name),donation:{type:'none'},review:true,unsure:[],createdAt:Date.now(),createdBy:'טופס מהבית (נקלט ע״י '+ME+')',notes:'הגיע מהטופס באתר'};
+    FIELDS.forEach(([k])=>{if(f[k])o[k]=String(f[k]).slice(0,2000)});if(prev){FIELDS.forEach(([k])=>{if(!o[k]&&prev.x[k]&&k!=='request')o[k]=prev.x[k]})}o.email=fixEmail(o.email);
+    await putRec(o,true);log('קליטת בקשה מהבית',fullName(o));await drop(it.id);toast('נקלט לרשימה עם סימון "לבדיקה"');renderInbox();renderTabs()})}
+/* הטופס עצמו – מוצג למי שנכנס לקישור #bakasha, בלי כניסה */
+async function renderPublicForm(){$('#login').hidden=true;$('#app').hidden=true;let wrap=$('#pubForm');if(!wrap){wrap=document.createElement('div');wrap.id='pubForm';wrap.className='gut pubform';document.body.insertBefore(wrap,$('#toast'))}
+  wrap.innerHTML='<div class="card" style="text-align:center"><span class="spin"></span></div>';
+  let pub=null;try{const {data}=await SB.from('kk_public').select('data').eq('id','form').maybeSingle();pub=data?.data}catch(e){}
+  const head=`<div class="pfh"><img src="${$('.top-in img')?.getAttribute('src')||''}" alt=""><h1>בקשת ברכה מכ״ק מרן האדמו״ר מביאלא שליט״א</h1><p>מרכז חסידי ביאלא בני ברק</p></div>`;
+  if(!pub?.pub||!pub.open){wrap.innerHTML=`<div class="card">${head}<p style="text-align:center">הטופס סגור כרגע. אפשר להגיע לקבלת קהל או לפנות למשרד.</p></div>`;return}
+  const done=lget('pubSent',0);
+  wrap.innerHTML=`<form class="card form" id="pf">${head}
+    <p class="muted small">הפרטים מוצפנים במחשב שלך לפני השליחה, ורק גבאי המרכז יכולים לקרוא אותם.</p>
+    <fieldset><legend>פרטי המבקש</legend><div class="grid"><label class="f">שם<input id="p_first" required maxlength="60"></label><label class="f">שם משפחה<input id="p_last" required maxlength="60"></label>
+      <label class="f wide">שם לתפילה (שם ושם האם)<input id="p_prayName" maxlength="120" placeholder="למשל: משה בן שרה"></label>
+      <label class="f">שם בן / בת הזוג (ושם האם)<input id="p_spouseName" maxlength="120"></label><label class="f">נייד<input id="p_mobile" type="tel" dir="ltr" required maxlength="20"></label>
+      <label class="f">מייל<input id="p_email" type="email" dir="ltr" maxlength="80"></label><label class="f">עיר<input id="p_city" maxlength="40"></label><label class="f wide">כתובת<input id="p_address" maxlength="120"></label></div></fieldset>
+    <fieldset><legend>לעילוי נשמת (לא חובה)</legend>${[0,1,2].map(i=>`<div class="dec-row"><label class="f">שם ושם האבא<input id="p_dn${i}" maxlength="80"></label><label class="f">קירבה<input id="p_dr${i}" maxlength="20"></label><label class="f">יום ושנה<input id="p_dd${i}" maxlength="30" placeholder="ח׳ אייר תשס״ה"></label></div>`).join('')}</fieldset>
+    <fieldset><legend>הבקשה</legend><div class="chips">${TAGS.filter(t=>t!=='אחר').map(t=>`<label><input type="checkbox" name="ptag" value="${t}">${t}</label>`).join('')}</div>
+      <label class="f" style="margin-top:8px"><textarea id="p_request" maxlength="2000" placeholder="על מה לבקש ברכה"></textarea></label></fieldset>
+    <input id="p_web" tabindex="-1" autocomplete="off" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0;padding:0" aria-hidden="true">
+    <div class="row"><button class="btn primary">שליחת הבקשה</button><span id="pmsg" class="small"></span></div>
+    ${done?'<p class="muted small">כבר שלחת בקשה מהמחשב הזה. אפשר לשלוח עוד אחת אם צריך.</p>':''}</form>`;
+  const t0=Date.now();
+  $('#pf').onsubmit=async e=>{e.preventDefault();const m=$('#pmsg');if($('#p_web').value||Date.now()-t0<4000)return;if(Date.now()-lget('pubSent',0)<30000){m.textContent='רגע… אפשר לשלוח שוב בעוד חצי דקה';return}
+    const v=id=>$('#p_'+id).value.trim();const o={first:v('first'),last:v('last'),prayName:v('prayName'),spouseName:v('spouseName'),mobile:v('mobile'),email:v('email'),city:v('city'),address:v('address'),request:v('request'),
+      tags:$$('[name=ptag]:checked').map(i=>i.value),deceased:[0,1,2].map(i=>({name:v('dn'+i),rel:v('dr'+i),date:v('dd'+i)})).filter(d=>d.name),sentAt:new Date().toISOString()};
+    if(digits(o.mobile).length<9){m.textContent='נא לכתוב מספר נייד תקין';return}
+    m.textContent='שולח…';try{const pk=await crypto.subtle.importKey('jwk',pub.pub,{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);const raw=crypto.getRandomValues(new Uint8Array(32)),k=await importDek(raw),iv=crypto.getRandomValues(new Uint8Array(12));
+      const c=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,new TextEncoder().encode(JSON.stringify(o))));const wk=new Uint8Array(await crypto.subtle.encrypt({name:'RSA-OAEP'},pk,raw));
+      const {error}=await SB.from('kk_inbox').insert({data:{v:1,k:kb64(wk),iv:kb64(iv),c:kb64(c)}});if(error)throw error;lset('pubSent',Date.now());
+      wrap.innerHTML=`<div class="card">${head}<h2 style="text-align:center">הבקשה התקבלה ✓</h2><p style="text-align:center">תודה. הגבאים יעבירו את הבקשה לכ״ק מרן האדמו״ר שליט״א.</p><p style="text-align:center"><a href="#bakasha" onclick="location.reload()">שליחת בקשה נוספת</a></p></div>`}
+    catch(x){m.textContent='השליחה לא הצליחה. בדקו את החיבור לאינטרנט ונסו שוב.'}}}
 
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
 </script>
