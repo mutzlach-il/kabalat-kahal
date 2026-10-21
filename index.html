@@ -670,6 +670,15 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 3. בקשה שהגיעה מופיעה בלשונית "בקשות מהבית" (עם מספר אדום). בודקים ולוחצים "קלוט לרשימה" – היא נכנסת לבקשות עם סימון "לבדיקה". אם האדם כבר ביקר בעבר, המערכת מראה זאת ומשלימה את הפרטים החסרים. אפשר גם למחוק.
 4. כדי לסגור את הטופס לציבור – מכבים בלשונית "ניהול" את "טופס בקשה מהבית". מי שייכנס לקישור יראה שהטופס סגור.
 
+# קבלות על תרומות (סעיף 46)
+1. פעם אחת: בלשונית "ניהול" ← "פרטי העמותה וקבלות" רושמים שם העמותה, מספר עמותה, עד מתי אישור סעיף 46 בתוקף, כתובת, טלפון, שם החותם, ואם רוצים – מאיזה מספר הקבלות מתחילות.
+2. בלשונית "כספים", ליד כל תרומה חד־פעמית לוחצים "🧾 הפק קבלה". בהוראת קבע יש כפתור "🧾" לכל שנה – קבלה שנתית על כל החודשים שנגבו באותה שנה.
+3. בחלון הקבלה רושמים את מספר הזהות (או ח״פ) של התורם. בלי זה התורם לא יקבל זיכוי ממס.
+4. חשוב: מאז 1.1.2026 כל תרומה שמקבלת קבלה לפי סעיף 46 צריכה להיות מדווחת במערכת "תרומות ישראל" של רשות המסים, ומספר הדיווח צריך להופיע על הקבלה. מדווחים שם, מעתיקים את מספר הדיווח לשדה "מספר דיווח מרשות המסים", ואז מדפיסים או שולחים לתורם.
+5. מספרי הקבלות רצים לבד ולא חוזרים על עצמם. קבלה שטעו בה – לוחצים עליה ← "ביטול קבלה". היא נשארת ביומן עם סימון "בוטלה" (ואם דווחה – מבטלים אותה גם אצל רשות המסים).
+6. בתחתית לשונית "כספים" יש "יומן קבלות" עם כל הקבלות, ומי שעוד לא דווחו. אפשר להוריד אותו לאקסל בשביל רואה החשבון. גם ב"היום שלי" מופיעות קבלות שעוד לא דווחו.
+בהוראת קבע: בשדה "מספר חודשים" אפשר לבחור מהרשימה (6, 12, 24...) או לכתוב כל מספר, ומתחת מופיע הסכום הכולל וחודש הסיום. אם משאירים ריק – ללא הגבלה.
+
 # סיסמאות ראשוניות
 כניסה: 1234 · כספים: 123456 · ניהול: 123456. אפשר להחליף אותן בלשונית "ניהול" ← "סיסמאות". כדי להחליף קוד צריך להקליד קודם את הקוד הנוכחי, כך שגם מי שקיבל הרשאת מנהל לא יכול להשתלט על המערכת בלי לדעת את הקודים. רק הבעלים (המנהל הראשי) נכנס לכספים ולניהול בלי קוד, ויכול להחליף קוד גם בלי לדעת את הקוד הישן. (במצב שרת הכניסה היא עם חשבון Google של כל גבאי.)`;
 
@@ -826,6 +835,15 @@ You can give the public a link to fill in a blessing request from home, without 
 2. The details are encrypted on the sender's own computer, and only approved gabbaim can open them. The server only holds gibberish.
 3. A new request appears in "Requests from home" (with a red number). Check it and click "Add to list" – it enters the requests marked "To review". If the person visited before, the system shows it and fills in missing details. You can also delete it.
 4. To close the form to the public, turn off "Request form from home" in "Management". Anyone opening the link will see that the form is closed.
+
+# Donation receipts (Section 46)
+1. Once: in "Management" → "Organization details & receipts" enter the organization name, registration number, until when the Section 46 approval is valid, address, phone, signer, and optionally the first receipt number.
+2. In "Finances", click "🧾 Issue receipt" next to each one-time donation. Standing orders have a "🧾" button per year – an annual receipt for all months collected that year.
+3. In the receipt window enter the donor's ID (or company) number – without it the donor won't get a tax credit.
+4. Important: since 1.1.2026 every donation receiving a Section 46 receipt must be reported in the Tax Authority's "Israel Donations" system, and the report number must appear on the receipt. Report there, copy the report number into "Tax Authority report number", then print or send to the donor.
+5. Receipt numbers run automatically and never repeat. A wrong receipt – open it → "Cancel receipt". It stays in the log marked "cancelled" (if reported, cancel it at the Tax Authority too).
+6. At the bottom of "Finances" there is a "Receipts log" with all receipts and those not yet reported; it can be downloaded to Excel for the accountant. "My day" also shows unreported receipts.
+Standing orders: in "Number of months" pick from the list (6, 12, 24...) or type any number; the total and the last month appear below. Leave it empty for no limit.
 
 # Initial passwords
 Login: 1234 · Finances: 123456 · Management: 123456. You can change them in "Management" → "Passwords". To change a code you must first type the current code, so even someone with manager permission cannot take over the system without knowing the codes. Only the owner (head manager) enters finances and management without a code, and can change a code without knowing the old one. (In server mode, each gabbai signs in with their own Google account.)`;
@@ -1248,9 +1266,9 @@ function renderForm(rec,prefill){
   ${S.features.finance?`<fieldset><legend>תרומה / פדיון</legend><div class="grid">
     <label class="f">אופן<select id="dtype">${Object.entries(DON).map(([k,v])=>`<option value="${k}" ${d.type===k?'selected':''}>${v}</option>`).join('')}</select></label>
     ${lockedAmt?`<div class="lock wide" id="wAmount">הוזן סכום. הצפייה והשינוי דורשים סיסמת כספים.</div>`:`<label class="f" id="wAmount">סכום (₪)<input id="damount" type="number" min="0" value="${esc(d.amount)}"></label>`}
-    <label class="f" id="wMonths">מספר חודשים<input id="dmonths" type="number" min="0" placeholder="ללא הגבלה" value="${esc(d.months)}"></label>
+    <label class="f" id="wMonths">מספר חודשים<input id="dmonths" type="number" min="0" list="monthsL" placeholder="ללא הגבלה" value="${esc(d.months)}"><datalist id="monthsL"><option value="6"><option value="10"><option value="12"><option value="18"><option value="24"><option value="36"></datalist></label>
     <label class="f" id="wStart">חודש התחלה<input id="dstart" type="month" value="${esc(d.start)}"></label>
-  </div><p class="muted small" style="margin:8px 0 0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p></fieldset>`:''}
+  <div class="small muted wide" id="dHint"></div></div><p class="muted small" style="margin:8px 0 0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p></fieldset>`:''}
   <fieldset><legend>טיפול</legend><div class="grid">
     <label class="f">סטטוס<select id="status">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${x.status===k?'selected':''}>${v}</option>`).join('')}</select></label>
     <label class="f wide">הערות פנימיות<textarea id="notes" style="min-height:56px">${esc(x.notes)}</textarea></label>
@@ -1273,6 +1291,7 @@ function renderForm(rec,prefill){
   drawDec();$('#addDec').onclick=()=>{decs.push({name:'',rel:'',date:''});drawDec()};
   $('#date').oninput=()=>$('[data-h="date"]').textContent=heb($('#date').value);
   ['birth','spouseBirth'].forEach(id=>$('#'+id).addEventListener('input',()=>{const g=parseGreg($('#'+id).value);$(`[data-h="${id}"]`).textContent=g?hebOf(g):''}));
+  if($('#dtype')&&$('#damount'))standingHint('#damount','#dmonths','#dstart','#dHint');
   if($('#dtype')){const dv=()=>{const t=$('#dtype').value;$('#wAmount').hidden=t==='none';$('#wMonths').hidden=$('#wStart').hidden=t!=='standing';const l=$('#wAmount').firstChild;if(l&&l.nodeType===3)l.textContent=t==='standing'?'סכום חודשי (₪)':'סכום (₪)'};$('#dtype').onchange=dv;dv()}
   /* זיהוי פונה חוזר לפי שם או טלפון */
   bindReturning(rec,p=>{const prev=p.x;FIELDS.forEach(([k])=>{const el=$('#'+k);if(el&&!el.value&&prev[k]&&k!=='request')el.value=prev[k]});if(!decs.some(o=>o.name)&&personSummary(p.recs).deceased.length){decs.splice(0,decs.length,...personSummary(p.recs).deceased.map(o=>({...o})));drawDec()}$('#dupMsg').hidden=true;toast('הפרטים מולאו מהביקורים הקודמים')});
@@ -1745,6 +1764,7 @@ function renderAdmin(){
   <fieldset><legend>נוסחי מכתבים</legend><p class="muted small" style="margin-top:0">מילים בסוגריים מסולסלים מתמלאות לבד: {שם} {כתובת} {עיר} {תאריך} {סכום} {אופן} {קבלה} {חודשים} {שם_לתפילה} {נפטר} {יום_זיכרון}</p>
     <div class="grid">${[['thanks','מכתב תודה לתורם'],['receipt','קבלה על תרומה'],['standing','אישור הוראת קבע'],['letter','מכתב חופשי'],['yahr','תזכורת יום זיכרון']].map(([k,n])=>`<label class="f">${n}<textarea data-tpl="${k}" style="min-height:180px">${esc((S.templates||{})[k]||DEF_TPL[k])}</textarea></label>`).join('')}</div>
     <div class="row" style="margin-top:8px"><button class="btn primary" id="tplBtn">שמור נוסחים</button></div></fieldset>
+  ${S.features.finance?orgFieldset():''}
   ${S.features.messages?`<fieldset><legend>שליחת מיילים ישירות מהמערכת (לא חובה)</legend><p class="muted small" style="margin-top:0">בלי זה, כפתור "פתח במייל" פותח את תוכנת המייל במחשב עם ההודעה מוכנה. כדי לשלוח ישירות מהמערכת, מחברים חשבון EmailJS (חינמי עד 200 מיילים בחודש): ב־emailjs.com מחברים את ה־Gmail של המשרד, יוצרים תבנית שבה הנמען הוא {{to_email}}, הנושא {{subject}} והתוכן {{message}}, ומעתיקים לכאן שלושה קודים.</p>
     <div class="grid"><label class="f">Service ID<input id="ejS" dir="ltr" value="${esc(S.emailjs?.service||'')}"></label><label class="f">Template ID<input id="ejT" dir="ltr" value="${esc(S.emailjs?.template||'')}"></label><label class="f">Public Key<input id="ejK" dir="ltr" value="${esc(S.emailjs?.key||'')}"></label></div>
     <div class="row" style="margin-top:8px"><button class="btn primary" id="ejBtn">שמור</button></div></fieldset>`:''}
@@ -1883,6 +1903,7 @@ create policy kk_l_sel on kk_log for select to authenticated using (kk_admin());
   const SQL=mkSQL('');
   $('#sqlBtn').onclick=()=>{const ae=($('#admEmail').value||MYEMAIL).trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(ae)){toast('כתוב קודם את כתובת ה־Gmail של המנהל');$('#admEmail').focus();return}
     const q=mkSQL(ae);$('#sqlBox').hidden=false;$('#sqlBox').value=q;copy(q,'קוד ההקמה הועתק. הדבק אותו ב־Supabase ← SQL Editor')};
+  bindOrg();
   if($('#ejBtn'))$('#ejBtn').onclick=async()=>{S.emailjs={service:$('#ejS').value.trim(),template:$('#ejT').value.trim(),key:$('#ejK').value.trim()};await putS('חיבור מיילים (EmailJS)');toast('נשמר')};
   $('#gkBtn').onclick=async()=>{S.geminiKey=$('#gk').value.trim();S.geminiModel=$('#gm').value.trim()||'gemini-3.8-flash';await putS();toast('המפתח נשמר')};
   $('#gkTest').onclick=async()=>{const m=$('#gkMsg');m.textContent='בודק...';S.geminiKey=$('#gk').value.trim();S.geminiModel=$('#gm').value.trim()||'gemini-3.8-flash';
@@ -2177,12 +2198,12 @@ function donationForm(pre={},after){const ov=document.createElement('div');ov.cl
       <label class="f">תאריך<input type="date" id="dnD" value="${todayISO()}"></label>
       <label class="f">אופן<select id="dnT">${Object.entries(DON).filter(([k])=>k!=='none').map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label>
       <label class="f"><span id="dnAl">סכום (₪)</span><input id="dnA" type="number" min="1" required></label>
-      <label class="f" id="dnMw">מספר חודשים<input id="dnM" type="number" min="0" placeholder="ללא הגבלה"></label><label class="f" id="dnSw">חודש התחלה<input id="dnS" type="month" value="${ym(new Date())}"></label>
-      <label class="f wide">הערה<input id="dnNote" placeholder="למשל: לזכות רפואת..."></label></div>
+      <label class="f" id="dnMw">מספר חודשים<input id="dnM" type="number" min="0" list="monthsL" placeholder="ללא הגבלה"><datalist id="monthsL"><option value="6"><option value="10"><option value="12"><option value="18"><option value="24"><option value="36"></datalist></label><label class="f" id="dnSw">חודש התחלה<input id="dnS" type="month" value="${ym(new Date())}"></label>
+      <div class="small muted wide" id="dnHint"></div><label class="f wide">הערה<input id="dnNote" placeholder="למשל: לזכות רפואת..."></label></div>
     <p class="muted small" style="margin:0">לא רושמים כאן מספרי כרטיס אשראי או חשבון בנק.</p>
     <div class="row"><button class="btn primary">שמור תרומה</button></div></form>`;
   document.body.appendChild(ov);const close=()=>ov.remove();$('#dnX').onclick=close;
-  const tv=()=>{const st=$('#dnT').value==='standing';$('#dnMw').hidden=$('#dnSw').hidden=!st;$('#dnAl').textContent=T(st?'סכום חודשי (₪)':'סכום (₪)')};$('#dnT').onchange=tv;tv();
+  const tv=()=>{const st=$('#dnT').value==='standing';$('#dnMw').hidden=$('#dnSw').hidden=!st;$('#dnAl').textContent=T(st?'סכום חודשי (₪)':'סכום (₪)')};$('#dnT').onchange=tv;tv();standingHint('#dnA','#dnM','#dnS','#dnHint');
   $('#dnN').onchange=()=>{const p=peopleIndex().find(p=>fullName(p.x)===$('#dnN').value.trim());if(p){if(!$('#dnP').value)$('#dnP').value=p.x.mobile||'';if(!$('#dnE').value)$('#dnE').value=p.x.email||''}};
   $('#dnF').onsubmit=async e=>{e.preventDefault();const name=$('#dnN').value.trim(),p=pre.key&&P&&fullName(P)===name?{key:pre.key}:peopleIndex().find(p=>fullName(p.x)===name);const t=$('#dnT').value,a=Number($('#dnA').value);
     const o={id:newId(),kind:'in',date:$('#dnD').value,amount:t==='standing'?0:a,desc:`תרומה – ${name}${$('#dnNote').value.trim()?' ('+$('#dnNote').value.trim()+')':''}`,by:ME,pkey:p?.key||'',pname:name,phone:$('#dnP').value.trim(),email:fixEmail($('#dnE').value),
@@ -2196,20 +2217,20 @@ function renderMoney(){const all=allDonations();const once=all.filter(x=>x.d.typ
   <div class="stats"><div class="stat"><b>${money(sum(once))||'₪0'}</b><span>תרומות חד־פעמיות (${once.length})</span></div><div class="stat"><b>${money(sum(once.filter(x=>x.d.type==='cash')))||'₪0'}</b><span>מזומן</span></div>
     <div class="stat"><b>${money(sum(st))||'₪0'}</b><span>הוראות קבע לחודש (${st.length})</span></div><div class="stat ${st.length>paidNow.length?'alert':''}"><b>${paidNow.length}/${st.length}</b><span>נגבו החודש</span></div></div>
   <h3 style="margin:8px 0">הוראות קבע — סימון גבייה לפי חודש</h3>
-  <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>נייד</th><th>חודשי</th><th>חודשים</th>${months.map(m=>`<th>${HEB_GREG_M[m.getMonth()]}</th>`).join('')}<th>נגבה עד כה</th></tr></thead><tbody>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>נייד</th><th>חודשי</th><th>חודשים</th>${months.map(m=>`<th>${HEB_GREG_M[m.getMonth()]}</th>`).join('')}<th>נגבה עד כה</th><th>קבלה שנתית</th></tr></thead><tbody>
   ${st.length?st.map((x,i)=>`<tr><td><a href="#" data-i="${i}" data-s="st" class="open">${esc(x.name)}</a>${x.src==='exp'?' <span class="pill tag">ללא בקשה</span>':''}</td><td class="num"><span class="ltr">${esc(x.phone||'')}</span></td><td class="num">${money(x.d.amount)}</td><td class="num">${esc(x.d.months)||'∞'}</td>
-    ${months.map(m=>`<td><input type="checkbox" aria-label="נגבה" data-pay="${i}" data-m="${ym(m)}" ${x.payments?.[ym(m)]?'checked':''}></td>`).join('')}<td class="num">${money(Object.values(x.payments||{}).filter(Boolean).length*(Number(x.d.amount)||0))||'₪0'}</td></tr>`).join(''):`<tr><td colspan="${5+months.length}" class="empty">אין הוראות קבע</td></tr>`}
+    ${months.map(m=>`<td><input type="checkbox" aria-label="נגבה" data-pay="${i}" data-m="${ym(m)}" ${x.payments?.[ym(m)]?'checked':''}></td>`).join('')}<td class="num">${money(Object.values(x.payments||{}).filter(Boolean).length*(Number(x.d.amount)||0))||'₪0'}</td><td class="row">${[...new Set(Object.keys(x.payments||{}).filter(k=>x.payments[k]).map(k=>k.slice(0,4)))].sort().slice(-2).map(y=>`<button class="btn sm" data-ry="${i}|${y}">🧾 ${y}${x.d.yrc?.[y]?' ✓':''}</button>`).join('')||'<span class="muted small">אין גבייה</span>'}</td></tr>`).join(''):`<tr><td colspan="${6+months.length}" class="empty">אין הוראות קבע</td></tr>`}
   </tbody></table></div>
   <h3 style="margin:18px 0 8px">תרומות חד־פעמיות</h3>
-  <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך</th><th>שם</th><th>אופן</th><th>סכום</th><th>מס׳ קבלה</th></tr></thead><tbody>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>תאריך</th><th>שם</th><th>אופן</th><th>סכום</th><th>קבלה</th></tr></thead><tbody>
   ${once.length?once.map((x,i)=>[x,i]).sort((a,b)=>(b[0].date||'').localeCompare(a[0].date||'')).map(([x,i])=>`<tr><td>${dual(x.date)}</td><td><a href="#" data-i="${i}" data-s="once" class="open">${esc(x.name)}</a>${x.src==='exp'?' <span class="pill tag">ללא בקשה</span>':''}</td><td><span class="pill tag">${DON[x.d.type]}</span></td><td class="num">${money(x.d.amount)}</td>
-    <td>${x.d.receipt?`<span class="num">${esc(x.d.receipt)}</span>`:`<button class="btn sm" data-rc="${i}">הפק מספר</button>`}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">אין תרומות</td></tr>'}
-  </tbody></table></div></section>`;
+    <td>${x.d.rc||x.d.receipt?`<button class="btn sm" data-rc="${i}">🧾 מס׳ ${esc(x.d.rc?.no||x.d.receipt)}${x.d.rc?.cancelled?' (בוטלה)':''}</button>`:`<button class="btn sm gold" data-rc="${i}">🧾 הפק קבלה</button>`}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">אין תרומות</td></tr>'}
+  </tbody></table></div>${receiptsSection()}</section>`;bindReceipts();
   $('#lockFin').onclick=()=>{FIN=false;ss.del('biala_fin');toast('הכספים ננעלו');go('home')};if($('#newDon'))$('#newDon').onclick=()=>donationForm({},renderMoney);
   const pick=a=>a.dataset.s==='st'?st[+a.dataset.i]:once[+a.dataset.i];
   $$('a.open').forEach(a=>a.onclick=e=>{e.preventDefault();const x=pick(a);if(x.src==='rec')go('view',x.o);else if(x.person)openPerson(x.key);else toast('תרומה ללא כרטיס אדם')});
   $$('[data-pay]').forEach(c=>c.onchange=async()=>{const x=st[+c.dataset.pay];x.payments={...(x.payments||{}),[c.dataset.m]:c.checked};await saveDon(x);toast(c.checked?'סומן כנגבה':'הסימון הוסר')});
-  $$('[data-rc]').forEach(b=>b.onclick=async()=>{const x=once[+b.dataset.rc];S.nextReceipt=(S.nextReceipt||1000)+1;await putS();x.d={...x.d,receipt:String(S.nextReceipt)};await saveDon(x);renderMoney()})}
+  $$('[data-rc]').forEach(b=>b.onclick=()=>receiptModal(once[+b.dataset.rc]));$$('[data-ry]').forEach(b=>b.onclick=()=>{const [i,y]=b.dataset.ry.split('|');receiptModal(st[+i],y)})}
 
 function donRecs(){return allDonations().map(it=>it.src==='rec'?it.o:{id:it.id,date:it.date,donation:it.d,payments:it.payments,first:it.name,last:'',mobile:it.phone||'',email:it.email||'',_key:it.key,_exp:true})}
 function donorIndex(){const g={};donRecs().forEach(r=>{const k=r._exp?r._key:personKey(r);(g[k]=g[k]||[]).push(r)});
@@ -2234,6 +2255,7 @@ function renderToday(){const t=todayISO(),cur=ym(new Date());
   ${card('✏️ בקשות לבדיקה',rev.length,`<p class="small">בקשות שנסרקו מכתב יד ועוד לא נבדקו מול הדף.</p><button class="btn gold" data-go="rev">לבדיקה</button>`)}
   ${S.features.tidings?card('🎉 בשורות שעוד לא נשלחה עליהן ברכה',tid.length,`<table><tbody>${tid.slice(0,8).map(r=>`<tr><td><b>${esc(fullName(r))}</b><div class="small muted">${esc(r.tiding.kind)} · ${dual(r.tiding.date)}</div></td><td class="row">${S.features.messages&&(r.email||r.mobile)?`<button class="btn sm" data-tm="${r.id}">💬 מזל טוב</button>`:''}<button class="btn sm" data-ts="${r.id}">סמן שנשלח</button></td></tr>`).join('')}</tbody></table>`):''}
   ${fin?card('💳 הוראות קבע שלא נגבו החודש',unpaid.length,`<table><tbody>${unpaid.slice(0,10).map(x=>`<tr><td><b>${esc(x.name)}</b></td><td class="num">${money(x.d.amount)}</td></tr>`).join('')}</tbody></table><button class="btn gold" data-go="money">לסימון גבייה</button>`):''}
+  ${fin?(()=>{const u=allReceipts().filter(x=>!x.rc.cancelled&&x.rc.s46&&!x.rc.reportNo);return card('🧾 קבלות שעוד לא דווחו לרשות המסים',u.length,`<table><tbody>${u.slice(0,8).map(x=>`<tr><td><b>${esc(x.rc.name)}</b> <span class="small muted">מס׳ ${esc(x.rc.no)}</span></td><td class="num">${money(x.rc.amount)}</td></tr>`).join('')}</tbody></table><button class="btn gold" data-go="money">ליומן הקבלות</button>`)})():''}
   ${fin?card('⏳ הוראות קבע שמסתיימות',ending.length,`<table><tbody>${ending.slice(0,8).map(d=>`<tr><td><b>${esc(fullName(d.x))}</b></td><td>${S.features.messages?`<button class="btn sm" data-rn="${esc(d.key)}">💬 תזכורת לחידוש</button>`:''}</td></tr>`).join('')}</tbody></table>`):''}
   </div></section>`;
   if($('#tdNew'))$('#tdNew').onclick=()=>go('new');
@@ -2307,6 +2329,90 @@ async function renderPublicForm(){$('#login').hidden=true;$('#app').hidden=true;
       const {error}=await SB.from('kk_inbox').insert({data:{v:1,k:kb64(wk),iv:kb64(iv),c:kb64(c)}});if(error)throw error;lset('pubSent',Date.now());
       wrap.innerHTML=`<div class="card">${head}<h2 style="text-align:center">הבקשה התקבלה ✓</h2><p style="text-align:center">תודה. הגבאים יעבירו את הבקשה לכ״ק מרן האדמו״ר שליט״א.</p><p style="text-align:center"><a href="#bakasha" onclick="location.reload()">שליחת בקשה נוספת</a></p></div>`}
     catch(x){m.textContent='השליחה לא הצליחה. בדקו את החיבור לאינטרנט ונסו שוב.'}}}
+
+/* =====================================================================
+   תוספות 3: קבלות לפי סעיף 46, פרטי העמותה, יומן קבלות
+   ===================================================================== */
+const ORG=()=>S.org||{};
+const s46Valid=()=>{const u=ORG().s46Until;return !!u&&u>=todayISO()};
+/* כל הקבלות שהופקו, מתוך כל התרומות (חד־פעמיות: d.rc, הוראות קבע: d.yrc[שנה]) */
+function allReceipts(){const out=[];allDonations().forEach(it=>{const d=it.d;
+  if(d.rc)out.push({it,rc:d.rc,year:null});else if(d.receipt&&d.type!=='standing')out.push({it,rc:{no:d.receipt,date:it.date,amount:+d.amount||0,old:true},year:null});
+  Object.entries(d.yrc||{}).forEach(([y,rc])=>out.push({it,rc,year:y}))});
+  return out.sort((a,b)=>(+b.rc.no||0)-(+a.rc.no||0))}
+function standingYear(it,y){const m=Object.entries(it.payments||{}).filter(([k,v])=>v&&k.startsWith(y)).map(([k])=>k).sort();return {months:m,amount:m.length*(+it.d.amount||0)}}
+function receiptHTML(r){const o=ORG();const big=s=>`<span style="font-size:15pt"><b>${s}</b></span>`;
+  return `<div style="border:2px solid #000;padding:18px 22px">
+  <div style="text-align:center;line-height:1.35"><div style="text-align:left;font-size:10pt">בס״ד</div>
+    <div style="font-size:17pt"><b>${esc(o.name||'מרכז חסידי ביאלא בני ברק')}</b></div>
+    ${o.num?`<div>ע״ר ${esc(o.num)}</div>`:''}<div style="font-size:11pt">${esc([o.address,o.phone,o.email].filter(Boolean).join(' · '))}</div></div>
+  <hr style="border:0;border-top:1px solid #000;margin:12px 0">
+  <div style="display:flex;justify-content:space-between;align-items:baseline"><div>${big('קבלה על תרומה מס׳ '+esc(r.no))}</div><div>${r.copy?'העתק':'מקור'}</div></div>
+  ${r.cancelled?`<div style="border:2px solid #b00;color:#b00;text-align:center;padding:4px;margin:8px 0"><b>קבלה זו בוטלה</b></div>`:''}
+  <table style="width:100%;margin-top:10px;border-collapse:collapse;font-size:13pt">
+    <tr><td style="width:34%;padding:4px 0">תאריך:</td><td>${esc(heb(r.date))} (${esc(greg(r.date))})</td></tr>
+    <tr><td style="padding:4px 0">התקבל מאת:</td><td><b>${esc(r.name)}</b></td></tr>
+    ${r.idNo?`<tr><td style="padding:4px 0">מספר זהות / ח״פ:</td><td>${esc(r.idNo)}</td></tr>`:''}
+    ${r.address?`<tr><td style="padding:4px 0">כתובת:</td><td>${esc(r.address)}</td></tr>`:''}
+    <tr><td style="padding:4px 0">סכום:</td><td>${big(money(r.amount))}</td></tr>
+    <tr><td style="padding:4px 0">אופן התשלום:</td><td>${esc(r.method)}${r.detail?' – '+esc(r.detail):''}</td></tr>
+    <tr><td style="padding:4px 0">עבור:</td><td>תרומה</td></tr></table>
+  ${r.s46&&o.s46Until?`<p style="margin:14px 0 4px">${esc(o.name||'המוסד')} מוכר כמוסד ציבורי לעניין סעיף 46 לפקודת מס הכנסה. האישור בתוקף עד ${esc(greg(o.s46Until))}.</p>`:''}
+  ${r.reportNo?`<p style="margin:4px 0"><b>התרומה דווחה לרשות המסים – מספר דיווח: ${esc(r.reportNo)}</b></p>`:''}
+  <div style="display:flex;justify-content:space-between;margin-top:36px"><div>תודה רבה!</div><div style="text-align:center">______________________<br>${esc(o.signer||'הגזבר')}</div></div></div>`}
+function receiptModal(it,year){const o=ORG(),st=it.d.type==='standing';const P=it.person||{};
+  const old=st?(it.d.yrc||{})[year]:it.d.rc||(it.d.receipt?{no:it.d.receipt}:null);const sy=st?standingYear(it,year):null;
+  const amt=old?.amount??(st?sy.amount:+it.d.amount||0);
+  const ov=document.createElement('div');ov.className='modal';
+  ov.innerHTML=`<form class="modal-in" id="rcF"><div class="row"><h3 style="margin:0">🧾 ${old?'קבלה מס׳ '+esc(old.no):'הפקת קבלה'}${st?' – שנת '+year:''}</h3><span class="spacer"></span><button type="button" class="btn sm" id="rcX">✕</button></div>
+    ${!o.name||!o.num?`<div class="notice warn">חסרים פרטי העמותה (שם ומספר עמותה). ממלאים אותם בלשונית "ניהול" ← "פרטי העמותה וקבלות".</div>`:''}
+    ${o.s46Until&&!s46Valid()?`<div class="notice warn">אישור סעיף 46 שנרשם בניהול פג תוקף (${esc(greg(o.s46Until))}). הקבלה תצא בלי שורת סעיף 46 עד שיעודכן התאריך.</div>`:''}
+    ${st?`<p class="small" style="margin:0">קבלה שנתית על הוראת הקבע: נגבו ${sy.months.length} חודשים בשנת ${year}${sy.months.length?' ('+sy.months.map(m=>HEB_GREG_M[+m.slice(5)-1]).join(', ')+')':''}.</p>`:''}
+    <div class="grid"><label class="f">שם התורם<input id="rcN" required value="${esc(old?.name||it.name)}"></label>
+      <label class="f">מספר זהות / ח״פ של התורם<input id="rcI" dir="ltr" inputmode="numeric" maxlength="12" value="${esc(old?.idNo||it.d.donorId||'')}"></label>
+      <label class="f wide">כתובת<input id="rcA" value="${esc(old?.address||[P.address,P.city].filter(Boolean).join(', '))}"></label>
+      <label class="f">תאריך הקבלה<input type="date" id="rcD" value="${esc(old?.date||(st?(year<String(new Date().getFullYear())?year+'-12-31':todayISO()):it.date||todayISO()))}"></label>
+      <label class="f">סכום (₪)<input id="rcS" type="number" min="1" required value="${esc(amt)}"></label>
+      <label class="f">אופן התשלום<input id="rcM" value="${esc(old?.method||DON[it.d.type]||'')}"></label>
+      <label class="f">פרטים (מס׳ צ׳ק, אסמכתא)<input id="rcDet" value="${esc(old?.detail||'')}"></label>
+      <label class="f wide">מספר דיווח מרשות המסים (מערכת "תרומות ישראל")<input id="rcR" dir="ltr" value="${esc(old?.reportNo||'')}" placeholder="מעתיקים לכאן אחרי הדיווח"></label></div>
+    <label class="chk"><input type="checkbox" id="rc46" ${s46Valid()&&(old?old.s46!==false:true)?'checked':''} ${s46Valid()?'':'disabled'}> לכלול בקבלה את שורת סעיף 46</label>
+    <div class="notice info small">מאז 1.1.2026 כל תרומה שמקבלת קבלה לפי סעיף 46 צריכה להיות מדווחת במערכת "תרומות ישראל" של רשות המסים, ומספר הדיווח צריך להופיע על הקבלה. לכן: מדווחים שם (צריך את מספר הזהות של התורם), מעתיקים לכאן את מספר הדיווח, ורק אז מדפיסים ושולחים.</div>
+    <div class="row" style="flex-wrap:wrap"><button class="btn primary">${old?'שמור והדפס':'הפק קבלה והדפס'}</button>${old?'<button type="button" class="btn" id="rcCopy">הדפס העתק</button>':''}
+      ${old&&S.features.messages?'<button type="button" class="btn" id="rcMail">💬 שלח לתורם</button>':''}${old&&!old.cancelled?'<button type="button" class="btn danger" id="rcCancel">ביטול קבלה</button>':''}</div></form>`;
+  document.body.appendChild(ov);const close=()=>ov.remove();$('#rcX').onclick=close;
+  const build=()=>({no:old?.no,date:$('#rcD').value,name:$('#rcN').value.trim(),idNo:$('#rcI').value.trim(),address:$('#rcA').value.trim(),amount:Number($('#rcS').value),method:$('#rcM').value.trim(),detail:$('#rcDet').value.trim(),reportNo:$('#rcR').value.trim(),s46:$('#rc46').checked,cancelled:old?.cancelled||false,by:old?.by||ME,at:old?.at||Date.now(),...(st?{months:sy.months}:{})});
+  const store=async rc=>{const d={...it.d,donorId:rc.idNo||it.d.donorId||''};if(st)d.yrc={...(d.yrc||{}),[year]:rc};else{d.rc=rc;d.receipt=rc.no}it.d=d;await saveDon(it)};
+  const print=(rc,copy)=>saveDoc('קבלה '+rc.no,`<div>${receiptHTML({...rc,copy})}</div>`,'print');
+  $('#rcF').onsubmit=async e=>{e.preventDefault();const rc=build();if(!rc.no){S.nextReceipt=Math.max(+S.nextReceipt||0,+(ORG().firstNo||1000)-1)+1;rc.no=String(S.nextReceipt);await putS()}
+    if(rc.s46&&!rc.idNo&&!confirm(T('לא נרשם מספר זהות של התורם. בלי זה התורם לא יוכל לקבל זיכוי ממס. להמשיך בכל זאת?')))return;
+    await store(rc);log(old?'עדכון קבלה':'הפקת קבלה',rc.name,{no:rc.no});print(rc,false);close();refreshFin()};
+  if($('#rcCopy'))$('#rcCopy').onclick=()=>print(build(),true);
+  if($('#rcMail'))$('#rcMail').onclick=()=>{const rc=build();compose({name:rc.name,email:P.email||it.email,phone:P.mobile||it.phone},{...P,first:rc.name,last:'',donation:{...it.d,amount:rc.amount,receipt:rc.no}},'receipt')};
+  if($('#rcCancel'))$('#rcCancel').onclick=async()=>{if(!confirm(T('לבטל את הקבלה? המספר נשאר שמור ומסומן "בוטלה". אם הקבלה דווחה לרשות המסים – צריך לבטל אותה גם שם.')))return;const rc={...build(),cancelled:true};await store(rc);log('ביטול קבלה',rc.name,{no:rc.no});toast('הקבלה סומנה כמבוטלת');close();refreshFin()}}
+function refreshFin(){if(view==='money')renderMoney();else if(view==='today')renderToday();else if(view==='person')renderPerson()}
+/* יומן קבלות – בתחתית מסך הכספים */
+function receiptsSection(){const L=allReceipts();if(!L.length)return '';const unrep=L.filter(x=>!x.rc.cancelled&&x.rc.s46!==false&&!x.rc.reportNo&&!x.rc.old).length;
+  return `<h3 style="margin:18px 0 8px">🧾 יומן קבלות (${L.length})${unrep?` <span class="pill rev">${unrep} לא דווחו לרשות המסים</span>`:''}</h3>
+  <div class="row" style="margin-bottom:8px"><button class="btn sm" id="rcCsv">הורד יומן קבלות לאקסל</button></div>
+  <div class="tablewrap"><table class="wide"><thead><tr><th>מס׳</th><th>תאריך</th><th>שם</th><th>סכום</th><th>סעיף 46</th><th>דיווח לרשות המסים</th><th></th></tr></thead><tbody>
+  ${L.map((x,i)=>`<tr ${x.rc.cancelled?'style="opacity:.55;text-decoration:line-through"':''}><td class="num">${esc(x.rc.no)}</td><td>${dual(x.rc.date)}</td><td>${esc(x.rc.name||x.it.name)}${x.year?` <span class="pill tag">שנתית ${x.year}</span>`:''}</td><td class="num">${money(x.rc.amount)}</td>
+    <td>${x.rc.old?'—':x.rc.s46?'כן':'לא'}</td><td>${x.rc.reportNo?`<span class="num">${esc(x.rc.reportNo)}</span>`:x.rc.cancelled||x.rc.old||x.rc.s46===false?'—':'<span class="pill wait">לא דווח</span>'}</td><td><button class="btn sm" data-rcv="${i}">פתח</button></td></tr>`).join('')}</tbody></table></div>`}
+function bindReceipts(){const L=allReceipts();$$('[data-rcv]').forEach(b=>b.onclick=()=>{const x=L[+b.dataset.rcv];receiptModal(x.it,x.year)});
+  if($('#rcCsv'))$('#rcCsv').onclick=()=>{const rows=[['מספר','תאריך','שם','ת.ז./ח.פ.','סכום','אופן','סעיף 46','מספר דיווח','בוטלה'],...L.map(x=>[x.rc.no,x.rc.date,x.rc.name||x.it.name,x.rc.idNo||'',x.rc.amount,x.rc.method||'',x.rc.s46?'כן':'',x.rc.reportNo||'',x.rc.cancelled?'כן':''])];
+    downloadBlob(`יומן-קבלות-${fileStamp()}.csv`,new Blob(['﻿'+rows.map(r=>r.map(c=>`"${String(c??'').replace(/"/g,'""')}"`).join(',')).join('\n')],{type:'text/csv'}));log('הורדת יומן קבלות')}}
+/* הגדרות העמותה בניהול */
+function orgFieldset(){const o=ORG();return `<fieldset><legend>פרטי העמותה וקבלות (סעיף 46)</legend><p class="muted small" style="margin-top:0">הפרטים האלה מודפסים על כל קבלה. אם יש לעמותה אישור לפי סעיף 46 – רושמים עד מתי הוא בתוקף, והקבלות יכללו את השורה המתאימה.</p>
+  <div class="grid"><label class="f">שם העמותה<input id="oN" value="${esc(o.name||'')}" placeholder="כמו ברשם העמותות"></label><label class="f">מספר עמותה (ע״ר)<input id="oNum" dir="ltr" value="${esc(o.num||'')}"></label>
+  <label class="f">אישור סעיף 46 בתוקף עד<input id="oS46" type="date" value="${esc(o.s46Until||'')}"></label><label class="f">שם החותם על הקבלות<input id="oSig" value="${esc(o.signer||'')}" placeholder="למשל: הגזבר"></label>
+  <label class="f wide">כתובת<input id="oAd" value="${esc(o.address||'')}"></label><label class="f">טלפון<input id="oPh" dir="ltr" value="${esc(o.phone||'')}"></label><label class="f">מייל<input id="oEm" dir="ltr" value="${esc(o.email||'')}"></label>
+  <label class="f">מספר הקבלה הראשון<input id="oFirst" type="number" min="1" value="${esc(o.firstNo||'')}" placeholder="${(+S.nextReceipt||1000)+1}"></label></div>
+  <div class="row"><button type="button" class="btn primary" id="oSave">שמור פרטי עמותה</button><span class="muted small">הקבלה הבאה תקבל מספר ${Math.max(+S.nextReceipt||0,+(o.firstNo||1000)-1)+1}</span></div></fieldset>`}
+function bindOrg(){if(!$('#oSave'))return;$('#oSave').onclick=async()=>{S.org={name:$('#oN').value.trim(),num:$('#oNum').value.trim(),s46Until:$('#oS46').value,signer:$('#oSig').value.trim(),address:$('#oAd').value.trim(),phone:$('#oPh').value.trim(),email:$('#oEm').value.trim(),firstNo:$('#oFirst').value};await putS('פרטי העמותה וקבלות');toast('נשמר');renderAdmin()}}
+/* סכום כולל וחודש סיום להוראת קבע – רמז חי ליד השדות */
+function standingHint(aSel,mSel,sSel,outSel){const f=()=>{const a=+($(aSel)?.value||0),m=+($(mSel)?.value||0),s=$(sSel)?.value||ym(new Date()),o=$(outSel);if(!o)return;
+  o.textContent=a&&m?T('סה״כ התחייבות')+': '+money(a*m)+' · '+T('חודש אחרון')+': '+HEB_GREG_M[+addMonths(s,m-1).slice(5)-1]+' '+addMonths(s,m-1).slice(0,4):a?T('ללא הגבלת חודשים – עד שמבטלים'):''};
+  [aSel,mSel,sSel].forEach(s=>{const e=$(s);if(e)e.addEventListener('input',f)});f()}
 
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
 </script>
