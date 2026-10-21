@@ -206,6 +206,7 @@ html[lang=en] label.f.unsure::after{content:"To review — unclear handwriting"}
 #usersIn select,#usersIn input:not([type=checkbox]){background:var(--field);border:1px solid var(--line);border-radius:8px;padding:6px 8px;color:var(--ink)}
 #toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--wood);color:#fbefd6;padding:10px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:20;max-width:90vw}
 textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;font-size:.8rem;direction:ltr;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)}
+.keybox{display:grid;gap:8px;text-align:right}.keybox h3{margin:0;text-align:center}.keybox .small{line-height:1.7}.reccode{font:700 20px monospace;letter-spacing:1px;background:#fff8e6;border:2px dashed #c9a227;border-radius:8px;padding:12px;text-align:center;user-select:all;color:#222}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spin{animation:none}}
@@ -341,7 +342,7 @@ const I18N={
 'ינואר':'January','פברואר':'February','מרץ':'March','אפריל':'April','מאי':'May','יוני':'June','יולי':'July','אוגוסט':'August','ספטמבר':'September','אוקטובר':'October','נובמבר':'November','דצמבר':'December',
 /* הוראות וניהול */
 'את ההוראות אפשר לערוך בלשונית "ניהול".':'The instructions can be edited in the "Management" tab.','נעל ניהול':'Lock management','סיסמאות':'Passwords','איזו סיסמה':'Which password','כניסה למערכת':'System login',
-'סיסמה חדשה':'New password','הקוד הנוכחי':'Current code','הקוד הנוכחי שגוי':'The current code is wrong','כבעלים, אתה יכול להחליף קוד בלי להקליד את הקוד הישן.':'As the owner, you can change a code without typing the old one.','כדי להחליף קוד צריך להקליד את הקוד הנוכחי שלו. כך אי אפשר להשתלט על המערכת בלי לדעת את הקודים.':'To change a code you must type its current code. This way nobody can take over the system without knowing the codes.','ניסיון החלפת קוד עם קוד נוכחי שגוי':'Attempt to change a code with a wrong current code','קוד הכספים עודכן ל־123456':'Finance code updated to 123456','שוב סיסמה חדשה':'New password again','החלף סיסמה':'Change password','לפחות 4 תווים':'At least 4 characters','הסיסמאות לא זהות':'The passwords do not match','הסיסמה הוחלפה':'Password changed',
+'סיסמה חדשה':'New password','🔑 קביעת מפתח הארגון':'🔑 Set the organization key','🔑 מפתח הארגון':'🔑 Organization key','🧾 קוד שחזור':'🧾 Recovery code','🧾 שחזור עם קוד':'🧾 Restore with a code','מפתח הארגון':'Organization key','שוב, לאימות':'Again, to confirm','קבע מפתח והמשך':'Set key and continue','פתח':'Open','שחזר':'Restore','חזרה':'Back','שכחתי את המפתח – יש לי קוד שחזור':'I forgot the key – I have a recovery code','מפתח ארגון חדש':'New organization key','העתקה':'Copy','הדפסה':'Print','שמרתי את הקוד':'I saved the code','המשך למערכת':'Continue to the system','סיום':'Done','לפחות 10 תווים':'At least 10 characters','המפתחות לא זהים':'The keys do not match','מכין…':'Preparing…','בודק…':'Checking…','מחליף…':'Changing…','המפתח שגוי':'The key is wrong','קוד השחזור שגוי':'The recovery code is wrong','סמן שקודם שמרת את הקוד':'Tick that you saved the code first','המנהל הראשי צריך להיכנס ראשון ולקבוע את מפתח הארגון. נסה שוב אחר כך.':'The owner must sign in first and set the organization key. Please try again later.','🔒 הצפנת הנתונים':'🔒 Data encryption','החלף מפתח ארגון':'Change organization key','צור קוד שחזור חדש':'Create a new recovery code','רק המנהל הראשי יכול להחליף את מפתח הארגון.':'Only the owner can change the organization key.','ליצור קוד שחזור חדש? הקוד הישן יפסיק לעבוד.':'Create a new recovery code? The old code will stop working.','קוד השחזור החדש:':'The new recovery code:','שמור אותו במקום בטוח.':'Keep it somewhere safe.','אין מפתח ארגון – הנתונים לא נשמרו':'No organization key – the data was not saved','מפתח הארגון הוחלף. מעכשיו אומרים לגבאים חדשים את המפתח החדש.':'The organization key was changed. From now on, tell new gabbaim the new key.','הצפנה':'Encryption','נקבע מפתח ארגון':'Organization key set','מפתח ארגון שגוי 3 פעמים':'Wrong organization key 3 times','מפתח הארגון הוחלף':'Organization key changed','נוצר קוד שחזור חדש':'New recovery code created','מפתח הארגון הוחלף בעזרת קוד שחזור':'Organization key changed with a recovery code','החלפת המפתח לא משנה את הנתונים, רק את המשפט שפותח אותם. מי שכבר מחובר ממשיך לעבוד. כדאי להחליף מפתח אם גבאי עזב.':'Changing the key does not change the data, only the phrase that opens it. Anyone already connected keeps working. It is worth changing the key if a gabbai leaves.','מקלידים את קוד השחזור שקיבלת כשקבעת את המפתח, ובוחרים מפתח ארגון חדש.':'Type the recovery code you got when you set the key, and choose a new organization key.','הועתק':'Copied','הקוד הנוכחי':'Current code','הקוד הנוכחי שגוי':'The current code is wrong','כבעלים, אתה יכול להחליף קוד בלי להקליד את הקוד הישן.':'As the owner, you can change a code without typing the old one.','כדי להחליף קוד צריך להקליד את הקוד הנוכחי שלו. כך אי אפשר להשתלט על המערכת בלי לדעת את הקודים.':'To change a code you must type its current code. This way nobody can take over the system without knowing the codes.','ניסיון החלפת קוד עם קוד נוכחי שגוי':'Attempt to change a code with a wrong current code','קוד הכספים עודכן ל־123456':'Finance code updated to 123456','שוב סיסמה חדשה':'New password again','החלף סיסמה':'Change password','לפחות 4 תווים':'At least 4 characters','הסיסמאות לא זהות':'The passwords do not match','הסיסמה הוחלפה':'Password changed',
 'במצב שרת, הכניסה למערכת היא עם המייל והסיסמה של כל גבאי. כאן מחליפים את סיסמאות הכספים והניהול.':"In server mode, each gabbai signs in with their own email and password. Here you change the finance and management passwords.",
 'גבאים':'Gabbaim','שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה.':'One name per line. The names appear in the choice on the sign-in screen.','שמור גבאים':'Save gabbaim','הגבאים נשמרו':'Gabbaim saved',
 'אפשרויות במערכת':'System options','כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.':'Turning an option off hides it from all gabbaim. No data is deleted.',
@@ -582,6 +583,13 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 # נעילה ומצב תצוגה
 המערכת ננעלת לבד אחרי 20 דקות בלי פעילות (אפשר לכבות בניהול). הכפתור ◐ למעלה מחליף בין תצוגה בהירה לכהה.
 
+# הצפנה ומפתח הארגון
+כל הנתונים מוצפנים במחשב לפני שהם יוצאים לשרת, עם "מפתח הארגון". בשרת נשמר רק ג'יבריש, ובגיטהאב יש רק את התוכנה בלי שום נתון. גם מי שיצליח להגיע לשרת יראה רק ג'יבריש.
+בכניסה הראשונה המנהל הראשי קובע את מפתח הארגון (משפט של לפחות 10 תווים, אפשר בעברית) ומקבל קוד שחזור. את הקוד שומרים במקום בטוח, למשל מדפיסים אותו.
+כל גבאי שאישרת מקבל ממך את המפתח בעל פה ומקליד אותו פעם אחת במחשב שלו. מי שלא אושר, או שהושבת, לא מקבל נתונים מהשרת בכלל, גם אם הוא יודע את המפתח.
+שכחת את המפתח? במסך המפתח לוחצים "שכחתי את המפתח – יש לי קוד שחזור", מקלידים את הקוד ובוחרים מפתח חדש.
+בלשונית "ניהול" ← "הצפנת הנתונים" המנהל הראשי יכול להחליף את מפתח הארגון (למשל כשגבאי עוזב) וליצור קוד שחזור חדש.
+
 # סיסמאות ראשוניות
 כניסה: 1234 · כספים: 123456 · ניהול: 123456. אפשר להחליף אותן בלשונית "ניהול" ← "סיסמאות". כדי להחליף קוד צריך להקליד קודם את הקוד הנוכחי, כך שגם מי שקיבל הרשאת מנהל לא יכול להשתלט על המערכת בלי לדעת את הקודים. רק הבעלים (המנהל הראשי) נכנס לכספים ולניהול בלי קוד, ויכול להחליף קוד גם בלי לדעת את הקוד הישן. (במצב שרת הכניסה היא עם חשבון Google של כל גבאי.)`;
 
@@ -668,6 +676,13 @@ With a shared server (Management → "Shared server connection"): all gabbaim wo
 # Lock and display mode
 The system locks itself after 20 minutes without activity (can be turned off in Management). The ◐ button at the top switches between light and dark display.
 
+# Encryption and the organization key
+All data is encrypted on the computer before it leaves for the server, with the "organization key". The server only stores gibberish, and GitHub only holds the program, with no data at all. Even someone who reaches the server sees only gibberish.
+On the first sign-in the owner sets the organization key (a phrase of at least 10 characters, Hebrew is fine) and receives a recovery code. Keep the code somewhere safe, for example print it.
+Every gabbai you approve gets the key from you by word of mouth and types it once on their computer. Anyone not approved, or disabled, gets no data from the server at all, even if they know the key.
+Forgot the key? On the key screen click "I forgot the key – I have a recovery code", type the code and choose a new key.
+In "Management" → "Data encryption" the owner can change the organization key (for example when a gabbai leaves) and create a new recovery code.
+
 # Initial passwords
 Login: 1234 · Finances: 123456 · Management: 123456. You can change them in "Management" → "Passwords". To change a code you must first type the current code, so even someone with manager permission cannot take over the system without knowing the codes. Only the owner (head manager) enters finances and management without a code, and can change a code without knowing the old one. (In server mode, each gabbai signs in with their own Google account.)`;
 
@@ -692,12 +707,88 @@ const logSeen={};
 async function log(action,target='',details=null){
   const who=ME||'?',key=action+'|'+target;if(/^צפייה/.test(action)){if(logSeen[key]&&Date.now()-logSeen[key]<10*60000)return;logSeen[key]=Date.now()}
   const row={at:new Date().toISOString(),who,email:MYEMAIL||'',action,target:String(target||'').slice(0,200),details};
-  if(MODE==='cloud'){try{await SB.from('kk_log').insert({action:row.action,target:row.target,details:{...(details||{}),who}})}catch(e){}}
+  if(MODE==='cloud'){try{const tg=DEK&&row.target?'enc:'+await encStr(row.target):row.target;const dt=DEK&&details?{enc:await encStr(JSON.stringify(details)),who}:{...(details||{}),who};await SB.from('kk_log').insert({action:row.action,target:tg,details:dt})}catch(e){}}
   else{LOG.push(row);if(LOG.length>5000)LOG=LOG.slice(-5000);await idb.set('log',LOG)}}
 let R=[], EXP=[], S=null;
 const DEF_S=async()=>({pw:await hash('1234'),fin:await hash('123456'),adm:await hash('123456'),gabbaim:['גבאי ראשי'],features:Object.fromEntries(Object.keys(FEATURES).map(k=>[k,true])),help:DEF_HELP,geminiKey:'',geminiModel:'gemini-3.8-flash',templates:{}});
 function withDefaults(o,d){return {...d,...o,features:{...d.features,...(o?.features||{})}}}
-async function cloudPut(tbl,id,data){const {error}=await SB.from(tbl).upsert({id,data,updated_at:new Date().toISOString()});if(error){toast('השמירה בשרת נכשלה: '+error.message);return false}return true}
+/* ===== הצפנה מקצה לקצה (כמו בעזר): הנתונים מוצפנים במחשב לפני שהם יוצאים לשרת =====
+   מפתח אקראי חזק (DEK) מצפין את כל הנתונים. הוא שמור בשרת רק כשהוא נעול: פעם במפתח הארגון (משפט שרק אנשי הצוות יודעים)
+   ופעם בקוד שחזור של הבעלים. בשרת יש רק ג'יבריש, ומי שמגיע לשרת בלי המפתח לא יכול לקרוא כלום. */
+let DEK=null, CMETA=null;
+const kb64=u=>{let s='';const a=new Uint8Array(u);for(let i=0;i<a.length;i+=0x8000)s+=String.fromCharCode.apply(null,a.subarray(i,i+0x8000));return btoa(s)};
+const kub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const normKey=p=>String(p||'').normalize('NFC').trim();
+const normCode=c=>String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+async function kDerive(pass,salt){const km=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:kub(salt),iterations:250000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function aesEnc(key,bytes){const iv=crypto.getRandomValues(new Uint8Array(12));const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,bytes));const o=new Uint8Array(12+ct.length);o.set(iv);o.set(ct,12);return kb64(o)}
+async function aesDec(key,s){const u=kub(s);return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(0,12)},key,u.slice(12)))}
+const encStr=async s=>aesEnc(DEK,new TextEncoder().encode(s));
+const decStr=async s=>new TextDecoder().decode(await aesDec(DEK,s));
+const importDek=raw=>crypto.subtle.importKey('raw',raw,{name:'AES-GCM'},true,['encrypt','decrypt']);
+async function wrapDek(secret,raw){const salt=kb64(crypto.getRandomValues(new Uint8Array(16)));return {salt,wrap:await aesEnc(await kDerive(secret,salt),raw)}}
+async function unwrapDek(secret,salt,wrap){return aesDec(await kDerive(secret,salt),wrap)}
+const dekSlot=()=>'kk_dek_'+(MYEMAIL||'local');
+async function dekSave(){try{localStorage.setItem(dekSlot(),kb64(await crypto.subtle.exportKey('raw',DEK)))}catch(e){}}
+function dekForget(){try{localStorage.removeItem(dekSlot())}catch(e){}}
+async function dekCheck(){try{return !!CMETA&&await decStr(CMETA.check)==='kk-ok'}catch(e){return false}}
+async function sealData(o){return DEK?{enc:await encStr(JSON.stringify(o))}:o}
+async function openData(d){if(d&&typeof d.enc==='string'){if(!DEK)throw new Error('אין מפתח ארגון במחשב הזה');return JSON.parse(await decStr(d.enc))}return d}
+function genRecovery(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',b=crypto.getRandomValues(new Uint8Array(20));let s='';b.forEach((x,i)=>{s+=A[x%A.length];if(i%5===4&&i<19)s+='-'});return s}
+async function putCMeta(m){const {error}=await SB.from('kk_settings').upsert({id:'crypto',data:m,updated_at:new Date().toISOString()});if(error)throw new Error(error.message);CMETA=m}
+/* חלון מפתח הארגון (בתוך מסך הכניסה) */
+function keyBox(html){const b=$('#pendingBox');b.hidden=false;b.classList.remove('bad');b.classList.add('keybox');b.innerHTML=html;
+  b.querySelectorAll('input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const p=b.querySelector('button.primary');if(p)p.click()}}));
+  const o=b.querySelector('#kOut');if(o)o.onclick=async()=>{DEK=null;await SB.auth.signOut();b.hidden=true;b.classList.remove('keybox')}}
+const kErr=t=>{const e=$('#kErr');if(e)e.textContent=T(t)};
+const kOutBtn='<button type="button" class="btn sm" id="kOut">יציאה מהחשבון</button>';
+function recoveryScreen(code,first,done){keyBox(`<h3>🧾 קוד שחזור</h3>
+  <p class="small">אם תשכח את מפתח הארגון, הקוד הזה פותח את הנתונים ומאפשר לקבוע מפתח חדש. <b>שמור אותו במקום בטוח</b>: הדפס, או כתוב על נייר. לא מעבירים אותו לאף אחד.</p>
+  <div class="reccode" dir="ltr" data-noi18n>${esc(code)}</div>
+  <div class="row" style="justify-content:center"><button type="button" class="btn sm" id="kCopy">העתקה</button><button type="button" class="btn sm" id="kPrint">הדפסה</button></div>
+  <label class="row small" style="justify-content:center"><input type="checkbox" id="kSaved"> שמרתי את הקוד</label>
+  <button type="button" class="btn primary" id="kGo">${first?'המשך למערכת':'סיום'}</button><div id="kErr" class="err"></div>`);
+  $('#kCopy').onclick=()=>{try{navigator.clipboard.writeText(code);toast('הועתק')}catch(e){}};
+  $('#kPrint').onclick=()=>printHTML(`<html dir="rtl"><body style="font-family:Arial;padding:40px"><h1>קבלת קהל ביאלה – קוד שחזור</h1><div dir="ltr" style="font:700 26px monospace;margin:24px 0">${esc(code)}</div><p>משתמשים בו רק אם שוכחים את מפתח הארגון. לשמור במקום בטוח ולא להעביר לאף אחד.</p></body></html>`);
+  $('#kGo').onclick=()=>{if(!$('#kSaved').checked)return kErr('סמן שקודם שמרת את הקוד');done()}}
+function ensureKey(){return new Promise(async res=>{
+  const {data,error}=await SB.from('kk_settings').select('data').eq('id','crypto').maybeSingle();
+  if(error){showPending('אין חיבור לשרת: '+error.message,true);return res(false)}
+  CMETA=data?.data||null;
+  if(CMETA){let s=null;try{s=localStorage.getItem(dekSlot())}catch(e){}
+    if(s){try{DEK=await importDek(kub(s))}catch(e){DEK=null}if(DEK&&await dekCheck())return res(true);DEK=null;dekForget()}}
+  if(!CMETA&&!isOwner()){showPending('המנהל הראשי צריך להיכנס ראשון ולקבוע את מפתח הארגון. נסה שוב אחר כך.');return res(false)}
+  const done=()=>{const b=$('#pendingBox');b.hidden=true;b.classList.remove('keybox');res(true)};
+  if(!CMETA){ /* הקמה ראשונה – רק הבעלים */
+    keyBox(`<h3>🔑 קביעת מפתח הארגון</h3><p class="small">המפתח נועל את כל הנתונים. הם מוצפנים במחשב לפני שהם נשלחים לשרת, ומי שאין לו את המפתח לא יכול לקרוא כלום, גם אם יגיע לשרת.<br>• אפשר בעברית או באנגלית, לפחות 10 תווים. עדיף משפט שקל לזכור וקשה לנחש.<br>• אומרים אותו בעל פה רק לגבאים שאישרת.<br>• אחרי הקביעה תקבל קוד שחזור, למקרה שתשכח.</p>
+      <input id="k1" type="password" placeholder="מפתח הארגון" autocomplete="new-password"><input id="k2" type="password" placeholder="שוב, לאימות" autocomplete="new-password">
+      <button type="button" class="btn primary" id="kGo">קבע מפתח והמשך</button><div id="kErr" class="err"></div>${kOutBtn}`);
+    $('#kGo').onclick=async()=>{const p1=normKey($('#k1').value);if(p1.length<10)return kErr('לפחות 10 תווים');if(p1!==normKey($('#k2').value))return kErr('המפתחות לא זהים');
+      kErr('מכין…');try{const raw=crypto.getRandomValues(new Uint8Array(32));DEK=await importDek(raw);const code=genRecovery();
+        const w1=await wrapDek(p1,raw),w2=await wrapDek(normCode(code),raw);
+        await putCMeta({v:1,salt:w1.salt,wrap:w1.wrap,rsalt:w2.salt,rwrap:w2.wrap,check:await encStr('kk-ok'),created:new Date().toISOString(),by:MYEMAIL});
+        await dekSave();log('הצפנה','נקבע מפתח ארגון');recoveryScreen(code,true,done)}catch(e){DEK=null;kErr('לא הצליח: '+(e.message||''))}};return}
+  const enterUI=()=>{keyBox(`<h3>🔑 מפתח הארגון</h3><p class="small">כותבים פעם אחת במחשב הזה את מפתח הארגון. ${isOwner()?'':'המנהל הראשי יגיד לך אותו בעל פה.'}</p>
+      <input id="k1" type="password" placeholder="מפתח הארגון" autocomplete="off">
+      <button type="button" class="btn primary" id="kGo">פתח</button><div id="kErr" class="err"></div>
+      ${isOwner()?'<button type="button" class="btn sm" id="kRec">שכחתי את המפתח – יש לי קוד שחזור</button>':''}${kOutBtn}`);
+    let fails=0;
+    $('#kGo').onclick=async()=>{kErr('בודק…');try{DEK=await importDek(await unwrapDek(normKey($('#k1').value),CMETA.salt,CMETA.wrap));if(!await dekCheck())throw 0;await dekSave();done()}
+      catch(e){DEK=null;fails++;kErr('המפתח שגוי');if(fails===3)log('מפתח ארגון שגוי 3 פעמים')}};
+    const r=$('#kRec');if(r)r.onclick=recUI};
+  const recUI=()=>{keyBox(`<h3>🧾 שחזור עם קוד</h3><p class="small">מקלידים את קוד השחזור שקיבלת כשקבעת את המפתח, ובוחרים מפתח ארגון חדש.</p>
+      <input id="kc" dir="ltr" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" autocomplete="off"><input id="k1" type="password" placeholder="מפתח ארגון חדש" autocomplete="new-password"><input id="k2" type="password" placeholder="שוב, לאימות" autocomplete="new-password">
+      <button type="button" class="btn primary" id="kGo">שחזר</button><div id="kErr" class="err"></div><button type="button" class="btn sm" id="kBack">חזרה</button>${kOutBtn}`);
+    $('#kBack').onclick=enterUI;
+    $('#kGo').onclick=async()=>{const p1=normKey($('#k1').value);if(p1.length<10)return kErr('לפחות 10 תווים');if(p1!==normKey($('#k2').value))return kErr('המפתחות לא זהים');
+      kErr('בודק…');let raw;try{raw=await unwrapDek(normCode($('#kc').value),CMETA.rsalt,CMETA.rwrap);DEK=await importDek(raw);if(!await dekCheck())throw 0}catch(e){DEK=null;return kErr('קוד השחזור שגוי')}
+      try{const w1=await wrapDek(p1,raw);await putCMeta({...CMETA,salt:w1.salt,wrap:w1.wrap});await dekSave();log('הצפנה','מפתח הארגון הוחלף בעזרת קוד שחזור');done()}catch(e){kErr('לא הצליח: '+(e.message||''))}}};
+  enterUI()})}
+/* החלפת מפתח / קוד שחזור חדש (בעלים, מלשונית ניהול) */
+async function changeOrgKey(p1){const raw=new Uint8Array(await crypto.subtle.exportKey('raw',DEK));const w1=await wrapDek(p1,raw);await putCMeta({...CMETA,salt:w1.salt,wrap:w1.wrap});log('הצפנה','מפתח הארגון הוחלף')}
+async function newRecoveryCode(){const raw=new Uint8Array(await crypto.subtle.exportKey('raw',DEK)),code=genRecovery();const w2=await wrapDek(normCode(code),raw);await putCMeta({...CMETA,rsalt:w2.salt,rwrap:w2.wrap});log('הצפנה','נוצר קוד שחזור חדש');return code}
+async function cloudPut(tbl,id,data){if(!DEK){toast('אין מפתח ארגון – הנתונים לא נשמרו');return false}data=await sealData(data);const {error}=await SB.from(tbl).upsert({id,data,updated_at:new Date().toISOString()});if(error){toast('השמירה בשרת נכשלה: '+error.message);return false}return true}
 async function cloudDel(tbl,id){const {error}=await SB.from(tbl).delete().eq('id',id);if(error)toast('המחיקה בשרת נכשלה: '+error.message)}
 async function putRec(o,quiet){o.updatedAt=Date.now();o.updatedBy=ME;const i=R.findIndex(r=>r.id===o.id);const prev=i>=0?R[i]:null;if(i>=0)R[i]=o;else R.push(o);
   if(!quiet)log(prev?(prev.status!==o.status&&JSON.stringify({...prev,status:o.status,updatedAt:0,updatedBy:0})===JSON.stringify({...o,updatedAt:0,updatedBy:0})?'שינוי סטטוס':'עריכת בקשה'):'בקשה חדשה',fullName(o),prev&&prev.status!==o.status?{status:STATUS[o.status]}:null);
@@ -709,7 +800,12 @@ async function putS(what){if(what)log('שינוי הגדרות',what);if(MODE===
 async function loadCloud(){
   const [a,b,c]=await Promise.all([SB.from('kk_records').select('id,data'),SB.from('kk_kupa').select('id,data'),SB.from('kk_settings').select('data').eq('id','main').maybeSingle()]);
   if(a.error)throw a.error;
-  R=(a.data||[]).map(x=>({...x.data,id:x.id}));EXP=(b.data||[]).map(x=>({...x.data,id:x.id}));S=withDefaults(c.data?.data||null,DEFS)}
+  const plain=[],open=async(tbl,x)=>{const d=x.data||{};if(typeof d.enc!=='string')plain.push([tbl,x.id,d]);try{return {...(await openData(d)),id:x.id}}catch(e){return null}};
+  R=(await Promise.all((a.data||[]).map(x=>open('kk_records',x)))).filter(Boolean);EXP=(await Promise.all((b.data||[]).map(x=>open('kk_kupa',x)))).filter(Boolean);
+  let sd=c.data?.data||null;if(sd){if(typeof sd.enc!=='string')plain.push(['kk_settings','main',sd]);try{sd=await openData(sd)}catch(e){sd=null}}
+  S=withDefaults(sd,DEFS);
+  /* נתונים ישנים שנשמרו לפני ההצפנה – מצפינים אותם עכשיו בשרת */
+  if(DEK&&plain.length&&canEdit()){for(const [t,id,d] of plain){await cloudPut(t,id,t==='kk_settings'?d:{...d,id})}log('הצפנה',`הוצפנו ${plain.length} רשומות ישנות בשרת`)}}
 async function boot(){
   DEFS=await DEF_S();try{await idb.open()}catch(e){}
   const c=CONN();
@@ -745,6 +841,7 @@ async function afterCloudAuth(user){
   if(!u.active){showPending(`החשבון ${email} עדיין ממתין לאישור מנהל המערכת.`);return false}
   if(u.role!=='owner'){const {data:sys}=await SB.from('kk_system').select('disabled,message').eq('id',1).maybeSingle();if(sys?.disabled){showPending(sys.message||'המערכת מושבתת זמנית.');return false}}
   MYEMAIL=email;ME=u.name||name;ROLE=u.role||'gabbai';
+  if(!await ensureKey())return false;
   try{await loadCloud()}catch(x){showPending('אין גישה לנתונים: '+(x.message||''),true);return false}
   if(ROLE==='owner'){FIN=true;ADM=true;ss.set('biala_fin','1');ss.set('biala_adm','1')}
   if(!S.finMig&&isAdm()){S.fin=await hash('123456');S.finMig=1;try{await putS('קוד הכספים עודכן ל־123456')}catch(e){}}
@@ -781,7 +878,7 @@ $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err
     ME=$('#gabbaiSel').value||'גבאי';ROLE='admin'}
   ss.set('biala_in','1');ss.set('biala_me',ME);ss.set('biala_role',ROLE);log('כניסה למערכת');enter()});
 function enter(){$('#login').hidden=true;$('#app').hidden=false;lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person'].includes(v)?v:'')||location.hash.slice(1)||'home')}
-function logout(){if(ME)log('יציאה מהמערכת');ME='';['biala_in','biala_fin','biala_adm','biala_me','biala_role','biala_logged'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
+function logout(){if(ME)log('יציאה מהמערכת');ME='';DEK=null;['biala_in','biala_fin','biala_adm','biala_me','biala_role','biala_logged'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
 /* נעילה אוטומטית אחרי 20 דקות בלי פעילות */
 let lastAct=Date.now();['click','keydown','mousemove','touchstart'].forEach(ev=>document.addEventListener(ev,()=>lastAct=Date.now(),{passive:true}));
 setInterval(()=>{if(S?.features?.autolock&&!$('#app').hidden&&Date.now()-lastAct>20*60000){logout();$('#loginErr').textContent='המערכת ננעלה אחרי 20 דקות ללא פעילות'}},30000);
@@ -1425,7 +1522,7 @@ async function renderLog(){
   <div class="tablewrap"><table class="wide"><thead><tr><th>מתי</th><th>מי</th><th>פעולה</th><th>על מה</th></tr></thead><tbody id="lgRows"><tr><td colspan="4" class="empty"><span class="spin"></span></td></tr></tbody></table></div><p class="muted small" id="lgCnt"></p></section>`;
   if(MODE==='cloud'){const {data,error}=await SB.from('kk_log').select('*').order('at',{ascending:false}).limit(2000);
     if(error){$('#lgRows').innerHTML=`<tr><td colspan="4" class="empty">לא ניתן לטעון את היומן: ${esc(error.message)}</td></tr>`;return}
-    LOGC=data.map(r=>({at:r.at,who:r.details?.who||r.email,email:r.email,action:r.action,target:r.target||'',details:r.details}))}
+    LOGC=await Promise.all(data.map(async r=>{let tg=r.target||'',dt=r.details;try{if(tg.startsWith('enc:'))tg=await decStr(tg.slice(4))}catch(e){tg='🔒'}try{if(dt&&typeof dt.enc==='string')dt={...JSON.parse(await decStr(dt.enc)),who:dt.who}}catch(e){}return {at:r.at,who:r.details?.who||r.email,email:r.email,action:r.action,target:tg,details:dt}}))}
   else LOGC=[...LOG].reverse();
   const opt=(sel,arr,cur)=>{$(sel).innerHTML+=arr.map(v=>`<option ${v===cur?'selected':''}>${esc(v)}</option>`).join('')};
   opt('#lgWho',[...new Set(LOGC.map(l=>l.who))].sort(),logFilt.who);opt('#lgAct',[...new Set(LOGC.map(l=>l.action))].sort(),logFilt.act);
@@ -1448,6 +1545,10 @@ function renderAdmin(){
     <label class="f">איזו סיסמה<select id="pk"><option value="pw">כניסה למערכת</option><option value="fin">כספים</option><option value="adm">ניהול</option></select></label>
     ${isOwner()?'':'<label class="f">הקוד הנוכחי<input id="p0" type="password" autocomplete="off"></label>'}<label class="f">סיסמה חדשה<input id="p1" type="password"></label><label class="f">שוב סיסמה חדשה<input id="p2" type="password"></label>
   </div><div class="row" style="margin-top:10px"><button class="btn primary" id="pwBtn">החלף סיסמה</button></div><p class="muted small">${isOwner()?'כבעלים, אתה יכול להחליף קוד בלי להקליד את הקוד הישן.':'כדי להחליף קוד צריך להקליד את הקוד הנוכחי שלו. כך אי אפשר להשתלט על המערכת בלי לדעת את הקודים.'}</p></fieldset>
+  ${MODE==='cloud'?`<fieldset><legend>🔒 הצפנת הנתונים</legend><p class="muted small" style="margin-top:0">כל הנתונים (בקשות, שמות, טלפונים, תרומות, דפים סרוקים, הגדרות ויומן) מוצפנים במחשב לפני שהם יוצאים לשרת, עם מפתח הארגון. בשרת נשמר רק ג'יבריש. מי שאין לו את המפתח, גם אם יגיע לשרת, יראה רק ג'יבריש. בגיטהאב יש רק את התוכנה, בלי שום נתון.<br>כל גבאי חדש: אחרי שאישרת אותו ברשימת המשתמשים, אומרים לו את מפתח הארגון בעל פה. הוא מקליד אותו פעם אחת במחשב שלו.</p>
+    ${isOwner()?`<div class="grid"><label class="f">מפתח ארגון חדש<input id="ok1" type="password" autocomplete="new-password"></label><label class="f">שוב, לאימות<input id="ok2" type="password" autocomplete="new-password"></label></div>
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="okBtn">החלף מפתח ארגון</button><button class="btn" id="orBtn">צור קוד שחזור חדש</button><span id="okMsg" class="small"></span></div>
+    <p class="muted small">החלפת המפתח לא משנה את הנתונים, רק את המשפט שפותח אותם. מי שכבר מחובר ממשיך לעבוד. כדאי להחליף מפתח אם גבאי עזב.</p>`:'<p class="muted small">רק המנהל הראשי יכול להחליף את מפתח הארגון.</p>'}</fieldset>`:''}
   <fieldset ${(S.users||[]).length||MODE==='cloud'?'hidden':''}><legend>גבאים (בלי סיסמה אישית)</legend><p class="muted small" style="margin-top:0">שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה. עדיף להוסיף משתמשים עם סיסמה אישית למעלה, כדי שיהיה ידוע מי עשה מה.</p>
     <label class="f"><textarea id="gb">${esc(S.gabbaim.join('\n'))}</textarea></label><div class="row" style="margin-top:8px"><button class="btn primary" id="gbBtn">שמור גבאים</button></div></fieldset>
   <fieldset><legend>אפשרויות במערכת</legend><p class="muted small" style="margin-top:0">כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.</p>
@@ -1482,6 +1583,10 @@ function renderAdmin(){
   $('#lockAdm').onclick=()=>{ADM=false;ss.del('biala_adm');go('home')};
   renderUsers();
   $('#pwBtn').onclick=async()=>{const k=$('#pk').value;if(!isOwner()&&await hash($('#p0').value)!==S[k]){log('ניסיון החלפת קוד עם קוד נוכחי שגוי',$('#pk').selectedOptions[0].text);return toast('הקוד הנוכחי שגוי')}if($('#p1').value.length<4)return toast('לפחות 4 תווים');if($('#p1').value!==$('#p2').value)return toast('הסיסמאות לא זהות');S[$('#pk').value]=await hash($('#p1').value);await putS('החלפת סיסמה: '+$('#pk').selectedOptions[0].text);toast('הסיסמה הוחלפה');$('#p1').value=$('#p2').value='';if($('#p0'))$('#p0').value=''};
+  if($('#okBtn'))$('#okBtn').onclick=async()=>{const p1=normKey($('#ok1').value);if(p1.length<10)return toast('לפחות 10 תווים');if(p1!==normKey($('#ok2').value))return toast('המפתחות לא זהים');
+    $('#okMsg').textContent=T('מחליף…');try{await changeOrgKey(p1);$('#ok1').value=$('#ok2').value='';$('#okMsg').textContent='';toast('מפתח הארגון הוחלף. מעכשיו אומרים לגבאים חדשים את המפתח החדש.')}catch(e){$('#okMsg').textContent=e.message||''}};
+  if($('#orBtn'))$('#orBtn').onclick=async()=>{if(!confirm(T('ליצור קוד שחזור חדש? הקוד הישן יפסיק לעבוד.')))return;try{const code=await newRecoveryCode();
+    $('#okMsg').innerHTML=`<b>${esc(T('קוד השחזור החדש:'))}</b> <span dir="ltr" class="reccode" data-noi18n style="display:inline-block;font-size:16px;padding:4px 8px">${esc(code)}</span> ${esc(T('שמור אותו במקום בטוח.'))}`}catch(e){toast(e.message||'')}};
   $('#gbBtn').onclick=async()=>{S.gabbaim=$('#gb').value.split('\n').map(s=>s.trim()).filter(Boolean);if(!S.gabbaim.length)S.gabbaim=['גבאי'];await putS();fillGabbai();toast('הגבאים נשמרו')};
   $$('[data-ft]').forEach(c=>c.onchange=async()=>{S.features={...S.features,[c.dataset.ft]:c.checked};await putS((c.checked?'הפעלת ':'כיבוי ')+FEATURES[c.dataset.ft]);renderTabs();toast('עודכן')});
   $('#tplBtn').onclick=async()=>{S.templates={...(S.templates||{})};$$('[data-tpl]').forEach(t=>S.templates[t.dataset.tpl]=t.value);await putS();toast('הנוסחים נשמרו')};
@@ -1545,7 +1650,10 @@ create policy kk_r_upd on kk_records for update to authenticated using (kk_can_e
 create policy kk_r_del on kk_records for delete to authenticated using (kk_can_edit());
 create policy kk_k_all on kk_kupa for all to authenticated using (kk_active()) with check (kk_can_edit());
 create policy kk_s_sel on kk_settings for select to authenticated using (kk_active());
-create policy kk_s_mod on kk_settings for all to authenticated using (kk_can_edit()) with check (kk_can_edit());
+create policy kk_s_mod on kk_settings for all to authenticated using (kk_can_edit() and id<>'crypto') with check (kk_can_edit() and id<>'crypto');
+drop policy if exists kk_s_crypto on kk_settings;
+-- את מפתח ההצפנה הנעול רק הבעלים יכול לשנות
+create policy kk_s_crypto on kk_settings for all to authenticated using (kk_owner()) with check (kk_owner());
 -- משתמש רואה את עצמו; מנהל רואה ומנהל את כולם; חדש יכול רק לבקש הצטרפות (לא מאושר)
 create policy kk_u_sel on kk_users for select to authenticated using (email=kk_me() or kk_admin());
 create policy kk_u_req on kk_users for insert to authenticated with check ((email=kk_me() and active=false and role='gabbai') or kk_admin());
