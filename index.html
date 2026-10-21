@@ -341,7 +341,7 @@ const I18N={
 'ינואר':'January','פברואר':'February','מרץ':'March','אפריל':'April','מאי':'May','יוני':'June','יולי':'July','אוגוסט':'August','ספטמבר':'September','אוקטובר':'October','נובמבר':'November','דצמבר':'December',
 /* הוראות וניהול */
 'את ההוראות אפשר לערוך בלשונית "ניהול".':'The instructions can be edited in the "Management" tab.','נעל ניהול':'Lock management','סיסמאות':'Passwords','איזו סיסמה':'Which password','כניסה למערכת':'System login',
-'סיסמה חדשה':'New password','שוב סיסמה חדשה':'New password again','החלף סיסמה':'Change password','לפחות 4 תווים':'At least 4 characters','הסיסמאות לא זהות':'The passwords do not match','הסיסמה הוחלפה':'Password changed',
+'סיסמה חדשה':'New password','הקוד הנוכחי':'Current code','הקוד הנוכחי שגוי':'The current code is wrong','כבעלים, אתה יכול להחליף קוד בלי להקליד את הקוד הישן.':'As the owner, you can change a code without typing the old one.','כדי להחליף קוד צריך להקליד את הקוד הנוכחי שלו. כך אי אפשר להשתלט על המערכת בלי לדעת את הקודים.':'To change a code you must type its current code. This way nobody can take over the system without knowing the codes.','ניסיון החלפת קוד עם קוד נוכחי שגוי':'Attempt to change a code with a wrong current code','קוד הכספים עודכן ל־123456':'Finance code updated to 123456','שוב סיסמה חדשה':'New password again','החלף סיסמה':'Change password','לפחות 4 תווים':'At least 4 characters','הסיסמאות לא זהות':'The passwords do not match','הסיסמה הוחלפה':'Password changed',
 'במצב שרת, הכניסה למערכת היא עם המייל והסיסמה של כל גבאי. כאן מחליפים את סיסמאות הכספים והניהול.':"In server mode, each gabbai signs in with their own email and password. Here you change the finance and management passwords.",
 'גבאים':'Gabbaim','שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה.':'One name per line. The names appear in the choice on the sign-in screen.','שמור גבאים':'Save gabbaim','הגבאים נשמרו':'Gabbaim saved',
 'אפשרויות במערכת':'System options','כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.':'Turning an option off hides it from all gabbaim. No data is deleted.',
@@ -583,7 +583,7 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 המערכת ננעלת לבד אחרי 20 דקות בלי פעילות (אפשר לכבות בניהול). הכפתור ◐ למעלה מחליף בין תצוגה בהירה לכהה.
 
 # סיסמאות ראשוניות
-כניסה: 1234 · כספים: 4321 · ניהול: 123456. יש להחליף אותן מיד בלשונית "ניהול". (במצב שרת הכניסה היא עם מייל וסיסמה של כל גבאי.)`;
+כניסה: 1234 · כספים: 123456 · ניהול: 123456. אפשר להחליף אותן בלשונית "ניהול" ← "סיסמאות". כדי להחליף קוד צריך להקליד קודם את הקוד הנוכחי, כך שגם מי שקיבל הרשאת מנהל לא יכול להשתלט על המערכת בלי לדעת את הקודים. רק הבעלים (המנהל הראשי) נכנס לכספים ולניהול בלי קוד, ויכול להחליף קוד גם בלי לדעת את הקוד הישן. (במצב שרת הכניסה היא עם חשבון Google של כל גבאי.)`;
 
 const DEF_HELP_EN=`# Welcome to the reception system
 The system replaces the paper form "Blessing request from the Biala Rebbe shlita". Everything on the form is recorded here, and you can search, arrange a queue and prepare the names for the Rebbe.
@@ -669,7 +669,7 @@ With a shared server (Management → "Shared server connection"): all gabbaim wo
 The system locks itself after 20 minutes without activity (can be turned off in Management). The ◐ button at the top switches between light and dark display.
 
 # Initial passwords
-Login: 1234 · Finances: 4321 · Management: 123456. Change them right away in the "Management" tab. (In server mode, each gabbai signs in with their own email and password.)`;
+Login: 1234 · Finances: 123456 · Management: 123456. You can change them in "Management" → "Passwords". To change a code you must first type the current code, so even someone with manager permission cannot take over the system without knowing the codes. Only the owner (head manager) enters finances and management without a code, and can change a code without knowing the old one. (In server mode, each gabbai signs in with their own Google account.)`;
 
 /* ===== חיבור לשרת משותף (לא חובה) =====
    ריק = הנתונים נשמרים רק במחשב הזה.
@@ -695,7 +695,7 @@ async function log(action,target='',details=null){
   if(MODE==='cloud'){try{await SB.from('kk_log').insert({action:row.action,target:row.target,details:{...(details||{}),who}})}catch(e){}}
   else{LOG.push(row);if(LOG.length>5000)LOG=LOG.slice(-5000);await idb.set('log',LOG)}}
 let R=[], EXP=[], S=null;
-const DEF_S=async()=>({pw:await hash('1234'),fin:await hash('4321'),adm:await hash('123456'),gabbaim:['גבאי ראשי'],features:Object.fromEntries(Object.keys(FEATURES).map(k=>[k,true])),help:DEF_HELP,geminiKey:'',geminiModel:'gemini-3.8-flash',templates:{}});
+const DEF_S=async()=>({pw:await hash('1234'),fin:await hash('123456'),adm:await hash('123456'),gabbaim:['גבאי ראשי'],features:Object.fromEntries(Object.keys(FEATURES).map(k=>[k,true])),help:DEF_HELP,geminiKey:'',geminiModel:'gemini-3.8-flash',templates:{}});
 function withDefaults(o,d){return {...d,...o,features:{...d.features,...(o?.features||{})}}}
 async function cloudPut(tbl,id,data){const {error}=await SB.from(tbl).upsert({id,data,updated_at:new Date().toISOString()});if(error){toast('השמירה בשרת נכשלה: '+error.message);return false}return true}
 async function cloudDel(tbl,id){const {error}=await SB.from(tbl).delete().eq('id',id);if(error)toast('המחיקה בשרת נכשלה: '+error.message)}
@@ -746,6 +746,8 @@ async function afterCloudAuth(user){
   if(u.role!=='owner'){const {data:sys}=await SB.from('kk_system').select('disabled,message').eq('id',1).maybeSingle();if(sys?.disabled){showPending(sys.message||'המערכת מושבתת זמנית.');return false}}
   MYEMAIL=email;ME=u.name||name;ROLE=u.role||'gabbai';
   try{await loadCloud()}catch(x){showPending('אין גישה לנתונים: '+(x.message||''),true);return false}
+  if(ROLE==='owner'){FIN=true;ADM=true;ss.set('biala_fin','1');ss.set('biala_adm','1')}
+  if(!S.finMig&&isAdm()){S.fin=await hash('123456');S.finMig=1;try{await putS('קוד הכספים עודכן ל־123456')}catch(e){}}
   SB.rpc('kk_touch',{n:name}).then(()=>{},()=>{});
   if(!ss.get('biala_logged')){ss.set('biala_logged','1');log('כניסה למערכת','Google')}
   return true}
@@ -790,6 +792,7 @@ function printHTML(html){const f=document.createElement('iframe');f.style.cssTex
 const fileStamp=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 /* שער סיסמה פנימי (כספים / ניהול) */
 function gate(kind,title,onOk){
+  if(isOwner()&&MODE==='cloud'){if(kind==='fin'){FIN=true;ss.set('biala_fin','1')}else{ADM=true;ss.set('biala_adm','1')}onOk();return}
   if((kind==='fin'&&!canFin())||(kind==='adm'&&!isAdm())){$('#main').innerHTML=`<section style="display:grid;place-items:center;min-height:40vh"><div class="card" style="text-align:center;max-width:420px"><h2>${title}</h2><p class="muted">אין לך הרשאה לאזור הזה. מנהל המערכת יכול לשנות את ההרשאה שלך בלשונית "ניהול" ← "משתמשים והרשאות".</p></div></section>`;return}
   $('#main').innerHTML=`<section style="display:grid;place-items:center;min-height:50vh"><form class="card" id="gf" style="width:min(380px,100%);text-align:center">
     <h2>${title}</h2><p class="muted" style="margin:0">אזור זה מוגן בסיסמה נוספת.</p>
@@ -1443,8 +1446,8 @@ function renderAdmin(){
   <fieldset id="usersBox"><legend>משתמשים והרשאות</legend><div id="usersIn"><span class="spin"></span></div></fieldset>
   <fieldset><legend>סיסמאות</legend>${MODE==='cloud'?'<p class="muted small" style="margin-top:0">במצב שרת, הכניסה למערכת היא עם המייל והסיסמה של כל גבאי. כאן מחליפים את סיסמאות הכספים והניהול.</p>':''}<div class="grid">
     <label class="f">איזו סיסמה<select id="pk"><option value="pw">כניסה למערכת</option><option value="fin">כספים</option><option value="adm">ניהול</option></select></label>
-    <label class="f">סיסמה חדשה<input id="p1" type="password"></label><label class="f">שוב סיסמה חדשה<input id="p2" type="password"></label>
-  </div><div class="row" style="margin-top:10px"><button class="btn primary" id="pwBtn">החלף סיסמה</button></div></fieldset>
+    ${isOwner()?'':'<label class="f">הקוד הנוכחי<input id="p0" type="password" autocomplete="off"></label>'}<label class="f">סיסמה חדשה<input id="p1" type="password"></label><label class="f">שוב סיסמה חדשה<input id="p2" type="password"></label>
+  </div><div class="row" style="margin-top:10px"><button class="btn primary" id="pwBtn">החלף סיסמה</button></div><p class="muted small">${isOwner()?'כבעלים, אתה יכול להחליף קוד בלי להקליד את הקוד הישן.':'כדי להחליף קוד צריך להקליד את הקוד הנוכחי שלו. כך אי אפשר להשתלט על המערכת בלי לדעת את הקודים.'}</p></fieldset>
   <fieldset ${(S.users||[]).length||MODE==='cloud'?'hidden':''}><legend>גבאים (בלי סיסמה אישית)</legend><p class="muted small" style="margin-top:0">שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה. עדיף להוסיף משתמשים עם סיסמה אישית למעלה, כדי שיהיה ידוע מי עשה מה.</p>
     <label class="f"><textarea id="gb">${esc(S.gabbaim.join('\n'))}</textarea></label><div class="row" style="margin-top:8px"><button class="btn primary" id="gbBtn">שמור גבאים</button></div></fieldset>
   <fieldset><legend>אפשרויות במערכת</legend><p class="muted small" style="margin-top:0">כיבוי אפשרות מסתיר אותה מכל הגבאים. הנתונים לא נמחקים.</p>
@@ -1478,7 +1481,7 @@ function renderAdmin(){
   </section>`;
   $('#lockAdm').onclick=()=>{ADM=false;ss.del('biala_adm');go('home')};
   renderUsers();
-  $('#pwBtn').onclick=async()=>{if($('#p1').value.length<4)return toast('לפחות 4 תווים');if($('#p1').value!==$('#p2').value)return toast('הסיסמאות לא זהות');S[$('#pk').value]=await hash($('#p1').value);await putS('החלפת סיסמה: '+$('#pk').selectedOptions[0].text);toast('הסיסמה הוחלפה');$('#p1').value=$('#p2').value=''};
+  $('#pwBtn').onclick=async()=>{const k=$('#pk').value;if(!isOwner()&&await hash($('#p0').value)!==S[k]){log('ניסיון החלפת קוד עם קוד נוכחי שגוי',$('#pk').selectedOptions[0].text);return toast('הקוד הנוכחי שגוי')}if($('#p1').value.length<4)return toast('לפחות 4 תווים');if($('#p1').value!==$('#p2').value)return toast('הסיסמאות לא זהות');S[$('#pk').value]=await hash($('#p1').value);await putS('החלפת סיסמה: '+$('#pk').selectedOptions[0].text);toast('הסיסמה הוחלפה');$('#p1').value=$('#p2').value='';if($('#p0'))$('#p0').value=''};
   $('#gbBtn').onclick=async()=>{S.gabbaim=$('#gb').value.split('\n').map(s=>s.trim()).filter(Boolean);if(!S.gabbaim.length)S.gabbaim=['גבאי'];await putS();fillGabbai();toast('הגבאים נשמרו')};
   $$('[data-ft]').forEach(c=>c.onchange=async()=>{S.features={...S.features,[c.dataset.ft]:c.checked};await putS((c.checked?'הפעלת ':'כיבוי ')+FEATURES[c.dataset.ft]);renderTabs();toast('עודכן')});
   $('#tplBtn').onclick=async()=>{S.templates={...(S.templates||{})};$$('[data-tpl]').forEach(t=>S.templates[t.dataset.tpl]=t.value);await putS();toast('הנוסחים נשמרו')};
