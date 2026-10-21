@@ -819,7 +819,8 @@ document.addEventListener('submit',()=>setTimeout(()=>typing=false,50),true);doc
 function snapFields(){const m={};$$('#main input[id],#main textarea[id],#main select[id]').forEach(el=>{if(el.type==='file'||el.type==='password')return;m[el.id]=el.type==='checkbox'?el.checked:el.value});return m}
 function restoreFields(m){for(const id in m){const el=document.getElementById(id);if(!el)continue;if(el.type==='checkbox')el.checked=m[id];else if(el.value!==m[id])el.value=m[id]}}
 function refresh(){if($('#app').hidden)return;renderTabs();
-  if(view==='new'||view==='edit'||$('#gf')||typing)return;
+  /* מסכי עבודה לא מצוירים מחדש לבד — רק מסכי תצוגה */
+  if(!['home','list','people','person','queue','kvittel','names','dates','view'].includes(view)||$('#gf')||typing)return;
   const a=document.activeElement;if(a&&a.closest&&a.closest('#main')&&a.matches('input,textarea,select,[contenteditable]'))return;
   if(view==='view'&&current)current=R.find(r=>r.id===current.id)||null;
   if(view==='list'&&$('#rows')){fillRows();return}
@@ -1354,7 +1355,8 @@ function renderHelp(){const en=LANG==='en'&&(!S.help||S.help===DEF_HELP);$('#mai
 
 /* ===== ניהול ===== */
 /* ===== משתמשים והרשאות ===== */
-async function renderUsers(){const box=$('#usersIn');if(!box)return;
+async function renderUsers(){const box=$('#usersIn');if(!box)return;const keepU={};box.querySelectorAll('input[id],select[id]').forEach(el=>{if(el.type!=='password')keepU[el.id]=el.value});
+  const done=()=>{for(const id in keepU){const el=document.getElementById(id);if(el&&keepU[id]&&!el.value)el.value=keepU[id]}};setTimeout(done,0);
   const roleSel=(id,cur,dis)=>cur==='owner'?`<b>${ROLES.owner}</b>`:`<select data-role="${esc(id)}" ${dis?'disabled':''}>${Object.entries(ROLES).filter(([k])=>k!=='owner').map(([k,v])=>`<option value="${k}" ${cur===k?'selected':''}>${v}</option>`).join('')}</select>`;
   const roleHelp='<p class="muted small" style="margin:0 0 8px">בעלים — רק אתה: גם השבתת המערכת והשבתת משתמשים. מנהל — הכל חוץ מזה (מוסיף ומסיר משתמשים, יומן). גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.</p>';
   if(MODE==='cloud'){
@@ -1374,6 +1376,7 @@ async function renderUsers(){const box=$('#usersIn');if(!box)return;
     <form class="row" id="addU" style="margin-top:12px;align-items:end"><label class="f" style="flex:1;min-width:200px">הוספת משתמש — כתובת Gmail<input id="nuEmail" type="email" dir="ltr" required placeholder="name@gmail.com"></label>
       <label class="f" style="min-width:150px">שם<input id="nuName"></label><label class="f">הרשאה${roleSel('_new','gabbai')}</label><button class="btn primary">הוסף ואשר</button></form>
     <p class="muted small">מי שתוסיף כאן יוכל להיכנס מיד עם חשבון ה־Google שלו. מי שלא ברשימה — לא יראה כלום, ורק תופיע כאן בקשה שלו לאישור.</p>`;
+    done();
     const upd=async(email,patch,msg,act)=>{const {error}=await SB.from('kk_users').update(patch).eq('email',email);if(error)return toast('השינוי נכשל: '+error.message);log(act,email,patch);toast(msg);renderUsers()};
     if($('#sysOn'))$('#sysOn').onclick=async()=>{const {error}=await SB.from('kk_system').update({disabled:false,updated_at:new Date().toISOString()}).eq('id',1);if(error)return toast('השינוי נכשל: '+error.message);log('הפעלת המערכת מחדש');toast('המערכת פעילה');renderUsers()};
     if($('#sysOff'))$('#sysOff').onclick=()=>{$('#sysConfirm').innerHTML=`<div class="confirm row" style="margin-top:8px;width:100%"><span>להשבית את המערכת לכל המשתמשים?</span><span class="spacer"></span><button class="btn danger" id="sysYes">כן, להשבית</button><button class="btn" id="sysNo">ביטול</button></div>`;
