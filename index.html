@@ -702,6 +702,9 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 - 🕯 ימי זיכרון בחודש עברי – בוחרים חודש, ומדפיסים רשימה של כל ימי הזיכרון בו לפי הסדר, עם שם המשפחה והטלפון.
 - 📜 רשימה לאירוע – בוחרים או כותבים שם אירוע (ערב ראש השנה, הושענא רבה...), והרשימה מודפסת לפי הסינון שלמעלה (תאריכים, נושא) עם כותרת האירוע.
 
+# מתי צריך את מפתח הארגון?
+הבעלים לא צריך להקליד את המפתח: בכל מחשב או דפדפן חדש המערכת נפתחת לו אוטומטית דרך החשבון שלו. גבאים מאושרים נפתחים אוטומטית כשמנהל נכנס. את המפתח וקוד השחזור שומרים רק לגיבוי.
+
 # סיסמאות ראשוניות
 כניסה: 1234 · כספים: 123456 · ניהול: 123456. אפשר להחליף אותן בלשונית "ניהול" ← "סיסמאות". כדי להחליף קוד צריך להקליד קודם את הקוד הנוכחי, כך שגם מי שקיבל הרשאת מנהל לא יכול להשתלט על המערכת בלי לדעת את הקודים. רק הבעלים (המנהל הראשי) נכנס לכספים ולניהול בלי קוד, ויכול להחליף קוד גם בלי לדעת את הקוד הישן. (במצב שרת הכניסה היא עם חשבון Google של כל גבאי.)`;
 
@@ -990,7 +993,9 @@ function ensureKey(){return new Promise(async res=>{
   CMETA=data?.data||null;
   if(CMETA){let s=null;try{s=localStorage.getItem(dekSlot())}catch(e){}
     if(s){try{DEK=await importDek(kub(s))}catch(e){DEK=null}if(DEK&&await dekCheck()){deviceUnlock();return res(true)}DEK=null;dekForget()}
-    if(await deviceUnlock())return res(true)}
+    if(await deviceUnlock())return res(true);
+    /* הבעלים: נפתח אוטומטית דרך החשבון שלו (אותו דבר כמו כפתור "שחזור דרך המייל") – בלי להקליד מפתח */
+    if(isOwner()){try{if(await escrowLoad()){await dekSave();deviceUnlock();log('הצפנה','נפתח אוטומטית לבעלים');return res(true)}}catch(e){DEK=null}}}
   if(!CMETA&&!isOwner()){showPending('המנהל הראשי צריך להיכנס ראשון ולקבוע את מפתח הארגון. נסה שוב אחר כך.');return res(false)}
   const done=()=>{const b=$('#pendingBox');b.hidden=true;b.classList.remove('keybox');res(true)};
   if(!CMETA){ /* הקמה ראשונה – רק הבעלים */
