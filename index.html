@@ -216,6 +216,11 @@ textarea.code{width:100%;min-height:120px;font-family:ui-monospace,monospace;fon
 tr.sel td{background:rgba(201,162,39,.18)}
 .gbar{height:14px;background:var(--line,#e5d9c3);border-radius:8px;overflow:hidden;margin:8px 0 4px}.gbar i{display:block;height:100%;background:linear-gradient(90deg,#b8862b,#d9a441);border-radius:8px}.card.goal{margin:8px 0 12px}
 button.pay{min-width:38px;height:28px;border:1px solid var(--line,#ccc);border-radius:6px;background:transparent;color:inherit;cursor:pointer;font:inherit;font-size:.85rem}button.pay.ok{background:var(--ok,#2e7d32);color:#fff;border-color:transparent}button.pay.bad{background:var(--bad,#b3261e);color:#fff;border-color:transparent}
+.imged{max-width:980px}.iewrap{display:grid;place-items:center;background:#222;border-radius:8px;padding:6px;max-height:62vh;overflow:auto}.iewrap canvas{max-width:100%;max-height:60vh;cursor:crosshair;touch-action:none}
+.camb{max-width:900px}.camwrap{position:relative;background:#000;border-radius:8px;overflow:hidden}.camwrap video{width:100%;max-height:62vh;display:block;object-fit:contain}.camframe{position:absolute;inset:6% 12%;border:3px dashed rgba(245,158,11,.9);border-radius:6px;pointer-events:none}
+.bulkbar{flex-wrap:wrap;background:var(--card,#fff);border:1px solid var(--line,#ddd);border-radius:10px;padding:8px 10px;margin:8px 0;position:sticky;top:0;z-index:2}
+table.grid td[contenteditable]{cursor:text;min-width:70px}table.grid td[contenteditable]:focus{outline:2px solid #d9a441;background:rgba(217,164,65,.12)}table.grid td.saved{background:rgba(46,125,50,.12)}.gridwrap{max-height:70vh;overflow:auto}
+.blist{max-height:40vh;overflow:auto;margin-top:6px}.blist td{padding:4px 6px;border-bottom:1px solid var(--line,#ddd)}
 .todaygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:10px}.card.today{border-inline-start:5px solid var(--warn)}.card.today.ok{border-inline-start-color:var(--ok);opacity:.85}.card.today h3{margin:0}.card.today table{width:100%;margin:6px 0}.card.today td{padding:4px 2px;border-bottom:1px solid var(--line,#ddd)}
 .pubform{max-width:760px;margin:20px auto;padding:0 16px}.pubform form{position:relative}.pfh{text-align:center;margin-bottom:12px}.pfh img{width:84px;height:auto}.pfh h1{font-size:1.35rem;margin:6px 0}.pfh p{margin:0;opacity:.75}
 .qscreen{background:linear-gradient(160deg,#4a2410,#2a1406);color:#f5e6c8;border-radius:16px;padding:28px;margin-top:12px;min-height:70vh;display:grid;gap:20px;align-content:start;text-align:center}
@@ -517,7 +522,7 @@ const STATUS={wait:'ממתין',in:'הוכנס לאדמו״ר',done:'טופל'};
 const DON={none:'ללא',cash:'מזומן',standing:'הוראת קבע',check:'צ׳ק',transfer:'העברה בנקאית'};
 const MARITAL=['נשוי','נשואה','רווק','רווקה','אלמן','אלמנה','גרוש','גרושה'];
 const TAGS=['רפואה','פרנסה','זיווג','הצלחה','שלום בית','נחת','דירה','הצלה','לימוד','אחר'];
-const FEATURES={scan:'סריקת טופס אוטומטית',queue:'תור קבלת קהל',kvittel:'מסך קוויטל לאדמו״ר',finance:'כספים והוראות קבע',kupa:'קופה (הכנסות והוצאות)',yahr:'ימי זיכרון',birthdays:'ימי הולדת עבריים',names:'רשימת שמות לתפילה',autolock:'נעילה אוטומטית אחרי 20 דקות ללא פעילות',showGreg:'הצג תאריך לועזי קטן ליד העברי',tidings:'בשורות טובות',qscreen:'מסך תור לחדר ההמתנה',donors:'ניהול תורמים',contacts:'אנשי קשר',messages:'שליחת הודעות (מייל, וואטסאפ, SMS)',report:'דוח חודשי',autobackup:'גיבוי שבועי אוטומטי (למנהלים)',today:'מסך "היום שלי" לגבאי',webform:'טופס בקשה מהבית (קישור לציבור)'};
+const FEATURES={scan:'סריקת טופס אוטומטית',queue:'תור קבלת קהל',kvittel:'מסך קוויטל לאדמו״ר',finance:'כספים והוראות קבע',kupa:'קופה (הכנסות והוצאות)',yahr:'ימי זיכרון',birthdays:'ימי הולדת עבריים',names:'רשימת שמות לתפילה',autolock:'נעילה אוטומטית אחרי 20 דקות ללא פעילות',showGreg:'הצג תאריך לועזי קטן ליד העברי',tidings:'בשורות טובות',qscreen:'מסך תור לחדר ההמתנה',donors:'ניהול תורמים',contacts:'אנשי קשר',messages:'שליחת הודעות (מייל, וואטסאפ, SMS)',report:'דוח חודשי',autobackup:'גיבוי שבועי אוטומטי (למנהלים)',today:'מסך "היום שלי" לגבאי',grid:'טבלת כל הנתונים ושליחה לרבים',webform:'טופס בקשה מהבית (קישור לציבור)'};
 const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 המערכת מחליפה את טופס הנייר "בקשת ברכה מכ״ק מרן האדמו״ר מביאלא שליט״א". כל מה שרשום בטופס נרשם כאן, ואפשר לחפש, לסדר תור ולהכין את השמות לאדמו״ר.
 
@@ -701,6 +706,31 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 בלשונית "שמות לתפילה", בתחתית, "רשימות מיוחדות":
 - 🕯 ימי זיכרון בחודש עברי – בוחרים חודש, ומדפיסים רשימה של כל ימי הזיכרון בו לפי הסדר, עם שם המשפחה והטלפון.
 - 📜 רשימה לאירוע – בוחרים או כותבים שם אירוע (ערב ראש השנה, הושענא רבה...), והרשימה מודפסת לפי הסינון שלמעלה (תאריכים, נושא) עם כותרת האירוע.
+
+# צילום דף במצלמה
+בלשונית "סריקת דפים" לוחצים "📷 צלם דף במצלמה". נפתחת המצלמה (במחשב – מצלמת הרשת, בטלפון – המצלמה האחורית). מכניסים את הדף למסגרת ולוחצים "📸 צלם".
+אחרי הצילום נפתח חלון עריכה:
+1. גוררים על התמונה כדי לחתוך רק את הטופס.
+2. "↺ / ↻ סובב" אם הדף עקום.
+3. "מצב: מסמך" הופך לשחור־לבן חד – טוב לכתב יד חלש. אפשר גם בהירות וניגודיות.
+4. "סרוק את הדף" – והטופס נקרא ונשמר. "סרוק וצלם עוד דף" – ממשיכים מיד לדף הבא.
+אם מסמנים "לערוך כל תמונה לפני הסריקה", גם תמונות שמעלים מהמחשב עוברות קודם בחלון העריכה.
+אם הדפדפן שואל על הרשאת מצלמה – מאשרים.
+
+# כל הנתונים – טבלה אחת של כולם
+לשונית "כל הנתונים" מציגה את כל האנשים בטבלה: שם, משפחה, נייד, טלפון, מייל, עיר, כתובת ושם לתפילה.
+- עריכה: לוחצים על תא, משנים, ולוחצים Enter או יוצאים מהתא. השינוי נשמר לבד בכל הבקשות של אותו אדם. Esc מבטל.
+- סינון: חיפוש, עיר, נושא, יש מייל / יש נייד / חסר מייל, תורמים, ביקר מאז תאריך.
+- "הורד לאקסל" – מוריד את הרשימה המסוננת.
+- מסמנים אנשים (או "סמן את כל הרשימה") ולוחצים "💬 שליחה למסומנים" או "מדבקות למסומנים".
+
+# שליחת הודעה להרבה אנשים
+בחלון "שליחה למסומנים" (וגם "💬 הודעה לכל הרשימה" בלשונית "תורמים"):
+- בוחרים נוסח וכותבים הודעה. {שם} מתחלף אצל כל אחד בשם שלו.
+- "📨 שלח מייל לכל אחד בנפרד" – רק אם חובר EmailJS בניהול. נשלח מייל אישי לכל אחד, רואים מה נשלח, ואפשר לעצור. שימו לב: בחשבון EmailJS החינמי יש מגבלה חודשית של מיילים.
+- "📧 פתח מייל אחד לכולם" – נפתחת תוכנת המייל עם כל הכתובות בעותק מוסתר (הנמענים לא רואים זה את זה). ההודעה לא אישית.
+- "וואטסאפ – אחד אחד" – רשימה עם כפתור לכל אדם, כל לחיצה פותחת שיחה עם ההודעה האישית שלו.
+- אפשר גם להעתיק את כל המיילים או כל הטלפונים.
 
 # מתי צריך את מפתח הארגון?
 הבעלים לא צריך להקליד את המפתח: בכל מחשב או דפדפן חדש המערכת נפתחת לו אוטומטית דרך החשבון שלו. גבאים מאושרים נפתחים אוטומטית כשמנהל נכנס. את המפתח וקוד השחזור שומרים רק לגיבוי.
@@ -1185,7 +1215,7 @@ function gate(kind,title,onOk){
 
 /* ===== ניווט ===== */
 let view='home', current=null, filt={q:'',status:'',date:'',tag:'',rev:false};
-const TABS=()=>[['home','ראשי'],S.features.today&&['today','היום שלי'],MODE==='cloud'&&S.features.webform&&canEdit()&&['inbox','בקשות מהבית'],['list','בקשות'],canEdit()&&['new','בקשה חדשה'],S.features.scan&&canEdit()&&['scan','סריקת דפים'],['people','אנשים'],S.features.contacts&&['contacts','אנשי קשר'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.tidings&&['tidings','בשורות טובות'],S.features.finance&&canFin()&&['money','כספים'],S.features.finance&&S.features.donors&&canFin()&&['donors','תורמים'],S.features.report&&canEdit()&&['report','דוח חודשי'],S.features.kupa&&canFin()&&['kupa','קופה'],['help','הוראות'],isAdm()&&['log','יומן פעולות'],isAdm()&&['admin','ניהול'],['logout','יציאה']].filter(Boolean);
+const TABS=()=>[['home','ראשי'],S.features.today&&['today','היום שלי'],MODE==='cloud'&&S.features.webform&&canEdit()&&['inbox','בקשות מהבית'],['list','בקשות'],canEdit()&&['new','בקשה חדשה'],S.features.scan&&canEdit()&&['scan','סריקת דפים'],['people','אנשים'],S.features.grid&&['grid','כל הנתונים'],S.features.contacts&&['contacts','אנשי קשר'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.tidings&&['tidings','בשורות טובות'],S.features.finance&&canFin()&&['money','כספים'],S.features.finance&&S.features.donors&&canFin()&&['donors','תורמים'],S.features.report&&canEdit()&&['report','דוח חודשי'],S.features.kupa&&canFin()&&['kupa','קופה'],['help','הוראות'],isAdm()&&['log','יומן פעולות'],isAdm()&&['admin','ניהול'],['logout','יציאה']].filter(Boolean);
 function renderTabs(){const rev=R.filter(r=>r.review).length;
   $('#tabs').innerHTML=TABS().map(([k,t])=>`<button data-v="${k}" aria-current="${k===(['view','edit'].includes(view)?'list':view==='person'?'people':view)}">${t}${k==='list'&&rev?`<span class="badge">${rev}</span>`:''}${k==='inbox'&&INBOX.length?`<span class="badge">${INBOX.length}</span>`:''}</button>`).join('');
   $('#who').textContent=ME?`מחובר: ${ME}`:''}
@@ -1195,7 +1225,7 @@ $('#themeBtn').onclick=()=>{const cur=document.documentElement.dataset.theme||(m
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v==='logout')return logout();go(b.dataset.v)});
 let pendingPre=null, curPerson=null;
 const VIEWS={home:()=>{renderHome();const g=goalBar(),sec=$('#main section');if(g&&sec){const h=sec.querySelector('h2');(h||sec.firstChild).insertAdjacentHTML(h?'afterend':'beforebegin',g)}},list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
-  money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,today:renderToday,inbox:renderInbox,tidings:renderTidings,qscreen:renderQScreen,contacts:renderContacts,report:renderReport,donors:()=>FIN&&canFin()?renderDonors():gate('fin','תורמים',renderDonors),admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
+  money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,grid:renderGrid,today:renderToday,inbox:renderInbox,tidings:renderTidings,qscreen:renderQScreen,contacts:renderContacts,report:renderReport,donors:()=>FIN&&canFin()?renderDonors():gate('fin','תורמים',renderDonors),admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
 function go(v,rec){if(!VIEWS[v])v='home';typing=false;if(!canEdit()&&['new','edit','scan'].includes(v)){toast('יש לך הרשאת צפייה בלבד');return}view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
 let dirty=false;
 /* שומר על מה שהוקלד: עדכון מהשרת לא מוחק שדות שעוד לא נשמרו */
@@ -1399,12 +1429,18 @@ function renderScan(){
   $('#main').innerHTML=`<section><h2>סריקת דפים</h2>
   <p class="muted">מעלים תמונה של טופס "בקשת ברכה" — אחד או כמה ביחד. המערכת קוראת את כתב היד, שומרת כל דף כבקשה ומסמנת בכתום מה שצריך לבדוק. תמונת הדף נשמרת ליד הבקשה ובכרטיס האדם.</p>
   ${hasKey()?'':'<div class="notice" style="margin:10px 0">הסריקה האוטומטית עוד לא מחוברת: מכניסים פעם אחת מפתח Gemini בלשונית "ניהול". עד אז אפשר להעלות תמונות ולהקליד את הפרטים ידנית ליד התמונה.</div>'}
+  <div class="row" style="flex-wrap:wrap;margin:10px 0"><button class="btn primary" id="camBtn" style="font-size:1.05rem">📷 צלם דף במצלמה</button>
+    <label class="row small"><input type="checkbox" id="scanEdit" ${lget('scanEdit',false)?'checked':''}> לערוך כל תמונה לפני הסריקה (חיתוך, סיבוב, שיפור)</label></div>
+  <input type="file" id="camFile" accept="image/*" capture="environment" hidden>
   <label class="drop" id="drop" for="multiScan"><b>לחץ כאן לבחירת תמונות</b><span>או גרור לכאן תמונות או קובץ PDF מהסורק · אפשר הרבה דפים ביחד, וגם תמונה אחת עם כמה טפסים</span></label>
   <input type="file" id="multiScan" accept="image/*,application/pdf,.pdf" multiple hidden>
   <p class="small muted">טיפ: צלם כל דף לבד, מקרוב, באור טוב ובלי צל. דף ישר וחד נקרא הרבה יותר טוב.</p>
   <div class="queue" id="jobs"></div></section>`;
-  const add=async files=>{for(const f of [...files]){if(f.type==='application/pdf'||/\.pdf$/i.test(f.name)){toast('פותח את קובץ ה־PDF…');try{(await pdfToImages(f)).forEach(p=>scanJobs.push({file:p,name:p.name,state:'wait'}))}catch(e){toast('לא הצלחתי לפתוח את ה־PDF')}}else if(f.type.startsWith('image/'))scanJobs.push({file:f,name:f.name,state:'wait'})}drawJobs();runJobs()};
+  const add=async files=>{for(const f of [...files]){if(f.type==='application/pdf'||/\.pdf$/i.test(f.name)){toast('פותח את קובץ ה־PDF…');try{(await pdfToImages(f)).forEach(p=>scanJobs.push({file:p,name:p.name,state:'wait'}))}catch(e){toast('לא הצלחתי לפתוח את ה־PDF')}}else if(f.type.startsWith('image/')){if(lget('scanEdit',false)){const e=await imageEditor(f,null);if(e)scanJobs.push({file:e,name:e.name,state:'wait'})}else scanJobs.push({file:f,name:f.name,state:'wait'})}}drawJobs();runJobs()};
   $('#multiScan').onchange=e=>add(e.target.files);
+  $('#scanEdit').onchange=e=>lset('scanEdit',e.target.checked);
+  $('#camBtn').onclick=()=>openCamera(f=>imageEditor(f,scanAddEdited,{more:true}));
+  $('#camFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)imageEditor(f,scanAddEdited,{more:false})};
   const dz=$('#drop');['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over')}));
   ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over')}));dz.addEventListener('drop',e=>add(e.dataTransfer.files));
   drawJobs();
@@ -2149,7 +2185,7 @@ let donorFilt='all';
 function renderDonors(){const all=donorIndex();const F={all:['כל התורמים',()=>true],standing:['הוראת קבע פעילה',d=>d.monthly>0],ending:['הוראת קבע מסתיימת',d=>d.ending],ended:['הוראת קבע שהסתיימה',d=>d.ended],unpaid:['לא נגבה החודש',d=>d.unpaid],once:['חד־פעמי בלבד',d=>!d.st.length]};
   const list=all.filter(F[donorFilt][1]).sort((a,b)=>b.total-a.total);const yr=String(new Date().getFullYear());
   const yearSum=donRecs().filter(r=>r.donation.type!=='standing'&&(r.date||'').startsWith(yr)).reduce((s,r)=>s+(+r.donation.amount||0),0)+donRecs().filter(r=>r.donation.type==='standing').reduce((s,r)=>s+Object.entries(r.payments||{}).filter(([m,v])=>v===true&&m.startsWith(yr)).length*(+r.donation.amount||0),0);
-  $('#main').innerHTML=`<section><div class="row"><h2>תורמים</h2><span class="spacer"></span>${canEdit()?'<button class="btn gold" id="dNew">💰 רישום תרומה</button>':''}<button class="btn" id="dPrint">הדפסה</button><button class="btn" id="dCsv">הורד לאקסל</button></div>
+  $('#main').innerHTML=`<section><div class="row"><h2>תורמים</h2><span class="spacer"></span>${canEdit()?'<button class="btn gold" id="dNew">💰 רישום תרומה</button>':''}${S.features.messages?'<button class="btn" id="dBulk">💬 הודעה לכל הרשימה</button>':''}<button class="btn" id="dPrint">הדפסה</button><button class="btn" id="dCsv">הורד לאקסל</button></div>
   <div class="stats"><div class="stat"><b>${all.length}</b><span>תורמים</span></div><div class="stat"><b>${money(all.reduce((s,d)=>s+d.monthly,0))||'₪0'}</b><span>הוראות קבע לחודש</span></div>
     <div class="stat"><b>${money(yearSum)||'₪0'}</b><span>נתרם בשנה הלועזית הנוכחית</span></div><div class="stat ${all.some(d=>d.ending)?'alert':''}"><b>${all.filter(d=>d.ending).length}</b><span>הוראות קבע שמסתיימות</span></div>
     <div class="stat ${all.some(d=>d.unpaid)?'alert':''}"><b>${all.filter(d=>d.unpaid).length}</b><span>לא נגבו החודש</span></div></div>
@@ -2161,7 +2197,7 @@ function renderDonors(){const all=donorIndex();const F={all:['כל התורמי�
     <td class="row">${S.features.messages?`<button class="btn sm" data-m="${esc(d.key)}">💬 הודעה</button>`:''}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">אין תורמים ברשימה הזאת.</td></tr>'}</tbody></table></div>
   <p class="muted small">תרומות נרשמות בתוך הבקשה (חלק "תרומה / פדיון"), או בכפתור "רישום תרומה" – לתרומה בלי בקשה. גביית הוראות קבע מסמנים בלשונית "כספים". אפשר לשלוח לכל תורם תודה, קבלה, אישור הוראת קבע או תזכורת לחידוש.</p></section>`;
   $$('[name=dfl]').forEach(r=>r.onchange=()=>{donorFilt=r.value;renderDonors()});
-  $$('[data-p]').forEach(a=>a.onclick=e=>{e.preventDefault();if(personRecs(a.dataset.p).length)openPerson(a.dataset.p);else toast('לתורם הזה אין עדיין כרטיס (לא הגיש בקשה)')});if($('#dNew'))$('#dNew').onclick=()=>donationForm({},renderDonors);
+  $$('[data-p]').forEach(a=>a.onclick=e=>{e.preventDefault();if(personRecs(a.dataset.p).length)openPerson(a.dataset.p);else toast('לתורם הזה אין עדיין כרטיס (לא הגיש בקשה)')});if($('#dNew'))$('#dNew').onclick=()=>donationForm({},renderDonors);if($('#dBulk'))$('#dBulk').onclick=()=>bulkCompose(list.map(d=>{const r=d.v.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];return {name:fullName(d.x),email:d.x.email,phone:d.x.mobile,x:{...d.x,donation:r.donation}}}));
   $$('[data-m]').forEach(b=>b.onclick=()=>{const d=all.find(o=>o.key===b.dataset.m);const r=d.v.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];compose({name:fullName(d.x),email:d.x.email,phone:d.x.mobile},{...d.x,donation:r.donation},d.ending?'remind':'thanks')});
   const doc=()=>`${docHead('רשימת תורמים – '+F[donorFilt][0])}<table><tr><th>תורם</th><th>טלפון</th><th>סה״כ</th><th>הוראת קבע לחודש</th><th>תרומה אחרונה</th></tr>${list.map(d=>`<tr><td>${esc(fullName(d.x))}</td><td>${esc(d.x.mobile||'')}</td><td>${money(d.total)}</td><td>${d.monthly?money(d.monthly):''}</td><td>${tdate(d.last)}</td></tr>`).join('')}</table>`;
   $('#dPrint').onclick=()=>saveDoc('תורמים',doc(),'print');
@@ -2529,6 +2565,139 @@ function bindEvents(list){if(!$('#ymM'))return;const cnt=()=>{$('#ymC').textCont
   $('#ymP').onclick=()=>saveDoc('ימי זיכרון '+HM[$('#ymM').value],docYahrMonth($('#ymM').value),'print');$('#ymW').onclick=()=>saveDoc('ימי זיכרון '+HM[$('#ymM').value],docYahrMonth($('#ymM').value),'word');
   const t=()=>'רשימת שמות לתפילה'+($('#evT').value.trim()?' – '+$('#evT').value.trim():'');
   $('#evP').onclick=()=>saveDoc(t(),docNamesTopic(list,t()),'print');$('#evW').onclick=()=>saveDoc(t(),docNamesTopic(list,t()),'word')}
+
+/* =====================================================================
+   תוספות 5: צילום דף במצלמה + עריכת תמונה, טבלת כל הנתונים, שליחה לרבים
+   ===================================================================== */
+
+/* ---------- עורך תמונה: סיבוב, חיתוך, שיפור ---------- */
+function imageEditor(src,onDone,opts={}){return new Promise(async resolve=>{
+  const img=await createImageBitmap(src);let rot=0,crop=null,mode=lget('imgMode','color'),bright=0,contrast=0;
+  const ov=document.createElement('div');ov.className='modal';
+  ov.innerHTML=`<div class="modal-in imged"><div class="row"><h3 style="margin:0">✏️ עריכת התמונה לפני הסריקה</h3><span class="spacer"></span><button class="btn sm" id="ieX">✕</button></div>
+    <p class="small muted" style="margin:0">גוררים על התמונה כדי לחתוך רק את הטופס. אפשר לסובב ולשפר. בסוף לוחצים "סרוק".</p>
+    <div class="row" style="flex-wrap:wrap"><button class="btn sm" id="ieL">↺ סובב</button><button class="btn sm" id="ieR">↻ סובב</button><button class="btn sm" id="ieC">בטל חיתוך</button>
+      <label class="row small">מצב<select id="ieM"><option value="color">צבע רגיל</option><option value="doc">מסמך (שחור־לבן חד)</option><option value="gray">אפור</option></select></label>
+      <label class="row small">בהירות<input type="range" id="ieB" min="-60" max="60" value="0"></label><label class="row small">ניגודיות<input type="range" id="ieK" min="-40" max="80" value="0"></label></div>
+    <div class="iewrap"><canvas id="ieCv"></canvas></div>
+    <div class="row" style="flex-wrap:wrap"><button class="btn primary" id="ieGo">${opts.goText||'סרוק את הדף'}</button>${opts.more?'<button class="btn gold" id="ieMore">סרוק וצלם עוד דף</button>':''}<button class="btn" id="ieSkip">סרוק בלי עריכה</button></div></div>`;
+  document.body.appendChild(ov);$('#ieM').value=mode;
+  const cv=$('#ieCv'),ctx=cv.getContext('2d');
+  const W=()=>rot%180?img.height:img.width,H=()=>rot%180?img.width:img.height;
+  const render=(c,full)=>{const w=W(),h=H(),k=full?1:Math.min(1,900/Math.max(w,h));c.width=Math.round(w*k);c.height=Math.round(h*k);const x=c.getContext('2d');x.save();x.translate(c.width/2,c.height/2);x.rotate(rot*Math.PI/180);
+    x.filter=`brightness(${100+bright}%) contrast(${100+contrast+(mode==='doc'?60:0)}%) ${mode!=='color'?'grayscale(1)':''}`;x.drawImage(img,-img.width*k/2,-img.height*k/2,img.width*k,img.height*k);x.restore();return k};
+  let K=1;const draw=()=>{K=render(cv,false);if(crop){ctx.save();ctx.fillStyle='rgba(0,0,0,.45)';ctx.beginPath();ctx.rect(0,0,cv.width,cv.height);ctx.rect(crop.x*cv.width,crop.y*cv.height,crop.w*cv.width,crop.h*cv.height);ctx.fill('evenodd');ctx.strokeStyle='#f59e0b';ctx.lineWidth=3;ctx.strokeRect(crop.x*cv.width,crop.y*cv.height,crop.w*cv.width,crop.h*cv.height);ctx.restore()}};
+  draw();
+  const pos=e=>{const r=cv.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return {x:Math.max(0,Math.min(1,(t.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(t.clientY-r.top)/r.height))}};
+  let st=null;const down=e=>{e.preventDefault();st=pos(e)},move=e=>{if(!st)return;e.preventDefault();const p=pos(e);crop={x:Math.min(st.x,p.x),y:Math.min(st.y,p.y),w:Math.abs(p.x-st.x),h:Math.abs(p.y-st.y)};draw()},up=()=>{st=null;if(crop&&(crop.w<.05||crop.h<.05)){crop=null;draw()}};
+  cv.addEventListener('mousedown',down);cv.addEventListener('mousemove',move);window.addEventListener('mouseup',up);cv.addEventListener('touchstart',down,{passive:false});cv.addEventListener('touchmove',move,{passive:false});cv.addEventListener('touchend',up);
+  $('#ieL').onclick=()=>{rot=(rot+270)%360;crop=null;draw()};$('#ieR').onclick=()=>{rot=(rot+90)%360;crop=null;draw()};$('#ieC').onclick=()=>{crop=null;draw()};
+  $('#ieM').onchange=()=>{mode=$('#ieM').value;lset('imgMode',mode);draw()};$('#ieB').oninput=()=>{bright=+$('#ieB').value;draw()};$('#ieK').oninput=()=>{contrast=+$('#ieK').value;draw()};
+  const finish=async(edit,more)=>{let out=src;if(edit){const full=document.createElement('canvas');render(full,true);let c=full;
+      if(crop){c=document.createElement('canvas');c.width=Math.round(crop.w*full.width);c.height=Math.round(crop.h*full.height);c.getContext('2d').drawImage(full,crop.x*full.width,crop.y*full.height,c.width,c.height,0,0,c.width,c.height)}
+      const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.92));out=new File([b],(src.name||'צילום').replace(/\.\w+$/,'')+'-ערוך.jpg',{type:'image/jpeg'})}
+    window.removeEventListener('mouseup',up);ov.remove();onDone&&onDone(out,more);resolve(out)};
+  $('#ieGo').onclick=()=>finish(true,false);if($('#ieMore'))$('#ieMore').onclick=()=>finish(true,true);$('#ieSkip').onclick=()=>finish(false,false);
+  $('#ieX').onclick=()=>{window.removeEventListener('mouseup',up);ov.remove();resolve(null)}})}
+
+/* ---------- מצלמה ---------- */
+async function openCamera(onShot){
+  if(!navigator.mediaDevices?.getUserMedia){$('#camFile').click();return}
+  const ov=document.createElement('div');ov.className='modal';
+  ov.innerHTML=`<div class="modal-in camb"><div class="row"><h3 style="margin:0">📷 צילום דף</h3><span class="spacer"></span><select id="camSel" class="small"></select><button class="btn sm" id="camX">✕</button></div>
+    <div class="camwrap"><video id="camV" playsinline autoplay muted></video><div class="camframe"></div></div>
+    <p class="small muted" style="margin:0">מניחים את הדף על משטח בהיר, מכניסים אותו למסגרת, ולוחצים "צלם". אור טוב בלי צל.</p>
+    <div class="row"><button class="btn primary" id="camShot" style="font-size:1.1rem">📸 צלם</button><button class="btn" id="camFileBtn">בחר מהמכשיר במקום</button><span id="camMsg" class="small"></span></div></div>`;
+  document.body.appendChild(ov);let stream=null;
+  const stop=()=>{stream&&stream.getTracks().forEach(t=>t.stop());stream=null};const close=()=>{stop();ov.remove()};
+  const start=async id=>{stop();try{stream=await navigator.mediaDevices.getUserMedia({video:id?{deviceId:{exact:id},width:{ideal:2560},height:{ideal:1920}}:{facingMode:{ideal:'environment'},width:{ideal:2560},height:{ideal:1920}},audio:false});$('#camV').srcObject=stream;
+      const cams=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput');$('#camSel').innerHTML=cams.map((c,i)=>`<option value="${c.deviceId}">${esc(c.label||('מצלמה '+(i+1)))}</option>`).join('');$('#camSel').hidden=cams.length<2;
+      const cur=stream.getVideoTracks()[0]?.getSettings?.().deviceId;if(cur)$('#camSel').value=cur}
+    catch(e){$('#camMsg').textContent=T(e.name==='NotAllowedError'?'הדפדפן לא קיבל הרשאה למצלמה. לוחצים על סמל המנעול ליד הכתובת ומאשרים מצלמה, או "בחר מהמכשיר".':'לא נמצאה מצלמה במחשב הזה. אפשר "בחר מהמכשיר".')}};
+  $('#camSel').onchange=()=>start($('#camSel').value);$('#camX').onclick=close;$('#camFileBtn').onclick=()=>{close();$('#camFile').click()};
+  $('#camShot').onclick=async()=>{const v=$('#camV');if(!v.videoWidth)return;const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);
+    const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.92));const f=new File([b],'צילום-'+new Date().toLocaleTimeString('he-IL').replace(/:/g,'-')+'.jpg',{type:'image/jpeg'});close();onShot(f)};
+  start()}
+function scanAddEdited(f,more){if(!f)return;scanJobs.push({file:f,name:f.name,state:'wait'});drawJobs();runJobs();if(more)setTimeout(()=>openCamera(f=>imageEditor(f,scanAddEdited,{more:true})),300)}
+
+/* ---------- טבלת כל הנתונים ---------- */
+const GRID_COLS=[['first','שם'],['last','משפחה'],['mobile','נייד'],['homePhone','טלפון בבית'],['email','מייל'],['city','עיר'],['address','כתובת'],['prayName','שם לתפילה']];
+let gridSel=new Set(),gridF={q:'',city:'',tag:'',has:'',since:'',don:''};
+function gridPeople(){const g={};R.forEach(r=>{const k=personKey(r);(g[k]=g[k]||[]).push(r)});
+  const don=new Set(allDonations().map(x=>x.key));
+  return Object.entries(g).map(([k,v])=>{v.sort((a,b)=>(b.date||'').localeCompare(a.date||''));const x=personSummary(v).x;return {key:k,recs:v,x,tags:uniq(v.flatMap(r=>r.tags||[])),last:v[0].date||'',donor:don.has(k)}})}
+function gridFilter(all){const f=gridF;return all.filter(p=>{const x=p.x;
+  if(f.q&&!GRID_COLS.map(([k])=>x[k]).join(' ').toLowerCase().includes(f.q.toLowerCase()))return false;
+  if(f.city&&x.city!==f.city)return false;if(f.tag&&!p.tags.includes(f.tag))return false;
+  if(f.has==='email'&&!x.email)return false;if(f.has==='mobile'&&!x.mobile)return false;if(f.has==='noemail'&&x.email)return false;
+  if(f.since&&p.last<f.since)return false;if(f.don==='yes'&&!p.donor)return false;if(f.don==='no'&&p.donor)return false;return true})}
+function renderGrid(){const all=gridPeople(),list=gridFilter(all).sort((a,b)=>fullName(a.x).localeCompare(fullName(b.x),'he'));const ed=canEdit();
+  const cities=uniq(all.map(p=>p.x.city)).sort((a,b)=>a.localeCompare(b,'he'));gridSel=new Set([...gridSel].filter(k=>all.some(p=>p.key===k)));
+  $('#main').innerHTML=`<section><div class="row"><h2>כל הנתונים</h2><span class="spacer"></span><button class="btn" id="gd_Csv">הורד לאקסל</button></div>
+  <p class="muted">כל האנשים בטבלה אחת. ${ed?'לוחצים על תא, משנים, ויוצאים – זה נשמר לבד בכל הבקשות של אותו אדם. ':''}מסמנים אנשים ושולחים לכולם אותה הודעה.</p>
+  <div class="toolbar"><input type="search" id="gd_q" placeholder="חיפוש: שם, טלפון, מייל, עיר" value="${esc(gridF.q)}">
+    <select id="gd_city"><option value="">כל הערים</option>${cities.map(c=>`<option ${gridF.city===c?'selected':''}>${esc(c)}</option>`).join('')}</select>
+    <select id="gd_tag"><option value="">כל הנושאים</option>${TAGS.map(t=>`<option ${gridF.tag===t?'selected':''}>${t}</option>`).join('')}</select>
+    <select id="gd_has"><option value="">כולם</option><option value="email" ${gridF.has==='email'?'selected':''}>יש מייל</option><option value="mobile" ${gridF.has==='mobile'?'selected':''}>יש נייד</option><option value="noemail" ${gridF.has==='noemail'?'selected':''}>חסר מייל</option></select>
+    ${S.features.finance&&FIN&&canFin()?`<select id="gd_don"><option value="">תורמים וכולם</option><option value="yes" ${gridF.don==='yes'?'selected':''}>רק תורמים</option><option value="no" ${gridF.don==='no'?'selected':''}>לא תורמים</option></select>`:''}
+    <label class="row small">ביקר מאז<input type="date" id="gd_since" value="${esc(gridF.since)}"></label></div>
+  <div class="row bulkbar"><b>${list.length}</b> אנשים ברשימה · <b id="gd_N">${gridSel.size}</b> מסומנים
+    <button class="btn sm" id="gd_All">סמן את כל הרשימה</button><button class="btn sm" id="gd_None">נקה סימון</button><span class="spacer"></span>
+    ${S.features.messages?'<button class="btn gold" id="gd_Msg">💬 שליחה למסומנים</button>':''}<button class="btn sm" id="gd_Lbl">מדבקות למסומנים</button></div>
+  <div class="tablewrap gridwrap"><table class="wide grid"><thead><tr><th></th>${GRID_COLS.map(([,t])=>`<th>${t}</th>`).join('')}<th>ביקורים</th><th>ביקור אחרון</th><th></th></tr></thead><tbody>
+  ${list.map(p=>`<tr data-k="${esc(p.key)}"><td><input type="checkbox" class="gchk" ${gridSel.has(p.key)?'checked':''} aria-label="סימון"></td>
+    ${GRID_COLS.map(([k])=>`<td ${ed?`contenteditable="plaintext-only" data-f="${k}"`:''} class="${['mobile','homePhone','email'].includes(k)?'ltr':''}">${esc(p.x[k]||'')}</td>`).join('')}
+    <td class="num">${p.recs.length}</td><td>${dual(p.last)}</td><td><button class="btn sm" data-op="${esc(p.key)}">כרטיס</button></td></tr>`).join('')||`<tr><td colspan="${GRID_COLS.length+4}" class="empty">אין אנשים שמתאימים לסינון</td></tr>`}</tbody></table></div></section>`;
+  const setF=(k,v)=>{gridF[k]=v;renderGrid()};
+  let tq;$('#gd_q').oninput=()=>{clearTimeout(tq);tq=setTimeout(()=>{gridF.q=$('#gd_q').value;renderGrid();const i=$('#gd_q');i.focus();i.setSelectionRange(i.value.length,i.value.length)},350)};
+  $('#gd_city').onchange=e=>setF('city',e.target.value);$('#gd_tag').onchange=e=>setF('tag',e.target.value);$('#gd_has').onchange=e=>setF('has',e.target.value);$('#gd_since').onchange=e=>setF('since',e.target.value);if($('#gd_don'))$('#gd_don').onchange=e=>setF('don',e.target.value);
+  const cnt=()=>$('#gd_N').textContent=gridSel.size;
+  $$('.gchk').forEach(c=>c.onchange=()=>{const k=c.closest('tr').dataset.k;c.checked?gridSel.add(k):gridSel.delete(k);cnt()});
+  $('#gd_All').onclick=()=>{list.forEach(p=>gridSel.add(p.key));renderGrid()};$('#gd_None').onclick=()=>{gridSel.clear();renderGrid()};
+  $$('[data-op]').forEach(b=>b.onclick=()=>openPerson(b.dataset.op));
+  const sel=()=>all.filter(p=>gridSel.has(p.key));
+  if($('#gd_Msg'))$('#gd_Msg').onclick=()=>{const s=sel();if(!s.length)return toast('קודם מסמנים אנשים');bulkCompose(s.map(p=>({name:fullName(p.x),email:p.x.email,phone:p.x.mobile,x:p.x})))};
+  $('#gd_Lbl').onclick=()=>{const s=sel().filter(p=>p.x.address||p.x.city);if(!s.length)return toast('אין למסומנים כתובת');saveDoc('מדבקות',`<div style="display:grid;grid-template-columns:repeat(3,1fr)">${s.map(p=>`<div style="border:1px dashed #bbb;padding:14px 10px;min-height:36mm;font-size:12.5pt;line-height:1.5"><b>לכבוד ${esc(fullName(p.x))}</b><br>${esc(p.x.address||'')}<br>${esc([p.x.city,p.x.zip].filter(Boolean).join(' '))}</div>`).join('')}</div>`,'print')};
+  $('#gd_Csv').onclick=()=>{const rows=[[...GRID_COLS.map(c=>c[1]),'ביקורים','ביקור אחרון'],...list.map(p=>[...GRID_COLS.map(([k])=>p.x[k]||''),p.recs.length,p.last])];downloadBlob(`כל-הנתונים-${fileStamp()}.csv`,new Blob(['﻿'+rows.map(r=>r.map(c=>`"${String(c??'').replace(/"/g,'""')}"`).join(',')).join('\n')],{type:'text/csv'}));log('הורדת כל הנתונים לאקסל')};
+  if(ed)$$('td[data-f]').forEach(td=>{const orig=td.textContent;
+    td.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();td.blur()}if(e.key==='Escape'){td.textContent=orig;td.blur()}};
+    td.onfocus=()=>{typing=true};
+    td.onblur=async()=>{typing=false;const v=td.textContent.trim(),f=td.dataset.f;if(v===orig.trim())return;const p=all.find(o=>o.key===td.closest('tr').dataset.k);if(!p)return;
+      const nv=f==='email'?fixEmail(v):v;for(const r of p.recs){r[f]=nv;await putRec(r,true)}log('עריכה בטבלת הנתונים',fullName(p.x),{field:FL[f]||f});td.classList.add('saved');toast('נשמר');
+      if(['mobile','homePhone','first','last'].includes(f)){const nk=personKey(p.recs[0]);if(gridSel.delete(p.key))gridSel.add(nk);setTimeout(renderGrid,300)}}})}
+
+/* ---------- שליחה לרבים ---------- */
+function bulkCompose(people){if(!S.features.messages)return toast('שליחת הודעות כבויה בניהול');
+  const keys=Object.keys(MSG_TPL).filter(k=>!FIN_TPL.includes(k)||(FIN&&canFin()));const hasEJ=S.emailjs?.service&&S.emailjs?.template&&S.emailjs?.key;
+  const ov=document.createElement('div');ov.className='modal';
+  ov.innerHTML=`<div class="modal-in" style="max-width:860px"><div class="row"><h3 style="margin:0">💬 הודעה ל־${people.length} אנשים</h3><span class="spacer"></span><button class="btn sm" id="bX">✕</button></div>
+    <p class="small muted" style="margin:0">${people.filter(p=>p.email).length} עם מייל · ${people.filter(p=>normPhone(p.phone||'').length>=9).length} עם נייד. המילה {שם} מתחלפת אצל כל אחד בשם שלו.</p>
+    <div class="grid"><label class="f">נוסח<select id="bT">${keys.map(k=>`<option value="${k}">${MSG_TPL[k][0]}</option>`).join('')}</select></label><label class="f wide">נושא (למייל)<input id="bS" value="הודעה ממרכז חסידי ביאלא"></label>
+      <label class="f wide">ההודעה<textarea id="bB" style="min-height:200px"></textarea></label></div>
+    <div class="row" style="flex-wrap:wrap">${hasEJ?'<button class="btn primary" id="bEJ">📨 שלח מייל לכל אחד בנפרד (ישירות)</button>':''}<button class="btn ${hasEJ?'':'primary'}" id="bBcc">📧 פתח מייל אחד לכולם (עותק מוסתר)</button>
+      <button class="btn" id="bWa">וואטסאפ – אחד אחד</button><button class="btn sm" id="bCpE">העתק כל המיילים</button><button class="btn sm" id="bCpP">העתק כל הטלפונים</button></div>
+    <div id="bMsg" class="small"></div><div id="bList" class="blist"></div></div>`;
+  document.body.appendChild(ov);const close=()=>{stopped=true;ov.remove()};$('#bX').onclick=close;let stopped=false;
+  const body=(k)=>MSG_TPL[k][1]??(S.templates||{})[k]??DEF_TPL[k]??'';
+  const setT=()=>{const k=$('#bT').value;$('#bB').value=body(k).replace(/\{שם\}/g,'{שם}');$('#bS').value=MSG_TPL[k][0]+' – מרכז חסידי ביאלא'};$('#bT').onchange=setT;setT();
+  const per=p=>tplText($('#bB').value,p.x||{first:p.name});const m=t=>$('#bMsg').innerHTML=t;
+  const list=(rows)=>{$('#bList').innerHTML=`<table class="wide"><tbody>${rows.join('')}</tbody></table>`};
+  if($('#bEJ'))$('#bEJ').onclick=async()=>{const to=people.filter(p=>/.+@.+\..+/.test(fixEmail(p.email||'')));if(!to.length)return m(T('אין לאף אחד מהמסומנים כתובת מייל'));
+    if(!confirm(T(`לשלוח ${to.length} מיילים, לכל אחד בנפרד?`)))return;stopped=false;const st=to.map(()=>'ממתין');const draw=()=>list(to.map((p,i)=>`<tr><td>${esc(p.name)}</td><td class="ltr">${esc(p.email)}</td><td>${st[i]}</td></tr>`));draw();
+    m(`<span class="spin"></span> ${T('שולח…')} <button class="btn sm" id="bStop">${T('עצור')}</button>`);$('#bStop').onclick=()=>stopped=true;let ok=0;
+    for(let i=0;i<to.length&&!stopped;i++){const p=to[i];try{const r=await fetch('https://api.emailjs.com/api/v1.0/email/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_id:S.emailjs.service,template_id:S.emailjs.template,user_id:S.emailjs.key,template_params:{to_email:fixEmail(p.email),to_name:p.name,subject:tplText($('#bS').value,p.x||{}),message:per(p)}})});
+        if(!r.ok)throw new Error((await r.text()).slice(0,80));st[i]='✓ נשלח';ok++}catch(x){st[i]='✗ '+esc(String(x.message||x))}draw();await new Promise(z=>setTimeout(z,1200))}
+    log('שליחה לרבים',`${ok} מיילים`,{tpl:$('#bT').value});m(`${T('נשלחו')} ${ok} ${T('מתוך')} ${to.length}.${stopped?' '+T('(נעצר)'):''}`)};
+  $('#bBcc').onclick=()=>{const em=uniq(people.map(p=>fixEmail(p.email||'')).filter(e=>/.+@.+\..+/.test(e)));if(!em.length)return m(T('אין לאף אחד מהמסומנים כתובת מייל'));
+    const txt=tplText($('#bB').value,{first:''}).replace(/שלום\s*,/,'שלום רב,');const groups=[];for(let i=0;i<em.length;i+=40)groups.push(em.slice(i,i+40));
+    list(groups.map((g,i)=>`<tr><td>${T('קבוצה')} ${i+1} (${g.length})</td><td><a class="btn sm gold" href="mailto:?bcc=${encodeURIComponent(g.join(','))}&subject=${encodeURIComponent($('#bS').value)}&body=${encodeURIComponent(txt.slice(0,1500))}">${T('פתח מייל')}</a></td></tr>`));
+    m(T('במייל לכולם יחד ההודעה לא אישית: {שם} הוחלף ב"שלום רב". הנמענים בעותק מוסתר ולא רואים זה את זה.')+(groups.length>1?' '+T('יש כמה קבוצות כי תוכנות מייל מגבילות את מספר הנמענים.'):''));log('שליחה לרבים',`מייל לכולם (${em.length})`)};
+  $('#bWa').onclick=()=>{const to=people.filter(p=>intlPhone(p.phone||'').length>=10);if(!to.length)return m(T('אין למסומנים מספר נייד'));
+    list(to.map((p,i)=>`<tr><td>${esc(p.name)}</td><td class="ltr">${esc(p.phone)}</td><td><button class="btn sm" data-wa="${i}">${T('פתח וואטסאפ')}</button></td></tr>`));
+    m(T('לוחצים אחד אחרי השני. כל לחיצה פותחת שיחה עם ההודעה האישית, ושולחים בוואטסאפ.'));
+    $$('[data-wa]').forEach(b=>b.onclick=()=>{const p=to[+b.dataset.wa];window.open(`https://wa.me/${intlPhone(p.phone)}?text=${encodeURIComponent(per(p))}`,'_blank');b.textContent='✓ '+T('נפתח');b.classList.add('done');log('שליחת הודעה',p.name,{channel:'whatsapp',bulk:1})})};
+  $('#bCpE').onclick=()=>copy(uniq(people.map(p=>fixEmail(p.email||''))).join(', '),'המיילים הועתקו');
+  $('#bCpP').onclick=()=>copy(uniq(people.map(p=>p.phone)).join('\n'),'הטלפונים הועתקו')}
 
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
 </script>
