@@ -922,7 +922,9 @@ const normKey=p=>String(p||'').normalize('NFC').trim();
 const normCode=c=>String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 async function kDerive(pass,salt){const km=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
   return crypto.subtle.deriveKey({name:'PBKDF2',salt:kub(salt),iterations:250000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
-async function aesEnc(key,bytes){const iv=crypto.getRandomValues(new Uint8Array(12));const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,bytes));const o=new Uint8Array(12+ct.length);o.set(iv);o.set(ct,12);return kb64(o)}
+async function aesEnc(key,bytes){const iv=crypto.getRandomValues(new Uint8Array(12));const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,bytes));const o=new Uint8Array(12+ct.length);o.set(iv);o.set(ct,12);return spc(kb64(o))}
+/* הטקסט המוצפן נשמר בזוגות אותיות עם רווח – כך מסנני תוכן (נטפרי וכדומה) לא יזהו בו בטעות "מילים" ויחסמו */
+function spc(b){return b.replace(/(..)/g,'$1 ').trim()}
 async function aesDec(key,s){const u=kub(s);return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(0,12)},key,u.slice(12)))}
 const encStr=async s=>aesEnc(DEK,new TextEncoder().encode(s));
 const decStr=async s=>new TextDecoder().decode(await aesDec(DEK,s));
@@ -1043,23 +1045,25 @@ async function putS(what){if(what)log('שינוי הגדרות',what);if(MODE===
 let LOADBAD=[];
 async function fetchTable(tbl){
   try{const r=await SB.from(tbl).select('id,data');if(r.error)throw r.error;return r.data||[]}
-  catch(e){const ids=await SB.from(tbl).select('id');if(ids.error)throw ids.error;const rows=[],bad=[];
+  catch(e){const ids=await SB.from(tbl).select('id');if(ids.error){ids.error.message=tbl+': '+(ids.error.message||'');throw ids.error}const rows=[],bad=[];
     const q=[...(ids.data||[])];const work=async()=>{while(q.length){const {id}=q.shift();let ok=false;
       for(let t=0;t<2&&!ok;t++){try{const r=await SB.from(tbl).select('id,data').eq('id',id).maybeSingle();if(r.error)throw r.error;if(r.data)rows.push(r.data);ok=true}catch(x){await new Promise(z=>setTimeout(z,600))}}
       if(!ok)bad.push(id)}};
     await Promise.all([work(),work(),work()]);
     if(bad.length){LOADBAD.push(...bad.map(id=>tbl+':'+id));try{await SB.from('kk_log').insert({action:'שורות שלא נטענו',target:(tbl+': '+bad.join(',')).slice(0,200),details:{who:ME,first:String(e?.message||e).slice(0,120),ua:navigator.userAgent.slice(0,160)}})}catch(z){}}
-    if(!rows.length&&bad.length)throw e;return rows}}
+    return rows}}
 async function loadCloud(){LOADBAD=[];
-  const [ad,bd,c]=await Promise.all([fetchTable('kk_records'),fetchTable('kk_kupa'),Promise.resolve(SB.from('kk_settings').select('data').eq('id','main').maybeSingle()).catch(e=>({data:null,error:e}))]);
+  const [ad,bd,c]=await Promise.all([fetchTable('kk_records'),fetchTable('kk_kupa').catch(e=>{LOADBAD.push('kk_kupa:*');return []}),Promise.resolve(SB.from('kk_settings').select('data').eq('id','main').maybeSingle()).catch(e=>({data:null,error:e}))]);
   const a={data:ad},b={data:bd};
-  const plain=[],open=async(tbl,x)=>{const d=x.data||{};if(typeof d.enc!=='string')plain.push([tbl,x.id,d]);try{return {...(await openData(d)),id:x.id}}catch(e){return null}};
+  const plain=[],respace=[],open=async(tbl,x)=>{const d=x.data||{};if(typeof d.enc!=='string')plain.push([tbl,x.id,d]);else if(!d.enc.includes(' '))respace.push([tbl,x.id]);try{return {...(await openData(d)),id:x.id}}catch(e){return null}};
   R=(await Promise.all((a.data||[]).map(x=>open('kk_records',x)))).filter(Boolean);EXP=(await Promise.all((b.data||[]).map(x=>open('kk_kupa',x)))).filter(Boolean);
   try{const cd=await fetchTable('kk_contacts');C=(await Promise.all(cd.map(x=>open('kk_contacts',x)))).filter(Boolean)}catch(e){C=C||[]}
-  let sd=c.data?.data||null;if(sd){if(typeof sd.enc!=='string')plain.push(['kk_settings','main',sd]);try{sd=await openData(sd)}catch(e){sd=null}}
+  let sd=c.data?.data||null;if(sd){if(typeof sd.enc!=='string')plain.push(['kk_settings','main',sd]);else if(!sd.enc.includes(' '))respace.push(['kk_settings','main']);try{sd=await openData(sd)}catch(e){sd=null}}
   S=withDefaults(sd,DEFS);
   await loadInbox();
   /* נתונים ישנים שנשמרו לפני ההצפנה – מצפינים אותם עכשיו בשרת */
+  if(DEK&&respace.length&&isAdm()){const byT={kk_records:R,kk_kupa:EXP,kk_contacts:C};let n=0;for(const [t,id] of respace){if(t==='kk_settings')continue;const o=(byT[t]||[]).find(x=>x.id===id);if(o){try{await cloudPut(t,id,o);n++}catch(e){}}}
+    try{if(respace.some(([t])=>t==='kk_settings'))await cloudPut('kk_settings','main',S)}catch(e){}if(n)log('הצפנה',`${n} רשומות נשמרו מחדש בפורמט שעובר סינון`)}
   if(DEK&&plain.length&&canEdit()){for(const [t,id,d] of plain){await cloudPut(t,id,t==='kk_settings'?d:{...d,id})}log('הצפנה',`הוצפנו ${plain.length} רשומות ישנות בשרת`)}}
 async function boot(){
   DEFS=await DEF_S();try{await idb.open()}catch(e){}
@@ -2367,7 +2371,7 @@ async function renderPublicForm(){$('#login').hidden=true;$('#app').hidden=true;
     if(digits(o.mobile).length<9){m.textContent='נא לכתוב מספר נייד תקין';return}
     m.textContent='שולח…';try{const pk=await crypto.subtle.importKey('jwk',pub.pub,{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);const raw=crypto.getRandomValues(new Uint8Array(32)),k=await importDek(raw),iv=crypto.getRandomValues(new Uint8Array(12));
       const c=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,new TextEncoder().encode(JSON.stringify(o))));const wk=new Uint8Array(await crypto.subtle.encrypt({name:'RSA-OAEP'},pk,raw));
-      const {error}=await SB.from('kk_inbox').insert({data:{v:1,k:kb64(wk),iv:kb64(iv),c:kb64(c)}});if(error)throw error;lset('pubSent',Date.now());
+      const {error}=await SB.from('kk_inbox').insert({data:{v:1,k:spc(kb64(wk)),iv:kb64(iv),c:spc(kb64(c))}});if(error)throw error;lset('pubSent',Date.now());
       wrap.innerHTML=`<div class="card">${head}<h2 style="text-align:center">הבקשה התקבלה ✓</h2><p style="text-align:center">תודה. הגבאים יעבירו את הבקשה לכ״ק מרן האדמו״ר שליט״א.</p><p style="text-align:center"><a href="#bakasha" onclick="location.reload()">שליחת בקשה נוספת</a></p></div>`}
     catch(x){m.textContent='השליחה לא הצליחה. בדקו את החיבור לאינטרנט ונסו שוב.'}}}
 
