@@ -1049,6 +1049,9 @@ async function inviteUnlock(){let S=null;try{S=localStorage.getItem('kk_inv')}ca
   try{const {data}=await SB.from('kk_invites').select('data').eq('email',MYEMAIL).maybeSingle();if(!data?.data)return false;
     DEK=await importDek(await unwrapDek(S,data.data.salt,data.data.wrap));if(!await dekCheck()){DEK=null;return false}
     await dekSave();await deviceUnlock();await SB.from('kk_invites').delete().eq('email',MYEMAIL);try{localStorage.removeItem('kk_inv')}catch(e){}log('הצפנה','מחשב חדש נפתח עם קישור הזמנה');return true}catch(e){DEK=null;return false}}
+/* מחשב שכבר נפתח בעבר (למשל מחשב המשרד או המחשב של המנהל): משתמש מאושר נוסף שנכנס בו נפתח מיד */
+async function sharedDekUnlock(){try{const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('kk_dek_')&&k!==dekSlot())keys.push(k)}
+  for(const k of keys){try{DEK=await importDek(kub(localStorage.getItem(k)));if(await dekCheck()){await dekSave();deviceUnlock();log('הצפנה','מחשב שכבר היה פתוח – נפתח גם למשתמש הזה');return true}}catch(e){}}}catch(e){}DEK=null;return false}
 async function dropDevices(email){try{await SB.from('kk_devices').delete().eq('email',email)}catch(e){}try{await SB.from('kk_invites').delete().eq('email',email)}catch(e){}}
 function ensureKey(){return new Promise(async res=>{
   const {data,error}=await SB.from('kk_settings').select('data').eq('id','crypto').maybeSingle();
@@ -1059,7 +1062,7 @@ function ensureKey(){return new Promise(async res=>{
     if(await deviceUnlock())return res(true);
     /* הבעלים: נפתח אוטומטית דרך החשבון שלו (אותו דבר כמו כפתור "שחזור דרך המייל") – בלי להקליד מפתח */
     if(isOwner()){try{if(await escrowLoad()){await dekSave();deviceUnlock();log('הצפנה','נפתח אוטומטית לבעלים');return res(true)}}catch(e){DEK=null}}
-    if(!isOwner()&&await inviteUnlock())return res(true)}
+    if(!isOwner()&&(await inviteUnlock()||await sharedDekUnlock()))return res(true)}
   if(!CMETA&&!isOwner()){showPending('המנהל הראשי צריך להיכנס ראשון ולקבוע את מפתח הארגון. נסה שוב אחר כך.');return res(false)}
   const done=()=>{const b=$('#pendingBox');b.hidden=true;b.classList.remove('keybox');res(true)};
   if(!CMETA){ /* הקמה ראשונה – רק הבעלים */
@@ -1242,7 +1245,7 @@ $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err
   else{if(await hash($('#pw').value)!==S.pw){loginFails++;err.textContent=loginFails>=3?'הסיסמה שגויה. אם שכחת — מנהל המערכת יכול להחליף אותה מהמחשב הראשי.':'הסיסמה שגויה, נסה שוב';$('#pw').select();return}
     ME=$('#gabbaiSel').value||'גבאי';ROLE='admin'}
   ss.set('biala_in','1');ss.set('biala_me',ME);ss.set('biala_role',ROLE);log('כניסה למערכת');enter()});
-async function grantFromLink(){const em=ss.get('kk_grant');if(!em)return;ss.del('kk_grant');if(!isAdm()||!DEK){toast(T('רק מנהל יכול לאשר מחשב חדש'));return}
+async function grantFromLink(){const em=ss.get('kk_grant');if(!em)return;if(!isAdm()||!DEK){alert(T('כדי לאשר את')+' '+em+' '+T('צריך להיות מחובר עם חשבון המנהל. לחץ "יציאה", היכנס עם החשבון שלך, והאישור יקרה מיד.'));return}ss.del('kk_grant');
   toast(T('מאשר את המחשב של')+' '+em+'…');let n=0;for(let i=0;i<3&&!n;i++){n=await grantDevices().catch(()=>0);if(!n)await new Promise(r=>setTimeout(r,2500))}
   toast(n?T('אושר ✓ המחשב של')+' '+em+' '+T('נפתח עכשיו.'):T('לא נמצא מחשב שמחכה לאישור (אולי כבר נפתח).'))}
 function enter(){$('#login').hidden=true;$('#app').hidden=false;setTimeout(grantFromLink,800);lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person','qscreen'].includes(v)?v:'')||location.hash.slice(1)||'home');initGlobalSearch();$('#instBtn').hidden=matchMedia('(display-mode: standalone)').matches;$('#instBtn').onclick=installApp;setTimeout(autoBackup,4000)}
