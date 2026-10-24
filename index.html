@@ -249,18 +249,16 @@ details.pwbox{border-top:1px solid rgba(217,195,155,.3);padding-top:8px}details.
     <p>מרכז חסידי ביאלא בני ברק</p>
     <div id="gLogin" hidden class="gwrap"><div class="or">כניסה בלחיצה אחת עם חשבון Google</div><div id="gBtn"></div><div id="gMsg" class="or"></div></div>
     <div id="codeWrap" hidden class="codecard">
-      <div class="or">או</div><h2>כניסה בלי סיסמה</h2>
-      <p class="small">גם בכניסה הראשונה. כותבים את המייל שהמנהל אישר, ומקבלים קוד כניסה למייל.</p>
-      <div id="cStep1" style="display:grid;gap:10px"><input id="cem" type="email" dir="ltr" placeholder="כתובת המייל שלך" aria-label="כתובת המייל שלך" autocomplete="email">
-        <button type="button" class="btn primary big" id="cSend">📧 שלחו לי קוד כניסה למייל</button></div>
+      <div class="or">או</div><h2>כניסה עם מייל וסיסמה</h2>
+      <div id="cStep1" style="display:grid;gap:10px"></div>
+      <div class="pwlinks" id="cLinks"><a href="#" id="cFirst">כניסה ראשונה או שכחת סיסמה? נשלח לך קוד למייל</a></div>
       <div id="cStep2" hidden style="display:grid;gap:10px"><p class="small" id="cInfo"></p>
         <input id="ccode" inputmode="numeric" dir="ltr" maxlength="10" placeholder="הקוד מהמייל" aria-label="הקוד מהמייל" autocomplete="one-time-code" class="codein">
-        <label class="row small" style="justify-content:center"><input type="checkbox" id="cSetPw"> רוצה גם לבחור סיסמה, כדי להיכנס בפעם הבאה בלי קוד</label>
-        <div id="cPwBox" hidden style="display:grid;gap:8px"><input id="cpw1" type="password" placeholder="סיסמה חדשה (לפחות 8 תווים)" autocomplete="new-password"><input id="cpw2" type="password" placeholder="שוב, לאימות" autocomplete="new-password"></div>
-        <button type="button" class="btn primary big" id="cGo">כניסה</button>
-        <div class="pwlinks"><a href="#" id="cAgain">לא הגיע? שלחו שוב</a> · <a href="#" id="cBack">מייל אחר</a></div></div>
+        <input id="cpw1" type="password" placeholder="בחר סיסמה (לפחות 8 תווים)" autocomplete="new-password"><input id="cpw2" type="password" placeholder="הסיסמה שוב, לאימות" autocomplete="new-password">
+        <button type="button" class="btn primary big" id="cGo">שמור סיסמה והיכנס</button>
+        <div class="pwlinks"><a href="#" id="cAgain">לא הגיע? שלחו שוב</a> · <a href="#" id="cBack">חזרה</a></div></div>
       <div class="err" id="cErr"></div></div>
-    <div id="emailWrap" hidden style="display:grid;gap:8px"><div class="or">או עם מייל וסיסמה</div><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"><div class="pwlinks"><a href="#" id="pwFirst">אין לי עדיין סיסמה – לבחור סיסמה</a> · <a href="#" id="pwForgot">שכחתי סיסמה</a></div></div>
+    <div id="emailWrap" hidden style="display:grid;gap:8px"><input id="em" type="email" dir="ltr" placeholder="כתובת המייל שלך" aria-label="כתובת מייל" autocomplete="username"></div>
     <input id="pw" type="password" placeholder="סיסמת כניסה" aria-label="סיסמה" autocomplete="current-password">
     <select id="gabbaiSel" aria-label="מי נכנס"></select>
     <button class="btn gold" type="submit">כניסה</button>
@@ -749,12 +747,12 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 
 # הוספת גבאי חדש – איך הוא נכנס
 1. בלשונית "ניהול" ← משתמשים: מוסיפים את המייל שלו ומאשרים. הוא מקבל אוטומטית מייל מחשבון החברה עם הקישור למערכת והוראות הכניסה (אפשר לבטל את הסימון "לשלוח לו מייל הזמנה"). אם המייל לא הגיע – בשורה שלו יש כפתור "📧 שלח הזמנה שוב".
-2. הגבאי נכנס באחת הדרכים:
-   - "כניסה בלי סיסמה" (הכפתור הגדול במסך הכניסה): כותב את המייל, לוחץ "שלחו לי קוד כניסה למייל", ומקבל מייל עם קוד של 6 ספרות (מ"כתר טכנולוגיות"). כותב את הקוד ונכנס. לא צריך לבחור סיסמה בכלל. הקוד נשלח רק למייל שאושר בניהול, ובתוקף ל־10 דקות.
-   - כפתור "כניסה עם Google" – אם המייל שלו הוא ג׳ימייל. לחיצה אחת.
-   - מייל וסיסמה: מי שרוצה סיסמה משלו – בכניסה עם הקוד מסמן "רוצה גם לבחור סיסמה" וכותב סיסמה. מאז הוא יכול להיכנס בחלק "כניסה עם מייל וסיסמה". אפשר גם אחרי הכניסה, בכפתור "🔑 סיסמה" למעלה, לבחור או להחליף סיסמה. שכח סיסמה? "שכחתי סיסמה" – נכנס עם קוד ובוחר סיסמה חדשה.
-   - "כניסה ראשונה? בחירת סיסמה": כותב מייל וסיסמה חדשה, לוחץ על הקישור, מקבל מייל אישור, לוחץ עליו – ואז נכנס עם המייל והסיסמה.
-   - סיסמה ראשונית מהמנהל הראשי: במסך של Supabase ← Authentication ← Users ← Add user ← Create new user, כותבים מייל וסיסמה ומסמנים Auto Confirm User. הגבאי נכנס מיד עם המייל והסיסמה האלה.
+2. במסך הכניסה יש שתי דרכים:
+   - כניסה עם Google – לחיצה אחת, למי שיש ג׳ימייל.
+   - כניסה עם מייל וסיסמה. בפעם הראשונה: כותבים את המייל ולוחצים "כניסה ראשונה או שכחת סיסמה? נשלח לך קוד למייל". מגיע מייל עם קוד של 6 ספרות. כותבים את הקוד, בוחרים סיסמה ולוחצים "שמור סיסמה והיכנס". מהפעם הבאה – מייל וסיסמה בלבד.
+3. שכח סיסמה? אותו קישור: מקבל קוד למייל ובוחר סיסמה חדשה.
+4. אחרי הכניסה אפשר להחליף סיסמה בכפתור "🔑 סיסמה" למעלה.
+הקוד נשלח רק למייל שאושר בניהול, ובתוקף ל־10 דקות.
 
 # מתי צריך את מפתח הארגון?
 הבעלים לא צריך להקליד את המפתח: בכל מחשב או דפדפן חדש המערכת נפתחת לו אוטומטית דרך החשבון שלו. גבאים מאושרים נפתחים אוטומטית כשמנהל נכנס. את המפתח וקוד השחזור שומרים רק לגיבוי.
@@ -1190,43 +1188,38 @@ async function onGoogle(resp){$('#loginErr').textContent=T('נכנס...');
   $('#loginErr').textContent='';if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}}
 /* סיסמה: בחירה בכניסה ראשונה, ושחזור דרך המייל */
 const backUrl=()=>location.origin+location.pathname;
-/* בחירת סיסמה / שכחתי סיסמה: עוברים דרך קוד למייל, ובאותה כניסה בוחרים סיסמה */
-const toCodeWithPw=e=>{e.preventDefault();const em=$('#em').value.trim();if(em)$('#cem').value=em;$('#cStep1').hidden=false;$('#cStep2').hidden=true;$('#cSetPw').checked=true;$('#cPwBox').hidden=false;
-  $('#cErr').textContent=T('כדי לבחור סיסמה: לוחצים "שלחו לי קוד כניסה למייל", כותבים את הקוד, ממלאים סיסמה חדשה ולוחצים "כניסה".');$('#codeWrap').scrollIntoView({behavior:'smooth'});$('#cem').focus()};
-$('#pwForgot').onclick=toCodeWithPw;$('#pwFirst').onclick=toCodeWithPw;
 function newPasswordUI(){const b=$('#pendingBox');b.hidden=false;b.classList.remove('bad');b.classList.add('keybox');
   b.innerHTML=`<h3>🔒 בחירת סיסמה חדשה</h3><input id="np1" type="password" placeholder="סיסמה חדשה (לפחות 8 תווים)" autocomplete="new-password"><input id="np2" type="password" placeholder="שוב, לאימות" autocomplete="new-password"><button type="button" class="btn primary" id="npGo">שמור סיסמה</button><div id="kErr" class="err"></div>`;
   $('#npGo').onclick=async()=>{const a=$('#np1').value;if(a.length<8)return kErr('לפחות 8 תווים');if(a!==$('#np2').value)return kErr('הסיסמאות לא זהות');
     const {data,error}=await SB.auth.updateUser({password:a});if(error)return kErr('לא הצליח: '+error.message);b.hidden=true;b.classList.remove('keybox');toast('הסיסמה נשמרה');
     if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}}}
-/* כניסה עם קוד חד־פעמי למייל – בלי סיסמה, גם בפעם הראשונה */
-function foldPasswordLogin(){if($('.pwbox'))return;const d=document.createElement('details');d.className='pwbox';d.open=true;d.innerHTML='<summary>'+T('או: כניסה עם מייל וסיסמה שבחרת')+'</summary>';
-  $('#codeWrap').after(d);d.append($('#emailWrap'),$('#pw'),$('#loginForm button[type=submit]'));const o=$('#emailWrap .or');if(o)o.remove()}
+/* כניסה: Google, או מייל + סיסמה. בפעם הראשונה (או כששוכחים) – קוד למייל ובחירת סיסמה */
+function foldPasswordLogin(){const c=$('#cStep1');if(c.childElementCount)return;const b=$('#loginForm button[type=submit]');b.classList.add('big');c.append($('#em'),$('#pw'),b);$('#pw').placeholder=T('סיסמה')}
 let codeEmail='';
 /* קוד הכניסה נשלח ונבדק בשרת (פונקציה kk-login) – רק למייל שאושר בניהול. המייל יוצא מחשבון החברה. */
 async function kkLogin(body){const r=await SB.functions.invoke('kk-login',{body});if(!r.error)return r.data||{};let j=null;try{j=await r.error.context.json()}catch(e){}return j||{error:'net',detail:r.error.message}}
 const codeErr=c=>T({not_approved:'המייל הזה עוד לא אושר במערכת. בקש מהמנהל להוסיף ולאשר אותו בלשונית "ניהול".',wait:'כבר נשלח קוד לפני רגע. חכה דקה ונסה שוב.',bad_email:'כתובת המייל לא תקינה.',mail:'שליחת המייל נכשלה. נסה שוב בעוד דקה.',wrong:'הקוד שגוי. בדוק ונסה שוב.',expired:'פג תוקף הקוד (או שהיו יותר מדי ניסיונות). בקש קוד חדש.',no_code:'לא נמצא קוד פעיל. בקש קוד חדש.',net:'אין חיבור לשרת. ייתכן שהסינון חוסם.'}[c]||'משהו השתבש. נסה שוב.');
-async function sendCode(){const em=$('#cem').value.trim().toLowerCase(),e=$('#cErr');if(!/.+@.+\..+/.test(em)){e.textContent=T('כתוב את כתובת המייל שלך');$('#cem').focus();return}
-  e.textContent=T('שולח…');$('#cSend').disabled=true;const r=await kkLogin({action:'send',email:em});$('#cSend').disabled=false;
+async function sendCode(){const em=$('#em').value.trim().toLowerCase(),e=$('#cErr');$('#loginErr').textContent='';if(!/.+@.+\..+/.test(em)){e.textContent=T('כתוב קודם את כתובת המייל שלך, ואז לחץ שוב');$('#em').focus();return}
+  e.textContent=T('שולח…');const r=await kkLogin({action:'send',email:em});
   if(r.error){e.textContent=codeErr(r.error);return}
-  codeEmail=em;e.textContent='';$('#cStep1').hidden=true;$('#cStep2').hidden=false;$('#cInfo').textContent=T('שלחנו קוד בן 6 ספרות אל')+' '+em+'. '+T('כתוב אותו כאן. אם לא רואים את המייל – לבדוק גם בספאם / קידומי מכירות.');$('#ccode').value='';$('#ccode').focus()}
-$('#cSend').onclick=sendCode;$('#cem').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendCode()}});
-$('#cAgain').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cStep2').hidden=true;sendCode()};
-$('#cBack').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cStep2').hidden=true;$('#cErr').textContent='';$('#cem').focus()};
-async function verifyCode(){const t=$('#ccode').value.replace(/\D/g,''),e=$('#cErr');if(t.length!==6){e.textContent=T('כתוב את 6 הספרות של הקוד');return}
-  const wantPw=$('#cSetPw').checked,p1=$('#cpw1').value;if(wantPw){if(p1.length<8){e.textContent=T('הסיסמה צריכה לפחות 8 תווים');$('#cpw1').focus();return}if(p1!==$('#cpw2').value){e.textContent=T('הסיסמאות לא זהות');$('#cpw2').focus();return}}
+  codeEmail=em;e.textContent='';$('#cStep1').hidden=true;$('#cLinks').hidden=true;$('#cStep2').hidden=false;$('#cInfo').textContent=T('שלחנו קוד בן 6 ספרות אל')+' '+em+'. '+T('כתוב אותו כאן ובחר סיסמה. מהפעם הבאה נכנסים עם המייל והסיסמה. (לא רואים את המייל? לבדוק גם בספאם.)');$('#ccode').value='';$('#ccode').focus()}
+$('#cFirst').onclick=e=>{e.preventDefault();sendCode()};
+$('#cAgain').onclick=e=>{e.preventDefault();sendCode()};
+$('#cBack').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cLinks').hidden=false;$('#cStep2').hidden=true;$('#cErr').textContent='';$('#em').focus()};
+async function verifyCode(){const t=$('#ccode').value.replace(/\D/g,''),e=$('#cErr'),p1=$('#cpw1').value;if(t.length!==6){e.textContent=T('כתוב את 6 הספרות של הקוד');$('#ccode').focus();return}
+  if(p1.length<8){e.textContent=T('בחר סיסמה של לפחות 8 תווים');$('#cpw1').focus();return}if(p1!==$('#cpw2').value){e.textContent=T('הסיסמאות לא זהות');$('#cpw2').focus();return}
   e.textContent=T('בודק…');
   const r=await kkLogin({action:'verify',email:codeEmail,code:t});if(r.error||!r.token_hash){e.textContent=codeErr(r.error);return}
   const v=await SB.auth.verifyOtp({token_hash:r.token_hash,type:'magiclink'});if(v.error){e.textContent=T('הכניסה נכשלה: ')+v.error.message;return}
-  if(wantPw){const u=await SB.auth.updateUser({password:p1});toast(u.error?T('הכניסה הצליחה, אבל הסיסמה לא נשמרה: ')+u.error.message:T('הסיסמה נשמרה. בפעם הבאה אפשר להיכנס עם המייל והסיסמה.'))}
+  const u=await SB.auth.updateUser({password:p1});toast(u.error?T('נכנסת, אבל הסיסמה לא נשמרה: ')+u.error.message:T('הסיסמה נשמרה. מהפעם הבאה נכנסים עם המייל והסיסמה.'));
   e.textContent='';if(await afterCloudAuth(v.data.user)){ss.set('biala_me',ME);enter()}}
-$('#cSetPw').onchange=()=>{$('#cPwBox').hidden=!$('#cSetPw').checked};$('#cGo').onclick=verifyCode;
+$('#cGo').onclick=verifyCode;$('#cpw2').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();verifyCode()}});
 $('#myPw').onclick=()=>{const ov=document.createElement('div');ov.className='modal';ov.innerHTML=`<form class="modal-in" id="mpF" style="max-width:420px"><div class="row"><h3 style="margin:0">🔑 בחירת סיסמה</h3><span class="spacer"></span><button type="button" class="btn sm" id="mpX">✕</button></div><p class="small muted" style="margin:0">עם הסיסמה אפשר להיכנס בפעם הבאה במייל וסיסמה, בלי לחכות לקוד. אפשר להמשיך להיכנס גם עם קוד או Google.</p><input id="mp1" type="password" placeholder="סיסמה חדשה (לפחות 8 תווים)" autocomplete="new-password"><input id="mp2" type="password" placeholder="שוב, לאימות" autocomplete="new-password"><button class="btn primary">שמור סיסמה</button><div id="mpE" class="err"></div></form>`;document.body.appendChild(ov);$('#mpX').onclick=()=>ov.remove();$('#mp1').focus();
   $('#mpF').onsubmit=async ev=>{ev.preventDefault();const a=$('#mp1').value;if(a.length<8)return $('#mpE').textContent=T('לפחות 8 תווים');if(a!==$('#mp2').value)return $('#mpE').textContent=T('הסיסמאות לא זהות');$('#mpE').textContent=T('שומר…');const {error}=await SB.auth.updateUser({password:a});if(error)return $('#mpE').textContent=T('לא נשמר: ')+error.message;log('בחירת סיסמה');ov.remove();toast('הסיסמה נשמרה')}};$('#ccode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();verifyCode()}});
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('#loginErr');
   if(MODE==='cloud'){err.textContent='מתחבר...';
     const {data,error}=await SB.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
-    if(error){const m=String(error.message||'');err.innerHTML=/confirm/i.test(m)?T('עוד לא אישרת את המייל. פתח את המייל מ־Supabase ולחץ על הקישור, ואז נסה שוב.'):/fetch|network/i.test(m)?T('אין חיבור לשרת. ייתכן שהסינון חוסם.'):T('המייל או הסיסמה לא נכונים.')+'<br><span class="small">'+T('נכנס בפעם הראשונה? כותבים מייל וסיסמה חדשה ולוחצים "כניסה ראשונה? בחירת סיסמה". אפשר גם לבקש מהמנהל סיסמה ראשונית, או להיכנס עם Google.')+'</span>';return}
+    if(error){const m=String(error.message||'');$('#cErr').textContent='';err.innerHTML=/confirm/i.test(m)?T('עוד לא אישרת את המייל. פתח את המייל מ־Supabase ולחץ על הקישור, ואז נסה שוב.'):/fetch|network/i.test(m)?T('אין חיבור לשרת. ייתכן שהסינון חוסם.'):T('המייל או הסיסמה לא נכונים.')+'<br><span class="small">'+T('בפעם הראשונה, או אם שכחת – לחץ "כניסה ראשונה או שכחת סיסמה? נשלח לך קוד למייל". אפשר גם להיכנס עם Google.')+'</span>';return}
     err.textContent='';if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}return}
   const users=(S.users||[]).filter(u=>u.active!==false);
   if(users.length){const u=users.find(x=>x.name===$('#gabbaiSel').value);
