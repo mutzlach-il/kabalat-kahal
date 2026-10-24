@@ -228,6 +228,9 @@ table.grid td[contenteditable]{cursor:text;min-width:70px}table.grid td[contente
 .qsnow span,.qsnext>span{font-size:1.4rem;opacity:.85}.qsnow b{display:block;font-size:min(30vw,14rem);line-height:1;color:#ffd77a;font-variant-numeric:tabular-nums}.qsn{font-size:2rem}
 .qsnext>div{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:8px}.qsnext>div>div b{font-size:4rem;display:block}.qsfoot{opacity:.75;font-size:1.1rem}
 @media (max-width:700px){.gsearch{max-width:none;flex-basis:100%}}
+.codecard{display:grid;gap:10px;background:rgba(255,255,255,.08);border:2px solid #d9a441;border-radius:16px;padding:18px 16px;text-align:center}.codecard h2{margin:0;font-size:1.5rem;color:#f5e6c8}.codecard p{margin:0;color:#e9d8b4}
+.btn.big{font-size:1.15rem;padding:14px 18px;min-height:52px}.codein{font-size:1.6rem!important;letter-spacing:.35em;text-align:center}
+details.pwbox{border-top:1px solid rgba(217,195,155,.3);padding-top:8px}details.pwbox>summary{cursor:pointer;color:#d9c39b;font-size:.9rem;text-align:center;list-style:none}details.pwbox[open]{display:grid;gap:8px}
 .pwlinks{font-size:13px;text-align:center}.pwlinks a{color:inherit;text-decoration:underline;cursor:pointer}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -244,7 +247,17 @@ table.grid td[contenteditable]{cursor:text;min-width:70px}table.grid td[contente
     <img src="crest.webp" alt="כתר ביאלה">
     <h1>מערכת קבלת קהל</h1>
     <p>מרכז חסידי ביאלא בני ברק</p>
-    <div id="gLogin" hidden class="gwrap"><div id="gBtn"></div><div id="gMsg" class="or"></div></div>
+    <div id="codeWrap" hidden class="codecard">
+      <h2>כניסה בלי סיסמה</h2>
+      <p class="small">גם בכניסה הראשונה. כותבים את המייל שהמנהל אישר, ומקבלים קוד כניסה למייל.</p>
+      <div id="cStep1" style="display:grid;gap:10px"><input id="cem" type="email" dir="ltr" placeholder="כתובת המייל שלך" aria-label="כתובת המייל שלך" autocomplete="email">
+        <button type="button" class="btn primary big" id="cSend">📧 שלחו לי קוד כניסה למייל</button></div>
+      <div id="cStep2" hidden style="display:grid;gap:10px"><p class="small" id="cInfo"></p>
+        <input id="ccode" inputmode="numeric" dir="ltr" maxlength="10" placeholder="הקוד מהמייל" aria-label="הקוד מהמייל" autocomplete="one-time-code" class="codein">
+        <button type="button" class="btn primary big" id="cGo">כניסה</button>
+        <div class="pwlinks"><a href="#" id="cAgain">לא הגיע? שלחו שוב</a> · <a href="#" id="cBack">מייל אחר</a></div></div>
+      <div class="err" id="cErr"></div></div>
+    <div id="gLogin" hidden class="gwrap"><div class="or">או בלחיצה אחת עם חשבון Google</div><div id="gBtn"></div><div id="gMsg" class="or"></div></div>
     <div id="emailWrap" hidden style="display:grid;gap:8px"><div class="or">או עם מייל וסיסמה</div><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"><div class="pwlinks"><a href="#" id="pwFirst">כניסה ראשונה? בחירת סיסמה</a> · <a href="#" id="pwForgot">שכחתי סיסמה</a></div></div>
     <input id="pw" type="password" placeholder="סיסמת כניסה" aria-label="סיסמה" autocomplete="current-password">
     <select id="gabbaiSel" aria-label="מי נכנס"></select>
@@ -735,7 +748,8 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 # הוספת גבאי חדש – איך הוא נכנס
 1. בלשונית "ניהול" ← משתמשים: מוסיפים את המייל שלו ומאשרים.
 2. הגבאי נכנס באחת הדרכים:
-   - כפתור "כניסה עם Google" – אם המייל שלו הוא ג׳ימייל. הכי פשוט.
+   - "כניסה בלי סיסמה" (הכפתור הגדול במסך הכניסה): כותב את המייל, לוחץ "שלחו לי קוד", ומקבל מייל עם קוד או קישור. כותב את הקוד (או לוחץ על הקישור) – ונכנס. לא צריך לבחור סיסמה בכלל.
+   - כפתור "כניסה עם Google" – אם המייל שלו הוא ג׳ימייל. לחיצה אחת.
    - "כניסה ראשונה? בחירת סיסמה": כותב מייל וסיסמה חדשה, לוחץ על הקישור, מקבל מייל אישור, לוחץ עליו – ואז נכנס עם המייל והסיסמה.
    - סיסמה ראשונית מהמנהל הראשי: במסך של Supabase ← Authentication ← Users ← Add user ← Create new user, כותבים מייל וסיסמה ומסמנים Auto Confirm User. הגבאי נכנס מיד עם המייל והסיסמה האלה.
 
@@ -1113,7 +1127,7 @@ async function boot(){
   if(c.url&&c.key&&window.supabase){try{SB=supabase.createClient(c.url,c.key);MODE='cloud'}catch(e){SB=null}}
   if(MODE==='local'){S=withDefaults(await idb.get('settings'),DEFS);R=(await idb.get('records'))||[];EXP=(await idb.get('kupa'))||[];C=(await idb.get('contacts'))||[];LOG=(await idb.get('log'))||[]}
   else S=withDefaults(null,DEFS);
-  $('#emailWrap').hidden=MODE!=='cloud';$('#gLogin').hidden=MODE!=='cloud';$('#gabbaiSel').hidden=MODE==='cloud';
+  $('#emailWrap').hidden=MODE!=='cloud';$('#gLogin').hidden=MODE!=='cloud';$('#codeWrap').hidden=MODE!=='cloud';if(MODE==='cloud')foldPasswordLogin();$('#gabbaiSel').hidden=MODE==='cloud';
   $('#pw').placeholder=T(MODE==='cloud'?'סיסמה':'סיסמת כניסה');
   fillGabbai();renderModebar();initGoogle();
   /* רענון אוטומטי כשעובדים כמה גבאים */
@@ -1187,6 +1201,23 @@ function newPasswordUI(){const b=$('#pendingBox');b.hidden=false;b.classList.rem
   $('#npGo').onclick=async()=>{const a=$('#np1').value;if(a.length<8)return kErr('לפחות 8 תווים');if(a!==$('#np2').value)return kErr('הסיסמאות לא זהות');
     const {data,error}=await SB.auth.updateUser({password:a});if(error)return kErr('לא הצליח: '+error.message);b.hidden=true;b.classList.remove('keybox');toast('הסיסמה נשמרה');
     if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}}}
+/* כניסה עם קוד חד־פעמי למייל – בלי סיסמה, גם בפעם הראשונה */
+function foldPasswordLogin(){if($('.pwbox'))return;const d=document.createElement('details');d.className='pwbox';d.innerHTML='<summary>'+T('כניסה עם סיסמה (למי שכבר יש)')+'</summary>';
+  $('#gLogin').after(d);d.append($('#emailWrap'),$('#pw'),$('#loginForm button[type=submit]'));const o=$('#emailWrap .or');if(o)o.remove()}
+let codeEmail='';
+async function sendCode(){const em=$('#cem').value.trim().toLowerCase(),e=$('#cErr');if(!/.+@.+\..+/.test(em)){e.textContent=T('כתוב את כתובת המייל שלך');$('#cem').focus();return}
+  e.textContent=T('שולח…');$('#cSend').disabled=true;
+  const {error}=await SB.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:backUrl()}});$('#cSend').disabled=false;
+  if(error){const m=String(error.message||'');e.textContent=/not authorized/i.test(m)?T('שליחת המיילים מהשרת עוד לא הופעלה. בינתיים אפשר להיכנס עם Google למטה, או לפנות למנהל.'):/rate|seconds|too many/i.test(m)?T('נשלחו יותר מדי קודים. חכה דקה ונסה שוב.'):/fetch|network/i.test(m)?T('אין חיבור לשרת. ייתכן שהסינון חוסם.'):T('השליחה נכשלה: ')+m;return}
+  codeEmail=em;e.textContent='';$('#cStep1').hidden=true;$('#cStep2').hidden=false;$('#cInfo').textContent=T('שלחנו מייל אל')+' '+em+'. '+T('כתוב כאן את הקוד שבמייל, או פשוט לחץ על הקישור שבתוך המייל (מהמחשב הזה). אם לא רואים – לבדוק גם בספאם.');$('#ccode').focus()}
+$('#cSend').onclick=sendCode;$('#cem').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendCode()}});
+$('#cAgain').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cStep2').hidden=true;sendCode()};
+$('#cBack').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cStep2').hidden=true;$('#cErr').textContent='';$('#cem').focus()};
+async function verifyCode(){const t=$('#ccode').value.replace(/\D/g,''),e=$('#cErr');if(t.length<6){e.textContent=T('כתוב את כל הספרות של הקוד');return}e.textContent=T('בודק…');
+  let r=await SB.auth.verifyOtp({email:codeEmail,token:t,type:'email'});if(r.error)r=await SB.auth.verifyOtp({email:codeEmail,token:t,type:'signup'});
+  if(r.error){e.textContent=/expired|invalid/i.test(r.error.message)?T('הקוד שגוי או שפג תוקפו. אפשר לבקש קוד חדש.'):T('הכניסה נכשלה: ')+r.error.message;return}
+  e.textContent='';if(await afterCloudAuth(r.data.user)){ss.set('biala_me',ME);enter()}}
+$('#cGo').onclick=verifyCode;$('#ccode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();verifyCode()}});
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('#loginErr');
   if(MODE==='cloud'){err.textContent='מתחבר...';
     const {data,error}=await SB.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
