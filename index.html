@@ -732,6 +732,13 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 - "וואטסאפ – אחד אחד" – רשימה עם כפתור לכל אדם, כל לחיצה פותחת שיחה עם ההודעה האישית שלו.
 - אפשר גם להעתיק את כל המיילים או כל הטלפונים.
 
+# הוספת גבאי חדש – איך הוא נכנס
+1. בלשונית "ניהול" ← משתמשים: מוסיפים את המייל שלו ומאשרים.
+2. הגבאי נכנס באחת הדרכים:
+   - כפתור "כניסה עם Google" – אם המייל שלו הוא ג׳ימייל. הכי פשוט.
+   - "כניסה ראשונה? בחירת סיסמה": כותב מייל וסיסמה חדשה, לוחץ על הקישור, מקבל מייל אישור, לוחץ עליו – ואז נכנס עם המייל והסיסמה.
+   - סיסמה ראשונית מהמנהל הראשי: במסך של Supabase ← Authentication ← Users ← Add user ← Create new user, כותבים מייל וסיסמה ומסמנים Auto Confirm User. הגבאי נכנס מיד עם המייל והסיסמה האלה.
+
 # מתי צריך את מפתח הארגון?
 הבעלים לא צריך להקליד את המפתח: בכל מחשב או דפדפן חדש המערכת נפתחת לו אוטומטית דרך החשבון שלו. גבאים מאושרים נפתחים אוטומטית כשמנהל נכנס. את המפתח וקוד השחזור שומרים רק לגיבוי.
 
@@ -1183,7 +1190,7 @@ function newPasswordUI(){const b=$('#pendingBox');b.hidden=false;b.classList.rem
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('#loginErr');
   if(MODE==='cloud'){err.textContent='מתחבר...';
     const {data,error}=await SB.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});
-    if(error){err.textContent='המייל או הסיסמה שגויים';return}
+    if(error){const m=String(error.message||'');err.innerHTML=/confirm/i.test(m)?T('עוד לא אישרת את המייל. פתח את המייל מ־Supabase ולחץ על הקישור, ואז נסה שוב.'):/fetch|network/i.test(m)?T('אין חיבור לשרת. ייתכן שהסינון חוסם.'):T('המייל או הסיסמה לא נכונים.')+'<br><span class="small">'+T('נכנס בפעם הראשונה? כותבים מייל וסיסמה חדשה ולוחצים "כניסה ראשונה? בחירת סיסמה". אפשר גם לבקש מהמנהל סיסמה ראשונית, או להיכנס עם Google.')+'</span>';return}
     err.textContent='';if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}return}
   const users=(S.users||[]).filter(u=>u.active!==false);
   if(users.length){const u=users.find(x=>x.name===$('#gabbaiSel').value);
