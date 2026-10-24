@@ -748,7 +748,7 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 # הוספת גבאי חדש – איך הוא נכנס
 1. בלשונית "ניהול" ← משתמשים: מוסיפים את המייל שלו ומאשרים.
 2. הגבאי נכנס באחת הדרכים:
-   - "כניסה בלי סיסמה" (הכפתור הגדול במסך הכניסה): כותב את המייל, לוחץ "שלחו לי קוד", ומקבל מייל עם קוד או קישור. כותב את הקוד (או לוחץ על הקישור) – ונכנס. לא צריך לבחור סיסמה בכלל.
+   - "כניסה בלי סיסמה" (הכפתור הגדול במסך הכניסה): כותב את המייל, לוחץ "שלחו לי קוד כניסה למייל", ומקבל מייל עם קוד של 6 ספרות (מ"כתר טכנולוגיות"). כותב את הקוד ונכנס. לא צריך לבחור סיסמה בכלל. הקוד נשלח רק למייל שאושר בניהול, ובתוקף ל־10 דקות.
    - כפתור "כניסה עם Google" – אם המייל שלו הוא ג׳ימייל. לחיצה אחת.
    - "כניסה ראשונה? בחירת סיסמה": כותב מייל וסיסמה חדשה, לוחץ על הקישור, מקבל מייל אישור, לוחץ עליו – ואז נכנס עם המייל והסיסמה.
    - סיסמה ראשונית מהמנהל הראשי: במסך של Supabase ← Authentication ← Users ← Add user ← Create new user, כותבים מייל וסיסמה ומסמנים Auto Confirm User. הגבאי נכנס מיד עם המייל והסיסמה האלה.
@@ -1205,18 +1205,20 @@ function newPasswordUI(){const b=$('#pendingBox');b.hidden=false;b.classList.rem
 function foldPasswordLogin(){if($('.pwbox'))return;const d=document.createElement('details');d.className='pwbox';d.innerHTML='<summary>'+T('כניסה עם סיסמה (למי שכבר יש)')+'</summary>';
   $('#gLogin').after(d);d.append($('#emailWrap'),$('#pw'),$('#loginForm button[type=submit]'));const o=$('#emailWrap .or');if(o)o.remove()}
 let codeEmail='';
+/* קוד הכניסה נשלח ונבדק בשרת (פונקציה kk-login) – רק למייל שאושר בניהול. המייל יוצא מחשבון החברה. */
+async function kkLogin(body){const r=await SB.functions.invoke('kk-login',{body});if(!r.error)return r.data||{};let j=null;try{j=await r.error.context.json()}catch(e){}return j||{error:'net',detail:r.error.message}}
+const codeErr=c=>T({not_approved:'המייל הזה עוד לא אושר במערכת. בקש מהמנהל להוסיף ולאשר אותו בלשונית "ניהול".',wait:'כבר נשלח קוד לפני רגע. חכה דקה ונסה שוב.',bad_email:'כתובת המייל לא תקינה.',mail:'שליחת המייל נכשלה. נסה שוב בעוד דקה.',wrong:'הקוד שגוי. בדוק ונסה שוב.',expired:'פג תוקף הקוד (או שהיו יותר מדי ניסיונות). בקש קוד חדש.',no_code:'לא נמצא קוד פעיל. בקש קוד חדש.',net:'אין חיבור לשרת. ייתכן שהסינון חוסם.'}[c]||'משהו השתבש. נסה שוב.');
 async function sendCode(){const em=$('#cem').value.trim().toLowerCase(),e=$('#cErr');if(!/.+@.+\..+/.test(em)){e.textContent=T('כתוב את כתובת המייל שלך');$('#cem').focus();return}
-  e.textContent=T('שולח…');$('#cSend').disabled=true;
-  const {error}=await SB.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:backUrl()}});$('#cSend').disabled=false;
-  if(error){const m=String(error.message||'');e.textContent=/not authorized/i.test(m)?T('שליחת המיילים מהשרת עוד לא הופעלה. בינתיים אפשר להיכנס עם Google למטה, או לפנות למנהל.'):/rate|seconds|too many/i.test(m)?T('נשלחו יותר מדי קודים. חכה דקה ונסה שוב.'):/fetch|network/i.test(m)?T('אין חיבור לשרת. ייתכן שהסינון חוסם.'):T('השליחה נכשלה: ')+m;return}
-  codeEmail=em;e.textContent='';$('#cStep1').hidden=true;$('#cStep2').hidden=false;$('#cInfo').textContent=T('שלחנו מייל אל')+' '+em+'. '+T('כתוב כאן את הקוד שבמייל, או פשוט לחץ על הקישור שבתוך המייל (מהמחשב הזה). אם לא רואים – לבדוק גם בספאם.');$('#ccode').focus()}
+  e.textContent=T('שולח…');$('#cSend').disabled=true;const r=await kkLogin({action:'send',email:em});$('#cSend').disabled=false;
+  if(r.error){e.textContent=codeErr(r.error);return}
+  codeEmail=em;e.textContent='';$('#cStep1').hidden=true;$('#cStep2').hidden=false;$('#cInfo').textContent=T('שלחנו קוד בן 6 ספרות אל')+' '+em+'. '+T('כתוב אותו כאן. אם לא רואים את המייל – לבדוק גם בספאם / קידומי מכירות.');$('#ccode').value='';$('#ccode').focus()}
 $('#cSend').onclick=sendCode;$('#cem').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendCode()}});
 $('#cAgain').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cStep2').hidden=true;sendCode()};
 $('#cBack').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cStep2').hidden=true;$('#cErr').textContent='';$('#cem').focus()};
-async function verifyCode(){const t=$('#ccode').value.replace(/\D/g,''),e=$('#cErr');if(t.length<6){e.textContent=T('כתוב את כל הספרות של הקוד');return}e.textContent=T('בודק…');
-  let r=await SB.auth.verifyOtp({email:codeEmail,token:t,type:'email'});if(r.error)r=await SB.auth.verifyOtp({email:codeEmail,token:t,type:'signup'});
-  if(r.error){e.textContent=/expired|invalid/i.test(r.error.message)?T('הקוד שגוי או שפג תוקפו. אפשר לבקש קוד חדש.'):T('הכניסה נכשלה: ')+r.error.message;return}
-  e.textContent='';if(await afterCloudAuth(r.data.user)){ss.set('biala_me',ME);enter()}}
+async function verifyCode(){const t=$('#ccode').value.replace(/\D/g,''),e=$('#cErr');if(t.length!==6){e.textContent=T('כתוב את 6 הספרות של הקוד');return}e.textContent=T('בודק…');
+  const r=await kkLogin({action:'verify',email:codeEmail,code:t});if(r.error||!r.token_hash){e.textContent=codeErr(r.error);return}
+  const v=await SB.auth.verifyOtp({token_hash:r.token_hash,type:'magiclink'});if(v.error){e.textContent=T('הכניסה נכשלה: ')+v.error.message;return}
+  e.textContent='';if(await afterCloudAuth(v.data.user)){ss.set('biala_me',ME);enter()}}
 $('#cGo').onclick=verifyCode;$('#ccode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();verifyCode()}});
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err=$('#loginErr');
   if(MODE==='cloud'){err.textContent='מתחבר...';
