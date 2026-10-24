@@ -752,7 +752,8 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
    - כניסה עם מייל וסיסמה. בפעם הראשונה: כותבים את המייל ולוחצים "כניסה ראשונה או שכחת סיסמה? נשלח לך קוד למייל". מגיע מייל עם קוד של 6 ספרות. כותבים את הקוד, בוחרים סיסמה ולוחצים "שמור סיסמה והיכנס". מהפעם הבאה – מייל וסיסמה בלבד.
 3. שכח סיסמה? אותו קישור: מקבל קוד למייל ובוחר סיסמה חדשה.
 4. אחרי הכניסה אפשר להחליף סיסמה בכפתור "🔑 סיסמה" למעלה.
-5. מחשב חדש צריך אישור חד־פעמי (בגלל ההצפנה): כשגבאי נכנס ממחשב חדש, מגיע לבעלים מייל "… מחכה לאישור כניסה" עם קישור. לוחצים על הקישור מהמחשב שלך – המערכת נפתחת אצלך ומאשרת אותו מיד, והמסך אצלו נפתח לבד. (גם בלי המייל: כל כניסה שלך למערכת מאשרת את כל מי שמחכה.)
+5. מייל ההזמנה כולל קישור אישי שפותח את המחשב שלו לבד: הוא לוחץ על הקישור שבמייל, נכנס (Google או קוד וסיסמה) – והנתונים נפתחים מיד, בלי לחכות לאישור. הקישור תקף 7 ימים, לשימוש אחד, ורק למייל שלו. אם עבר הזמן – "📧 שלח הזמנה שוב".
+6. מחשב חדש בלי קישור הזמנה צריך אישור חד־פעמי (בגלל ההצפנה): כשגבאי נכנס ממחשב חדש, מגיע לבעלים מייל "… מחכה לאישור כניסה" עם קישור. לוחצים על הקישור מהמחשב שלך – המערכת נפתחת אצלך ומאשרת אותו מיד, והמסך אצלו נפתח לבד. (גם בלי המייל: כל כניסה שלך למערכת מאשרת את כל מי שמחכה.)
 הקוד נשלח רק למייל שאושר בניהול, ובתוקף ל־10 דקות.
 
 # מתי צריך את מפתח הארגון?
@@ -1039,7 +1040,16 @@ async function escrowSave(){if(!DEK||!isOwner()||MODE!=='cloud')return;try{const
   if(!data)await SB.from('kk_escrow').upsert({email:MYEMAIL,dek:kb64(await crypto.subtle.exportKey('raw',DEK)),updated_at:new Date().toISOString()})}catch(e){}}
 async function escrowLoad(){const {data,error}=await SB.from('kk_escrow').select('dek').eq('email',MYEMAIL).maybeSingle();if(error||!data)return false;
   DEK=await importDek(kub(data.dek));if(!await dekCheck()){DEK=null;return false}return true}
-async function dropDevices(email){try{await SB.from('kk_devices').delete().eq('email',email)}catch(e){}}
+/* קישור הזמנה שפותח מחשב חדש לבד: המחשב של המנהל נועל את מפתח הנתונים בסוד חד־פעמי שנשלח רק למייל של המוזמן.
+   בשרת נשמר רק הנעול (בלי הסוד). תקף 7 ימים, לשימוש אחד, ורק למשתמש עצמו אחרי שנכנס עם המייל שלו. */
+async function makeInvite(email){if(!DEK||!isAdm()||MODE!=='cloud')return null;try{const b=crypto.getRandomValues(new Uint8Array(24));const S=kb64(b).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  const w=await wrapDek(S,new Uint8Array(await crypto.subtle.exportKey('raw',DEK)));
+  const {error}=await SB.from('kk_invites').upsert({email:email.toLowerCase(),data:{v:1,salt:w.salt,wrap:w.wrap},expires:new Date(Date.now()+7*864e5).toISOString(),created_by:MYEMAIL});return error?null:S}catch(e){return null}}
+async function inviteUnlock(){let S=null;try{S=localStorage.getItem('kk_inv')}catch(e){}if(!S)return false;
+  try{const {data}=await SB.from('kk_invites').select('data').eq('email',MYEMAIL).maybeSingle();if(!data?.data)return false;
+    DEK=await importDek(await unwrapDek(S,data.data.salt,data.data.wrap));if(!await dekCheck()){DEK=null;return false}
+    await dekSave();await deviceUnlock();await SB.from('kk_invites').delete().eq('email',MYEMAIL);try{localStorage.removeItem('kk_inv')}catch(e){}log('הצפנה','מחשב חדש נפתח עם קישור הזמנה');return true}catch(e){DEK=null;return false}}
+async function dropDevices(email){try{await SB.from('kk_devices').delete().eq('email',email)}catch(e){}try{await SB.from('kk_invites').delete().eq('email',email)}catch(e){}}
 function ensureKey(){return new Promise(async res=>{
   const {data,error}=await SB.from('kk_settings').select('data').eq('id','crypto').maybeSingle();
   if(error){showPending('אין חיבור לשרת: '+error.message,true);return res(false)}
@@ -1048,7 +1058,8 @@ function ensureKey(){return new Promise(async res=>{
     if(s){try{DEK=await importDek(kub(s))}catch(e){DEK=null}if(DEK&&await dekCheck()){deviceUnlock();return res(true)}DEK=null;dekForget()}
     if(await deviceUnlock())return res(true);
     /* הבעלים: נפתח אוטומטית דרך החשבון שלו (אותו דבר כמו כפתור "שחזור דרך המייל") – בלי להקליד מפתח */
-    if(isOwner()){try{if(await escrowLoad()){await dekSave();deviceUnlock();log('הצפנה','נפתח אוטומטית לבעלים');return res(true)}}catch(e){DEK=null}}}
+    if(isOwner()){try{if(await escrowLoad()){await dekSave();deviceUnlock();log('הצפנה','נפתח אוטומטית לבעלים');return res(true)}}catch(e){DEK=null}}
+    if(!isOwner()&&await inviteUnlock())return res(true)}
   if(!CMETA&&!isOwner()){showPending('המנהל הראשי צריך להיכנס ראשון ולקבוע את מפתח הארגון. נסה שוב אחר כך.');return res(false)}
   const done=()=>{const b=$('#pendingBox');b.hidden=true;b.classList.remove('keybox');res(true)};
   if(!CMETA){ /* הקמה ראשונה – רק הבעלים */
@@ -1811,7 +1822,7 @@ async function renderUsers(){const box=$('#usersIn');if(!box)return;const keepU=
     if($('#sysOff'))$('#sysOff').onclick=()=>{$('#sysConfirm').innerHTML=`<div class="confirm row" style="margin-top:8px;width:100%"><span>להשבית את המערכת לכל המשתמשים?</span><span class="spacer"></span><button class="btn danger" id="sysYes">כן, להשבית</button><button class="btn" id="sysNo">ביטול</button></div>`;
       $('#sysNo').onclick=()=>$('#sysConfirm').innerHTML='';$('#sysYes').onclick=async()=>{const msg=$('#sysMsg').value.trim()||'המערכת מושבתת זמנית.';const {error}=await SB.from('kk_system').update({disabled:true,message:msg,updated_at:new Date().toISOString()}).eq('id',1);if(error)return toast('השינוי נכשל: '+error.message);log('השבתת המערכת',msg);toast('המערכת הושבתה');renderUsers()}};
     /* מייל הזמנה עם קישור והוראות כניסה – נשלח מחשבון החברה */
-    const invite=async(email,quiet)=>{const r=await kkLogin({action:'welcome',email});if(r.error){toast(T('המשתמש נשמר, אבל מייל ההזמנה לא נשלח')+(r.error==='mail'?T(' (בעיה בשליחת המייל)'):''));return false}log('שליחת מייל הזמנה',email);if(!quiet)toast(T('נשלח מייל הזמנה אל ')+email);return true};
+    const invite=async(email,quiet)=>{const S=await makeInvite(email);const r=await kkLogin({action:'welcome',email,inv:S||undefined});if(r.error){toast(T('המשתמש נשמר, אבל מייל ההזמנה לא נשלח')+(r.error==='mail'?T(' (בעיה בשליחת המייל)'):''));return false}log('שליחת מייל הזמנה',email);if(!quiet)toast(T('נשלח מייל הזמנה אל ')+email);return true};
     $$('#usersIn [data-approve]').forEach(b=>b.onclick=async()=>{const em=b.dataset.approve;await upd(em,{active:true,blocked:false,role:$(`#usersIn select[data-role="${em}"]`).value},'המשתמש אושר ויכול להיכנס','אישור משתמש');if(await invite(em,true))toast(T('המשתמש אושר, ונשלח לו מייל עם הקישור והוראות הכניסה'))});
     $$('#usersIn [data-inv]').forEach(b=>b.onclick=async()=>{b.disabled=true;b.textContent=T('שולח…');await invite(b.dataset.inv);b.disabled=false;b.textContent=T('📧 שלח הזמנה שוב')});
     $$('#usersIn [data-reject]').forEach(b=>b.onclick=async()=>{await SB.from('kk_users').delete().eq('email',b.dataset.reject);await dropDevices(b.dataset.reject);log('דחיית בקשת כניסה',b.dataset.reject);toast('הבקשה נדחתה');renderUsers()});
@@ -2744,6 +2755,7 @@ function bulkCompose(people){if(!S.features.messages)return toast('שליחת ה
   $('#bCpE').onclick=()=>copy(uniq(people.map(p=>fixEmail(p.email||''))).join(', '),'המיילים הועתקו');
   $('#bCpP').onclick=()=>copy(uniq(people.map(p=>p.phone)).join('\n'),'הטלפונים הועתקו')}
 
+(()=>{const m=location.hash.match(/^#inv=([A-Za-z0-9_-]{20,64})$/);if(m){try{localStorage.setItem('kk_inv',m[1])}catch(e){}history.replaceState(null,'',location.pathname+location.search)}})();
 const GRANT_REQ=decodeURIComponent((location.hash.match(/^#grant=(.+)$/)||[])[1]||'');if(GRANT_REQ){ss.set('kk_grant',GRANT_REQ);history.replaceState(null,'',location.pathname+location.search)}
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
 </script>
