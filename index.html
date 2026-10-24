@@ -752,6 +752,7 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
    - כניסה עם מייל וסיסמה. בפעם הראשונה: כותבים את המייל ולוחצים "כניסה ראשונה או שכחת סיסמה? נשלח לך קוד למייל". מגיע מייל עם קוד של 6 ספרות. כותבים את הקוד, בוחרים סיסמה ולוחצים "שמור סיסמה והיכנס". מהפעם הבאה – מייל וסיסמה בלבד.
 3. שכח סיסמה? אותו קישור: מקבל קוד למייל ובוחר סיסמה חדשה.
 4. אחרי הכניסה אפשר להחליף סיסמה בכפתור "🔑 סיסמה" למעלה.
+5. מחשב חדש צריך אישור חד־פעמי (בגלל ההצפנה): כשגבאי נכנס ממחשב חדש, מגיע לבעלים מייל "… מחכה לאישור כניסה" עם קישור. לוחצים על הקישור מהמחשב שלך – המערכת נפתחת אצלך ומאשרת אותו מיד, והמסך אצלו נפתח לבד. (גם בלי המייל: כל כניסה שלך למערכת מאשרת את כל מי שמחכה.)
 הקוד נשלח רק למייל שאושר בניהול, ובתוקף ל־10 דקות.
 
 # מתי צריך את מפתח הארגון?
@@ -1073,11 +1074,12 @@ function ensureKey(){return new Promise(async res=>{
       <button type="button" class="btn primary" id="kGo">שמור והמשך</button><div id="kErr" class="err"></div>`);
     $('#kGo').onclick=async()=>{const p1=normKey($('#k1').value);if(p1.length<10)return kErr('לפחות 10 תווים');if(p1!==normKey($('#k2').value))return kErr('המפתחות לא זהים');
       kErr('שומר…');try{await changeOrgKey(p1);done()}catch(e){kErr('לא הצליח: '+(e.message||''))}}};
-  const waitUI=()=>{keyBox(`<h3>🔓 המחשב הזה ממתין לפתיחה</h3><p class="small">הנתונים במערכת מוצפנים. המחשב הזה ייפתח לבד ברגע שמנהל המערכת ייכנס למערכת (אצלו זה קורה אוטומטית, בלי שהוא צריך לעשות כלום). אפשר להשאיר את המסך פתוח – הוא יתעדכן לבד.</p>
+  const waitUI=()=>{keyBox(`<h3>🔓 המחשב הזה ממתין לאישור</h3><p class="small">הנתונים במערכת מוצפנים, ולכן מחשב חדש צריך אישור חד־פעמי. שלחנו עכשיו למנהל המערכת מייל, ומיד כשהוא מאשר – המחשב הזה נפתח לבד. אפשר להשאיר את המסך פתוח.</p>
       <button type="button" class="btn primary" id="kGo">בדוק עכשיו</button><div id="kErr" class="err"></div><button type="button" class="btn sm" id="kHave">יש לי את מפתח הארגון</button>${kOutBtn}`);
     const tryIt=async()=>{if(await deviceUnlock()){clearInterval(poll);done();return true}return false};
     $('#kGo').onclick=async()=>{kErr('בודק…');if(!await tryIt())kErr('עדיין לא נפתח. המחשב ייפתח כשמנהל ייכנס למערכת.')};
-    $('#kHave').onclick=()=>{clearInterval(poll);enterUI()};clearInterval(poll);poll=setInterval(()=>{if($('#pendingBox').hidden){clearInterval(poll);return}tryIt()},15000)};
+    $('#kHave').onclick=()=>{clearInterval(poll);enterUI()};clearInterval(poll);poll=setInterval(()=>{if($('#pendingBox').hidden){clearInterval(poll);return}tryIt()},8000);
+    kkLogin({action:'waiting',email:MYEMAIL}).catch(()=>{})};
   const recUI=()=>{keyBox(`<h3>🧾 שחזור עם קוד</h3><p class="small">מקלידים את קוד השחזור שקיבלת כשקבעת את המפתח, ובוחרים מפתח ארגון חדש.</p>
       <input id="kc" dir="ltr" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" autocomplete="off"><input id="k1" type="password" placeholder="מפתח ארגון חדש" autocomplete="new-password"><input id="k2" type="password" placeholder="שוב, לאימות" autocomplete="new-password">
       <button type="button" class="btn primary" id="kGo">שחזר</button><div id="kErr" class="err"></div><button type="button" class="btn sm" id="kBack">חזרה</button>${kOutBtn}`);
@@ -1229,7 +1231,10 @@ $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err
   else{if(await hash($('#pw').value)!==S.pw){loginFails++;err.textContent=loginFails>=3?'הסיסמה שגויה. אם שכחת — מנהל המערכת יכול להחליף אותה מהמחשב הראשי.':'הסיסמה שגויה, נסה שוב';$('#pw').select();return}
     ME=$('#gabbaiSel').value||'גבאי';ROLE='admin'}
   ss.set('biala_in','1');ss.set('biala_me',ME);ss.set('biala_role',ROLE);log('כניסה למערכת');enter()});
-function enter(){$('#login').hidden=true;$('#app').hidden=false;lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person','qscreen'].includes(v)?v:'')||location.hash.slice(1)||'home');initGlobalSearch();$('#instBtn').hidden=matchMedia('(display-mode: standalone)').matches;$('#instBtn').onclick=installApp;setTimeout(autoBackup,4000)}
+async function grantFromLink(){const em=ss.get('kk_grant');if(!em)return;ss.del('kk_grant');if(!isAdm()||!DEK){toast(T('רק מנהל יכול לאשר מחשב חדש'));return}
+  toast(T('מאשר את המחשב של')+' '+em+'…');let n=0;for(let i=0;i<3&&!n;i++){n=await grantDevices().catch(()=>0);if(!n)await new Promise(r=>setTimeout(r,2500))}
+  toast(n?T('אושר ✓ המחשב של')+' '+em+' '+T('נפתח עכשיו.'):T('לא נמצא מחשב שמחכה לאישור (אולי כבר נפתח).'))}
+function enter(){$('#login').hidden=true;$('#app').hidden=false;setTimeout(grantFromLink,800);lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person','qscreen'].includes(v)?v:'')||location.hash.slice(1)||'home');initGlobalSearch();$('#instBtn').hidden=matchMedia('(display-mode: standalone)').matches;$('#instBtn').onclick=installApp;setTimeout(autoBackup,4000)}
 function logout(){if(ME)log('יציאה מהמערכת');ME='';DEK=null;['biala_in','biala_fin','biala_adm','biala_me','biala_role','biala_logged'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
 /* נעילה אוטומטית אחרי 20 דקות בלי פעילות */
 let lastAct=Date.now();['click','keydown','mousemove','touchstart'].forEach(ev=>document.addEventListener(ev,()=>lastAct=Date.now(),{passive:true}));
@@ -2739,6 +2744,7 @@ function bulkCompose(people){if(!S.features.messages)return toast('שליחת ה
   $('#bCpE').onclick=()=>copy(uniq(people.map(p=>fixEmail(p.email||''))).join(', '),'המיילים הועתקו');
   $('#bCpP').onclick=()=>copy(uniq(people.map(p=>p.phone)).join('\n'),'הטלפונים הועתקו')}
 
+const GRANT_REQ=decodeURIComponent((location.hash.match(/^#grant=(.+)$/)||[])[1]||'');if(GRANT_REQ){ss.set('kk_grant',GRANT_REQ);history.replaceState(null,'',location.pathname+location.search)}
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
 </script>
 
