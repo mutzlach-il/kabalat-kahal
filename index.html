@@ -748,7 +748,7 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 - אפשר גם להעתיק את כל המיילים או כל הטלפונים.
 
 # הוספת גבאי חדש – איך הוא נכנס
-1. בלשונית "ניהול" ← משתמשים: מוסיפים את המייל שלו ומאשרים.
+1. בלשונית "ניהול" ← משתמשים: מוסיפים את המייל שלו ומאשרים. הוא מקבל אוטומטית מייל מחשבון החברה עם הקישור למערכת והוראות הכניסה (אפשר לבטל את הסימון "לשלוח לו מייל הזמנה"). אם המייל לא הגיע – בשורה שלו יש כפתור "📧 שלח הזמנה שוב".
 2. הגבאי נכנס באחת הדרכים:
    - "כניסה בלי סיסמה" (הכפתור הגדול במסך הכניסה): כותב את המייל, לוחץ "שלחו לי קוד כניסה למייל", ומקבל מייל עם קוד של 6 ספרות (מ"כתר טכנולוגיות"). כותב את הקוד ונכנס. לא צריך לבחור סיסמה בכלל. הקוד נשלח רק למייל שאושר בניהול, ובתוקף ל־10 דקות.
    - כפתור "כניסה עם Google" – אם המייל שלו הוא ג׳ימייל. לחיצה אחת.
@@ -1802,17 +1802,20 @@ async function renderUsers(){const box=$('#usersIn');if(!box)return;const keepU=
     <div class="tablewrap"><table class="wide"><thead><tr><th>שם</th><th>Gmail</th><th>הרשאה</th><th>מצב</th><th>כניסה אחרונה</th><th></th></tr></thead><tbody>
     ${act.map(u=>{const me=u.email===MYEMAIL;return `<tr><td><input class="uname" data-name="${esc(u.email)}" value="${esc(u.name||'')}" style="width:100%;min-width:110px"></td><td class="ltr small">${esc(u.email)}</td><td>${roleSel(u.email,u.role,me)}</td>
       <td>${u.blocked?'<span class="pill rev">מושבת</span>':'<span class="pill done">פעיל</span>'}</td><td>${u.last_login?dual(u.last_login.slice(0,10))+' <span class="g num">'+u.last_login.slice(11,16)+'</span>':'<span class="muted">עוד לא נכנס</span>'}</td>
-      <td class="row">${me?'<span class="muted small">(אתה)</span>':u.role==='owner'?'':`${isOwner()?`<button class="btn sm" data-block="${esc(u.email)}">${u.blocked?'הפעל מחדש':'השבת'}</button>`:''}<button class="btn sm danger" data-del="${esc(u.email)}">הסר</button>`}</td></tr>`}).join('')}
+      <td class="row">${me?'<span class="muted small">(אתה)</span>':u.role==='owner'?'':`${!u.blocked?`<button class="btn sm" data-inv="${esc(u.email)}" title="שולח לו שוב מייל עם הקישור והוראות הכניסה">📧 שלח הזמנה שוב</button>`:''}${isOwner()?`<button class="btn sm" data-block="${esc(u.email)}">${u.blocked?'הפעל מחדש':'השבת'}</button>`:''}<button class="btn sm danger" data-del="${esc(u.email)}">הסר</button>`}</td></tr>`}).join('')}
     </tbody></table></div>
     <form class="row" id="addU" style="margin-top:12px;align-items:end"><label class="f" style="flex:1;min-width:200px">הוספת משתמש — כתובת Gmail<input id="nuEmail" type="email" dir="ltr" required placeholder="name@gmail.com"></label>
-      <label class="f" style="min-width:150px">שם<input id="nuName"></label><label class="f">הרשאה${roleSel('_new','gabbai')}</label><button class="btn primary">הוסף ואשר</button></form>
-    <p class="muted small">מי שתוסיף כאן יוכל להיכנס מיד עם חשבון ה־Google שלו. מי שלא ברשימה — לא יראה כלום, ורק תופיע כאן בקשה שלו לאישור.</p>`;
+      <label class="f" style="min-width:150px">שם<input id="nuName"></label><label class="f">הרשאה${roleSel('_new','gabbai')}</label><label class="row small" style="align-self:center"><input type="checkbox" id="nuInv" checked> לשלוח לו מייל הזמנה</label><button class="btn primary">הוסף ואשר</button></form>
+    <p class="muted small">מי שתוסיף כאן מקבל מייל (מחשבון החברה) עם הקישור למערכת והוראות כניסה: קוד למייל, Google, או סיסמה שיבחר. מי שלא ברשימה — לא יראה כלום, ורק תופיע כאן בקשה שלו לאישור.</p>`;
     done();
     const upd=async(email,patch,msg,act)=>{const {error}=await SB.from('kk_users').update(patch).eq('email',email);if(error)return toast('השינוי נכשל: '+error.message);if(patch.blocked)await dropDevices(email);log(act,email,patch);toast(msg);renderUsers()};
     if($('#sysOn'))$('#sysOn').onclick=async()=>{const {error}=await SB.from('kk_system').update({disabled:false,updated_at:new Date().toISOString()}).eq('id',1);if(error)return toast('השינוי נכשל: '+error.message);log('הפעלת המערכת מחדש');toast('המערכת פעילה');renderUsers()};
     if($('#sysOff'))$('#sysOff').onclick=()=>{$('#sysConfirm').innerHTML=`<div class="confirm row" style="margin-top:8px;width:100%"><span>להשבית את המערכת לכל המשתמשים?</span><span class="spacer"></span><button class="btn danger" id="sysYes">כן, להשבית</button><button class="btn" id="sysNo">ביטול</button></div>`;
       $('#sysNo').onclick=()=>$('#sysConfirm').innerHTML='';$('#sysYes').onclick=async()=>{const msg=$('#sysMsg').value.trim()||'המערכת מושבתת זמנית.';const {error}=await SB.from('kk_system').update({disabled:true,message:msg,updated_at:new Date().toISOString()}).eq('id',1);if(error)return toast('השינוי נכשל: '+error.message);log('השבתת המערכת',msg);toast('המערכת הושבתה');renderUsers()}};
-    $$('#usersIn [data-approve]').forEach(b=>b.onclick=()=>upd(b.dataset.approve,{active:true,blocked:false,role:$(`#usersIn select[data-role="${b.dataset.approve}"]`).value},'המשתמש אושר ויכול להיכנס','אישור משתמש'));
+    /* מייל הזמנה עם קישור והוראות כניסה – נשלח מחשבון החברה */
+    const invite=async(email,quiet)=>{const r=await kkLogin({action:'welcome',email});if(r.error){toast(T('המשתמש נשמר, אבל מייל ההזמנה לא נשלח')+(r.error==='mail'?T(' (בעיה בשליחת המייל)'):''));return false}log('שליחת מייל הזמנה',email);if(!quiet)toast(T('נשלח מייל הזמנה אל ')+email);return true};
+    $$('#usersIn [data-approve]').forEach(b=>b.onclick=async()=>{const em=b.dataset.approve;await upd(em,{active:true,blocked:false,role:$(`#usersIn select[data-role="${em}"]`).value},'המשתמש אושר ויכול להיכנס','אישור משתמש');if(await invite(em,true))toast(T('המשתמש אושר, ונשלח לו מייל עם הקישור והוראות הכניסה'))});
+    $$('#usersIn [data-inv]').forEach(b=>b.onclick=async()=>{b.disabled=true;b.textContent=T('שולח…');await invite(b.dataset.inv);b.disabled=false;b.textContent=T('📧 שלח הזמנה שוב')});
     $$('#usersIn [data-reject]').forEach(b=>b.onclick=async()=>{await SB.from('kk_users').delete().eq('email',b.dataset.reject);await dropDevices(b.dataset.reject);log('דחיית בקשת כניסה',b.dataset.reject);toast('הבקשה נדחתה');renderUsers()});
     $$('#usersIn [data-block]').forEach(b=>b.onclick=()=>{const u=data.find(x=>x.email===b.dataset.block);upd(u.email,{blocked:!u.blocked},u.blocked?'המשתמש הופעל מחדש':'המשתמש הושבת',u.blocked?'הפעלת משתמש מחדש':'השבתת משתמש')});
     $$('#usersIn [data-del]').forEach(b=>b.onclick=()=>{const row=b.closest('td');row.innerHTML=`<span class="small">להסיר?</span><button class="btn sm danger" data-yes>כן</button><button class="btn sm" data-no>לא</button>`;
@@ -1821,7 +1824,8 @@ async function renderUsers(){const box=$('#usersIn');if(!box)return;const keepU=
     $$('#usersIn .uname').forEach(inp=>inp.onchange=()=>upd(inp.dataset.name,{name:inp.value.trim()},'השם עודכן','שינוי שם משתמש'));
     $('#addU').onsubmit=async e=>{e.preventDefault();const email=$('#nuEmail').value.trim().toLowerCase();
       const {error}=await SB.from('kk_users').upsert({email,name:$('#nuName').value.trim()||email.split('@')[0],role:$('#usersIn select[data-role="_new"]').value,active:true,blocked:false});
-      if(error)return toast('ההוספה נכשלה: '+error.message);log('הוספת משתמש',email);toast('המשתמש נוסף ויכול להיכנס עם Google');renderUsers()};
+      if(error)return toast('ההוספה נכשלה: '+error.message);log('הוספת משתמש',email);
+      if($('#nuInv').checked){if(await invite(email,true))toast(T('המשתמש נוסף, ונשלח לו מייל עם הקישור והוראות הכניסה'))}else toast('המשתמש נוסף');renderUsers()};
     return}
   /* מצב מחשב אחד: משתמשים עם סיסמה אישית */
   const U=S.users||[];
