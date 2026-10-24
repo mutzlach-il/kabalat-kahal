@@ -228,7 +228,7 @@ table.grid td[contenteditable]{cursor:text;min-width:70px}table.grid td[contente
 .qsnow span,.qsnext>span{font-size:1.4rem;opacity:.85}.qsnow b{display:block;font-size:min(30vw,14rem);line-height:1;color:#ffd77a;font-variant-numeric:tabular-nums}.qsn{font-size:2rem}
 .qsnext>div{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:8px}.qsnext>div>div b{font-size:4rem;display:block}.qsfoot{opacity:.75;font-size:1.1rem}
 @media (max-width:700px){.gsearch{max-width:none;flex-basis:100%}}
-.codecard{display:grid;gap:10px;background:rgba(255,255,255,.08);border:2px solid #d9a441;border-radius:16px;padding:18px 16px;text-align:center}.codecard h2{margin:0;font-size:1.5rem;color:#f5e6c8}.codecard p{margin:0;color:#e9d8b4}
+.codecard{display:grid;gap:10px;padding:6px 0;text-align:center;border-top:1px solid rgba(217,195,155,.3)}.codecard h2{margin:0;font-size:1.5rem;color:#f5e6c8}.codecard p{margin:0;color:#e9d8b4}
 .btn.big{font-size:1.15rem;padding:14px 18px;min-height:52px}.codein{font-size:1.6rem!important;letter-spacing:.35em;text-align:center}
 details.pwbox{border-top:1px solid rgba(217,195,155,.3);padding-top:8px}details.pwbox>summary{cursor:pointer;color:#d9c39b;font-size:.9rem;text-align:center;list-style:none}details.pwbox[open]{display:flex;flex-direction:column;gap:8px}details.pwbox>input,details.pwbox>button{width:100%;box-sizing:border-box}
 .pwlinks{font-size:13px;text-align:center}.pwlinks a{color:inherit;text-decoration:underline;cursor:pointer}
@@ -247,8 +247,9 @@ details.pwbox{border-top:1px solid rgba(217,195,155,.3);padding-top:8px}details.
     <img src="crest.webp" alt="כתר ביאלה">
     <h1>מערכת קבלת קהל</h1>
     <p>מרכז חסידי ביאלא בני ברק</p>
+    <div id="gLogin" hidden class="gwrap"><div class="or">כניסה בלחיצה אחת עם חשבון Google</div><div id="gBtn"></div><div id="gMsg" class="or"></div></div>
     <div id="codeWrap" hidden class="codecard">
-      <h2>כניסה בלי סיסמה</h2>
+      <div class="or">או</div><h2>כניסה בלי סיסמה</h2>
       <p class="small">גם בכניסה הראשונה. כותבים את המייל שהמנהל אישר, ומקבלים קוד כניסה למייל.</p>
       <div id="cStep1" style="display:grid;gap:10px"><input id="cem" type="email" dir="ltr" placeholder="כתובת המייל שלך" aria-label="כתובת המייל שלך" autocomplete="email">
         <button type="button" class="btn primary big" id="cSend">📧 שלחו לי קוד כניסה למייל</button></div>
@@ -259,7 +260,6 @@ details.pwbox{border-top:1px solid rgba(217,195,155,.3);padding-top:8px}details.
         <button type="button" class="btn primary big" id="cGo">כניסה</button>
         <div class="pwlinks"><a href="#" id="cAgain">לא הגיע? שלחו שוב</a> · <a href="#" id="cBack">מייל אחר</a></div></div>
       <div class="err" id="cErr"></div></div>
-    <div id="gLogin" hidden class="gwrap"><div class="or">או בלחיצה אחת עם חשבון Google</div><div id="gBtn"></div><div id="gMsg" class="or"></div></div>
     <div id="emailWrap" hidden style="display:grid;gap:8px"><div class="or">או עם מייל וסיסמה</div><input id="em" type="email" dir="ltr" placeholder="כתובת מייל" aria-label="כתובת מייל" autocomplete="username"><div class="pwlinks"><a href="#" id="pwFirst">אין לי עדיין סיסמה – לבחור סיסמה</a> · <a href="#" id="pwForgot">שכחתי סיסמה</a></div></div>
     <input id="pw" type="password" placeholder="סיסמת כניסה" aria-label="סיסמה" autocomplete="current-password">
     <select id="gabbaiSel" aria-label="מי נכנס"></select>
@@ -1201,7 +1201,7 @@ function newPasswordUI(){const b=$('#pendingBox');b.hidden=false;b.classList.rem
     if(await afterCloudAuth(data.user)){ss.set('biala_me',ME);enter()}}}
 /* כניסה עם קוד חד־פעמי למייל – בלי סיסמה, גם בפעם הראשונה */
 function foldPasswordLogin(){if($('.pwbox'))return;const d=document.createElement('details');d.className='pwbox';d.open=true;d.innerHTML='<summary>'+T('או: כניסה עם מייל וסיסמה שבחרת')+'</summary>';
-  $('#gLogin').after(d);d.append($('#emailWrap'),$('#pw'),$('#loginForm button[type=submit]'));const o=$('#emailWrap .or');if(o)o.remove()}
+  $('#codeWrap').after(d);d.append($('#emailWrap'),$('#pw'),$('#loginForm button[type=submit]'));const o=$('#emailWrap .or');if(o)o.remove()}
 let codeEmail='';
 /* קוד הכניסה נשלח ונבדק בשרת (פונקציה kk-login) – רק למייל שאושר בניהול. המייל יוצא מחשבון החברה. */
 async function kkLogin(body){const r=await SB.functions.invoke('kk-login',{body});if(!r.error)return r.data||{};let j=null;try{j=await r.error.context.json()}catch(e){}return j||{error:'net',detail:r.error.message}}
