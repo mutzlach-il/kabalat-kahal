@@ -264,6 +264,7 @@ details.pwbox{border-top:1px solid rgba(217,195,155,.3);padding-top:8px}details.
     <button class="btn gold" type="submit">כניסה</button>
     <div class="err" id="loginErr"></div>
     <div id="pendingBox" hidden class="pending"></div>
+    <div class="pwlinks" style="margin-top:10px"><a href="#check" id="chkLink">יש בעיה בכניסה? בדיקת חיבור</a></div>
   </form>
 </div>
 
@@ -756,6 +757,9 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 6. מחשב חדש בלי קישור הזמנה צריך אישור חד־פעמי (בגלל ההצפנה): כשגבאי נכנס ממחשב חדש, מגיע לבעלים מייל "… מחכה לאישור כניסה" עם קישור. לוחצים על הקישור מהמחשב שלך – המערכת נפתחת אצלך ומאשרת אותו מיד, והמסך אצלו נפתח לבד. (גם בלי המייל: כל כניסה שלך למערכת מאשרת את כל מי שמחכה.)
 הקוד נשלח רק למייל שאושר בניהול, ובתוקף ל־10 דקות.
 
+# בעיה בכניסה – בדיקת חיבור
+בתחתית מסך הכניסה יש "יש בעיה בכניסה? בדיקת חיבור" (או הקישור https://mutzlach-il.github.io/kabalat-kahal/#check). העמוד בודק מהמחשב של המשתמש: אינטרנט, שרת הנתונים, שליחת קודים, כניסה עם Google, ומה שמור במחשב. כל שורה מקבלת ✅ או ❌. לוחצים "העתק את התוצאות" ושולחים למנהל. ❌ עם "Failed to fetch" או "timeout" – בדרך כלל הסינון חוסם במחשב הזה.
+
 # מתי צריך את מפתח הארגון?
 הבעלים לא צריך להקליד את המפתח: בכל מחשב או דפדפן חדש המערכת נפתחת לו אוטומטית דרך החשבון שלו. גבאים מאושרים נפתחים אוטומטית כשמנהל נכנס. את המפתח וקוד השחזור שומרים רק לגיבוי.
 
@@ -1149,6 +1153,7 @@ async function boot(){
   fillGabbai();renderModebar();initGoogle();
   /* רענון אוטומטי כשעובדים כמה גבאים */
   if(MODE==='cloud'&&/^#bakasha/.test(location.hash)){renderPublicForm();return false}
+  if(MODE==='cloud'&&/^#check/.test(location.hash)){renderCheck();return false}
   if(MODE==='cloud'){setInterval(()=>{if(!document.hidden&&!$('#app').hidden){grantDevices().catch(()=>{});if(view!=='new'&&view!=='edit')loadCloud().then(refresh).catch(()=>{})}},45000);
     setInterval(async()=>{if($('#app').hidden||isOwner()||!MYEMAIL)return;const [{data:sys},{data:me}]=await Promise.all([SB.from('kk_system').select('disabled,message').eq('id',1).maybeSingle(),SB.from('kk_users').select('active,blocked').eq('email',MYEMAIL).maybeSingle()]);
       const msg=sys?.disabled?(sys.message||'המערכת מושבתת זמנית.'):(!me||me.blocked||!me.active)?'המשתמש שלך הושבת. פנה לבעל המערכת.':'';if(msg){R=[];EXP=[];logout();$('#loginErr').textContent=T(msg)}},20000);
@@ -1220,6 +1225,7 @@ async function sendCode(){const em=$('#em').value.trim().toLowerCase(),e=$('#cEr
   if(r.error){e.textContent=codeErr(r.error);return}
   codeEmail=em;e.textContent='';$('#cStep1').hidden=true;$('#cLinks').hidden=true;$('#cStep2').hidden=false;$('#cInfo').textContent=T('שלחנו קוד בן 6 ספרות אל')+' '+em+'. '+T('כתוב אותו כאן ובחר סיסמה. מהפעם הבאה נכנסים עם המייל והסיסמה. (לא רואים את המייל? לבדוק גם בספאם.)');$('#ccode').value='';$('#ccode').focus()}
 $('#cFirst').onclick=e=>{e.preventDefault();sendCode()};
+$('#chkLink').onclick=e=>{e.preventDefault();if(!SB){toast(T('בדיקת החיבור זמינה רק כשהמערכת מחוברת לשרת'));return}history.replaceState(null,'','#check');renderCheck()};
 $('#cAgain').onclick=e=>{e.preventDefault();sendCode()};
 $('#cBack').onclick=e=>{e.preventDefault();$('#cStep1').hidden=false;$('#cLinks').hidden=false;$('#cStep2').hidden=true;$('#cErr').textContent='';$('#em').focus()};
 async function verifyCode(){const t=$('#ccode').value.replace(/\D/g,''),e=$('#cErr'),p1=$('#cpw1').value;if(t.length!==6){e.textContent=T('כתוב את 6 הספרות של הקוד');$('#ccode').focus();return}
@@ -2759,6 +2765,28 @@ function bulkCompose(people){if(!S.features.messages)return toast('שליחת ה
   $('#bCpP').onclick=()=>copy(uniq(people.map(p=>p.phone)).join('\n'),'הטלפונים הועתקו')}
 
 (()=>{const m=location.hash.match(/^#inv=([A-Za-z0-9_-]{20,64})$/);if(m){try{localStorage.setItem('kk_inv',m[1])}catch(e){}history.replaceState(null,'',location.pathname+location.search)}})();
+/* ---------- בדיקת חיבור: בודק מהמחשב של המשתמש מה עובד ומה חסום (למשל בסינון) ---------- */
+async function renderCheck(){$('#login').hidden=true;$('#app').hidden=true;let w=$('#pubForm');if(!w){w=document.createElement('div');w.id='pubForm';w.className='gut pubform';document.body.insertBefore(w,$('#toast'))}
+  const tests=[],add=(name,fn)=>tests.push({name,fn,st:'…',info:''});
+  const tmo=(p,ms=12000)=>Promise.race([p,new Promise((_,r)=>setTimeout(()=>r(new Error('timeout – אין תשובה אחרי '+ms/1000+' שניות')),ms))]);
+  const hdr={apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY};
+  add('אינטרנט ואתר המערכת',async()=>{const r=await tmo(fetch(location.pathname+'manifest.json?x='+Date.now(),{cache:'no-store'}));if(!r.ok)throw new Error('סטטוס '+r.status);return 'תקין'});
+  add('שרת הנתונים – כניסה (auth)',async()=>{const r=await tmo(fetch(SUPA_URL+'/auth/v1/health',{headers:hdr}));if(!r.ok)throw new Error('סטטוס '+r.status);return 'תקין'});
+  add('שרת הנתונים – טבלאות (rest)',async()=>{const r=await tmo(fetch(SUPA_URL+'/rest/v1/kk_public?select=id&limit=1',{headers:hdr}));if(!r.ok)throw new Error('סטטוס '+r.status);return 'תקין'});
+  add('שרת הנתונים – רשומות',async()=>{const r=await tmo(fetch(SUPA_URL+'/rest/v1/kk_records?select=id&limit=1',{headers:hdr}));if(!r.ok)throw new Error('סטטוס '+r.status);return 'תקין'});
+  add('שרת הנתונים – שליחת קודים (פונקציה)',async()=>{const r=await tmo(SB.functions.invoke('kk-login',{body:{action:'check',email:'check@example.com'}}));let j=null;if(r.error){try{j=await r.error.context.json()}catch(e){}if(!j)throw new Error(r.error.message)}return 'תקין'});
+  add('כניסה עם Google',async()=>{await tmo(new Promise((ok,no)=>{if(window.google?.accounts)return ok();const sc=document.createElement('script');sc.src='https://accounts.google.com/gsi/client';sc.onload=ok;sc.onerror=()=>no(new Error('הסקריפט של Google חסום או לא נטען'));document.head.appendChild(sc)}));return 'תקין'});
+  add('המחשב הזה',async()=>{const {data}=await SB.auth.getSession();const em=data?.session?.user?.email||'';let k=0;try{for(let i=0;i<localStorage.length;i++)if((localStorage.key(i)||'').startsWith('kk_dek_'))k++}catch(e){}
+    let dev='';try{const id=await devGet('id');dev=id?'יש מזהה מחשב':'אין מזהה מחשב'}catch(e){dev='אין גישה לאחסון'}return (em?'מחובר כ־'+em:'לא מחובר')+' · '+(k?'יש מפתח נתונים שמור':'אין מפתח נתונים שמור')+' · '+dev});
+  const draw=()=>{w.innerHTML=`<div class="card"><div class="pfh"><h1>בדיקת חיבור – קבלת קהל</h1><p>בודק מהמחשב הזה מה עובד ומה חסום</p></div>
+    <table class="wide"><tbody>${tests.map(t=>`<tr><td>${t.st==='ok'?'✅':t.st==='bad'?'❌':'⏳'}</td><td><b>${esc(t.name)}</b><div class="small muted">${esc(t.info)}</div></td></tr>`).join('')}</tbody></table>
+    <p class="small muted">דפדפן: ${esc(navigator.userAgent.slice(0,140))}<br>זמן: ${new Date().toLocaleString('he-IL')}</p>
+    ${tests.some(t=>t.st==='bad')?'<div class="notice">יש שורה עם ❌. אם כתוב בה "Failed to fetch" או "timeout" – בדרך כלל הסינון (נטפרי וכדומה) חוסם את השרת במחשב הזה.</div>':''}
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="ckCopy">העתק את התוצאות</button><button class="btn" id="ckAgain">בדוק שוב</button><a class="btn" href="./">חזרה לכניסה</a></div>
+    <p class="small muted">לוחצים "העתק את התוצאות" ושולחים למנהל המערכת (או מצלמים את המסך).</p></div>`;
+    $('#ckCopy').onclick=()=>copy(['בדיקת חיבור – קבלת קהל',new Date().toLocaleString('he-IL'),...tests.map(t=>(t.st==='ok'?'✓ ':t.st==='bad'?'✗ ':'… ')+t.name+(t.info?' – '+t.info:'')),navigator.userAgent].join('\n'),'התוצאות הועתקו');
+    $('#ckAgain').onclick=()=>renderCheck()};
+  draw();for(const t of tests){try{t.info=await t.fn();t.st='ok'}catch(e){t.st='bad';t.info=String(e?.message||e).slice(0,160)}draw()}}
 const GRANT_REQ=decodeURIComponent((location.hash.match(/^#grant=(.+)$/)||[])[1]||'');if(GRANT_REQ){ss.set('kk_grant',GRANT_REQ);history.replaceState(null,'',location.pathname+location.search)}
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
 </script>
