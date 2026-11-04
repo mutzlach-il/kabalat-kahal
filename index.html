@@ -421,7 +421,7 @@ const I18N={
 'כניסה עם Google לא זמינה כרגע (אולי חסומה בסינון). אפשר להיכנס עם מייל וסיסמה.':'Google sign-in is not available right now (maybe blocked by the filter). You can sign in with email and password.','איך עובדת הכניסה עם Google?':'How does Google sign-in work?','גבאים (בלי סיסמה אישית)':'Gabbaim (without a personal password)',
 'שם בכל שורה. השמות מופיעים בבחירה במסך הכניסה. עדיף להוסיף משתמשים עם סיסמה אישית למעלה, כדי שיהיה ידוע מי עשה מה.':'One name per line. The names appear on the sign-in screen. It is better to add users with a personal password above, so it is known who did what.',
 'בעלים — רק אתה: גם השבתת המערכת והשבתת משתמשים. מנהל — הכל חוץ מזה (מוסיף ומסיר משתמשים, יומן). גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.':'Owner — only you: also disabling the system and disabling users. Manager — everything else (adds and removes users, log). Gabbai + finances — also finances and the cash box. Gabbai — receiving, editing, scanning and printing. View only — sees but does not change.',
-'מנהל — הכל, כולל משתמשים ויומן. גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.':'Manager — everything, including users and the log. Gabbai + finances — also finances and the cash box. Gabbai — receiving, editing, scanning and printing. View only — sees but does not change.',
+'מנהל — הכל, כולל משתמשים (יומן הפעולות ופעילות המשתמשים — רק לבעלים). גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.':'Manager — everything, including users and the log. Gabbai + finances — also finances and the cash box. Gabbai — receiving, editing, scanning and printing. View only — sees but does not change.',
 'עדיין אין משתמשים, ולכן כולם נכנסים עם סיסמה משותפת אחת. הוסף משתמשים עם סיסמה אישית, כדי שיהיה ידוע מי נכנס ומה עשה.':'There are no users yet, so everyone signs in with one shared password. Add users with a personal password, so it is known who signed in and what they did.',
 'המשתמש הראשון שתוסיף יהיה מנהל.':'The first user you add will be the manager.','הרשאה':'Permission','מצב':'Status','כניסה אחרונה':'Last sign-in','עוד לא נכנס':'Not signed in yet','פעיל':'Active','חסום':'Blocked','בטל חסימה':'Unblock',
 'איפוס סיסמה':'Reset password','(אתה)':'(you)','סיסמה אישית':'Personal password','הוסף משתמש':'Add user','הוסף ואשר':'Add & approve','אשר כניסה':'Approve','דחה':'Reject','להסיר?':'Remove?','כן':'Yes','לא':'No',
@@ -549,11 +549,19 @@ const DEF_HELP=`# ברוכים הבאים למערכת קבלת הקהל
 
 # משתמשים והרשאות (ניהול)
 בלשונית "ניהול" ← "משתמשים והרשאות" מוסיפים משתמש (עם שרת: לפי כתובת Gmail; בלי שרת: שם וסיסמה אישית), מאשרים בקשות הצטרפות, חוסמים, מסירים ומאפסים סיסמה.
-יש ארבע הרשאות: מנהל — הכל, כולל משתמשים ויומן. גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.
+יש ארבע הרשאות: מנהל — הכל, כולל משתמשים (יומן הפעולות ופעילות המשתמשים — רק לבעלים). גבאי + כספים — גם כספים וקופה. גבאי — קליטה, עריכה, סריקה והדפסה. צפייה בלבד — רואה ולא משנה.
 המשתמש הראשון שמוסיפים הוא המנהל, ותמיד חייב להישאר לפחות מנהל אחד.
 עם שרת יש גם הרשאת "בעלים" — רק לך. רק הבעלים יכול להשבית משתמש (וגם להפעיל אותו מחדש) ולהשבית את כל המערכת זמנית: בלשונית "ניהול" ← "משתמשים והרשאות" ← "השבת את המערכת לכולם". כשהמערכת מושבתת אף אחד חוץ ממך לא נכנס ולא רואה נתונים, ומי שהיה מחובר נזרק תוך כחצי דקה. מנהלים אחרים יכולים רק להוסיף ולהסיר משתמשים.
 
-# יומן פעולות (מנהל בלבד)
+# פעילות משתמשים (רק לבעלים)
+רק אתה, כבעלים, רואה את הלשונית "פעילות משתמשים". מנהלים אחרים לא רואים אותה, וגם לא את "יומן פעולות".
+בטבלה מופיע כל משתמש: כמה פעמים נכנס, כמה זמן היה בסך הכל בתוך המערכת, כמה פעולות עשה (צפיות, עריכות וקליטות, כספים), ומתי היה פעיל לאחרונה.
+למעלה בוחרים תקופה: היום, יומיים אחרונים, שבוע, חודש או שנה. אפשר גם לבחור משתמש אחד מהרשימה.
+לחיצה על שורה של משתמש מציגה את כל הכניסות שלו: מתי נכנס, עד מתי, כמה זמן, מאיזה מכשיר, ומה בדיוק עשה בכל כניסה ובאיזו שעה.
+זמן השהייה נמדד מ־4/11/2026. לכניסות מלפני כן הזמן משוער לפי הפעולות, וזה מסומן ליד הכניסה.
+משתמש שפתוח אצלו המסך עכשיו מסומן "מחובר עכשיו".
+
+# יומן פעולות (רק לבעלים)
 כל כניסה ויציאה, בקשה חדשה, עריכה, שינוי סטטוס, מחיקה, צפייה בבקשה, הדפסה, הורדה לוורד ולאקסל, פתיחת כספים, שינוי הגדרות וניסיון כניסה שנכשל — נרשמים עם השם, התאריך והשעה.
 אפשר לסנן לפי משתמש, פעולה ותאריכים, ולהוריד לאקסל. ניסיונות כושלים ומחיקות מסומנים בכתום. אי אפשר למחוק או לשנות את היומן.
 
@@ -1254,8 +1262,8 @@ $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();const err
 async function grantFromLink(){const em=ss.get('kk_grant');if(!em)return;if(!isAdm()||!DEK){alert(T('כדי לאשר את')+' '+em+' '+T('צריך להיות מחובר עם חשבון המנהל. לחץ "יציאה", היכנס עם החשבון שלך, והאישור יקרה מיד.'));return}ss.del('kk_grant');
   toast(T('מאשר את המחשב של')+' '+em+'…');let n=0;for(let i=0;i<3&&!n;i++){n=await grantDevices().catch(()=>0);if(!n)await new Promise(r=>setTimeout(r,2500))}
   toast(n?T('אושר ✓ המחשב של')+' '+em+' '+T('נפתח עכשיו.'):T('לא נמצא מחשב שמחכה לאישור (אולי כבר נפתח).'))}
-function enter(){$('#login').hidden=true;$('#app').hidden=false;setTimeout(grantFromLink,800);lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person','qscreen'].includes(v)?v:'')||location.hash.slice(1)||'home');initGlobalSearch();$('#instBtn').hidden=matchMedia('(display-mode: standalone)').matches;$('#instBtn').onclick=installApp;setTimeout(autoBackup,4000)}
-function logout(){if(ME)log('יציאה מהמערכת');ME='';DEK=null;['biala_in','biala_fin','biala_adm','biala_me','biala_role','biala_logged'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
+function enter(){$('#login').hidden=true;$('#app').hidden=false;setTimeout(sessionStart,1500);setTimeout(grantFromLink,800);lastAct=Date.now();const v=ss.get('biala_view');ss.del('biala_view');go((v&&!['edit','view','person','qscreen'].includes(v)?v:'')||location.hash.slice(1)||'home');initGlobalSearch();$('#instBtn').hidden=matchMedia('(display-mode: standalone)').matches;$('#instBtn').onclick=installApp;setTimeout(autoBackup,4000)}
+function logout(){try{sessionEnd()}catch(e){}if(ME)log('יציאה מהמערכת');ME='';DEK=null;['biala_in','biala_fin','biala_adm','biala_me','biala_role','biala_logged'].forEach(k=>ss.del(k));FIN=ADM=false;if(SB)SB.auth.signOut();$('#app').hidden=true;$('#login').hidden=false;$('#pw').value='';$('#loginErr').textContent=''}
 /* נעילה אוטומטית אחרי 20 דקות בלי פעילות */
 let lastAct=Date.now();['click','keydown','mousemove','touchstart'].forEach(ev=>document.addEventListener(ev,()=>lastAct=Date.now(),{passive:true}));
 setInterval(()=>{if(S?.features?.autolock&&!$('#app').hidden&&Date.now()-lastAct>20*60000){logout();$('#loginErr').textContent='המערכת ננעלה אחרי 20 דקות ללא פעילות'}},30000);
@@ -1276,7 +1284,7 @@ function gate(kind,title,onOk){
 
 /* ===== ניווט ===== */
 let view='home', current=null, filt={q:'',status:'',date:'',tag:'',rev:false};
-const TABS=()=>[['home','ראשי'],S.features.today&&['today','היום שלי'],MODE==='cloud'&&S.features.webform&&canEdit()&&['inbox','בקשות מהבית'],['list','בקשות'],canEdit()&&['new','בקשה חדשה'],S.features.scan&&canEdit()&&['scan','סריקת דפים'],['people','אנשים'],S.features.grid&&['grid','כל הנתונים'],S.features.contacts&&['contacts','אנשי קשר'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.tidings&&['tidings','בשורות טובות'],S.features.finance&&canFin()&&['money','כספים'],S.features.finance&&S.features.donors&&canFin()&&['donors','תורמים'],S.features.report&&canEdit()&&['report','דוח חודשי'],S.features.kupa&&canFin()&&['kupa','קופה'],['help','הוראות'],isAdm()&&['log','יומן פעולות'],isAdm()&&['admin','ניהול'],['logout','יציאה']].filter(Boolean);
+const TABS=()=>[['home','ראשי'],S.features.today&&['today','היום שלי'],MODE==='cloud'&&S.features.webform&&canEdit()&&['inbox','בקשות מהבית'],['list','בקשות'],canEdit()&&['new','בקשה חדשה'],S.features.scan&&canEdit()&&['scan','סריקת דפים'],['people','אנשים'],S.features.grid&&['grid','כל הנתונים'],S.features.contacts&&['contacts','אנשי קשר'],['docs','מסמכים והדפסות'],S.features.queue&&['queue','תור היום'],S.features.kvittel&&['kvittel','קוויטל'],S.features.names&&['names','שמות לתפילה'],(S.features.yahr||S.features.birthdays)&&['dates','ימי זיכרון והולדת'],S.features.tidings&&['tidings','בשורות טובות'],S.features.finance&&canFin()&&['money','כספים'],S.features.finance&&S.features.donors&&canFin()&&['donors','תורמים'],S.features.report&&canEdit()&&['report','דוח חודשי'],S.features.kupa&&canFin()&&['kupa','קופה'],['help','הוראות'],isOwner()&&MODE==='cloud'&&['activity','פעילות משתמשים'],isOwner()&&['log','יומן פעולות'],isAdm()&&['admin','ניהול'],['logout','יציאה']].filter(Boolean);
 function renderTabs(){const rev=R.filter(r=>r.review).length;
   $('#tabs').innerHTML=TABS().map(([k,t])=>`<button data-v="${k}" aria-current="${k===(['view','edit'].includes(view)?'list':view==='person'?'people':view)}">${t}${k==='list'&&rev?`<span class="badge">${rev}</span>`:''}${k==='inbox'&&INBOX.length?`<span class="badge">${INBOX.length}</span>`:''}</button>`).join('');
   $('#who').textContent=ME?`מחובר: ${ME}`:'';if($('#myPw'))$('#myPw').hidden=MODE!=='cloud'||!ME}
@@ -1286,7 +1294,7 @@ $('#themeBtn').onclick=()=>{const cur=document.documentElement.dataset.theme||(m
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v==='logout')return logout();go(b.dataset.v)});
 let pendingPre=null, curPerson=null;
 const VIEWS={home:()=>{renderHome();const g=goalBar(),sec=$('#main section');if(g&&sec){const h=sec.querySelector('h2');(h||sec.firstChild).insertAdjacentHTML(h?'afterend':'beforebegin',g)}},list:renderList,new:()=>{const p=pendingPre;pendingPre=null;renderForm(null,p)},scan:renderScan,docs:renderDocs,person:renderPerson,edit:()=>renderForm(current),view:renderView,queue:renderQueue,kvittel:renderKvittel,names:renderNames,dates:renderDates,people:renderPeople,
-  money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>ADM&&isAdm()?renderLog():gate('adm','יומן פעולות',renderLog),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,grid:renderGrid,today:renderToday,inbox:renderInbox,tidings:renderTidings,qscreen:renderQScreen,contacts:renderContacts,report:renderReport,donors:()=>FIN&&canFin()?renderDonors():gate('fin','תורמים',renderDonors),admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
+  money:()=>FIN&&canFin()?renderMoney():gate('fin','כספים',renderMoney),log:()=>isOwner()?(ADM?renderLog():gate('adm','יומן פעולות',renderLog)):go('home'),activity:()=>isOwner()?renderActivity():go('home'),kupa:()=>FIN&&canFin()?renderKupa():gate('fin','קופה',renderKupa),help:renderHelp,grid:renderGrid,today:renderToday,inbox:renderInbox,tidings:renderTidings,qscreen:renderQScreen,contacts:renderContacts,report:renderReport,donors:()=>FIN&&canFin()?renderDonors():gate('fin','תורמים',renderDonors),admin:()=>ADM&&isAdm()?renderAdmin():gate('adm','ניהול',renderAdmin)};
 function go(v,rec){if(!VIEWS[v])v='home';typing=false;if(!canEdit()&&['new','edit','scan'].includes(v)){toast('יש לך הרשאת צפייה בלבד');return}view=v;if(rec!==undefined)current=rec;renderTabs();VIEWS[v]();window.scrollTo(0,0)}
 let dirty=false;
 /* שומר על מה שהוקלד: עדכון מהשרת לא מוחק שדות שעוד לא נשמרו */
@@ -2789,6 +2797,63 @@ async function renderCheck(){$('#login').hidden=true;$('#app').hidden=true;let w
   draw();for(const t of tests){try{t.info=await t.fn();t.st='ok'}catch(e){t.st='bad';t.info=String(e?.message||e).slice(0,160)}draw()}}
 const GRANT_REQ=decodeURIComponent((location.hash.match(/^#grant=(.+)$/)||[])[1]||'');if(GRANT_REQ){ss.set('kk_grant',GRANT_REQ);history.replaceState(null,'',location.pathname+location.search)}
 boot().then(ok=>{if(ok||(MODE==='local'&&ss.get('biala_in')==='1'))enter()});
+/* =====================================================================
+   תוספות 6: מעקב זמן שהייה, ומסך "פעילות משתמשים" – רק לבעלים
+   ===================================================================== */
+let SESSION_ID=null,_sesT=null,_sesTok='';
+async function sessionStart(){if(MODE!=='cloud'||!MYEMAIL||SESSION_ID)return;try{
+  const {data}=await SB.auth.getSession();_sesTok=data?.session?.access_token||'';
+  SESSION_ID='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);const now=new Date().toISOString();
+  const {error}=await SB.from('kk_sessions').insert({id:SESSION_ID,email:MYEMAIL,name:ME,started:now,last_seen:now,device:devName()});if(error){SESSION_ID=null;return}
+  clearInterval(_sesT);_sesT=setInterval(sessionPing,60000)}catch(e){SESSION_ID=null}}
+async function sessionPing(){if(!SESSION_ID||document.hidden||$('#app').hidden)return;try{const {data}=await SB.auth.getSession();_sesTok=data?.session?.access_token||_sesTok;
+  await SB.from('kk_sessions').update({last_seen:new Date().toISOString()}).eq('id',SESSION_ID)}catch(e){}}
+/* בסגירת החלון – בקשה שממשיכה גם אחרי שהדף נסגר */
+function sessionEnd(){if(!SESSION_ID)return;const id=SESSION_ID;SESSION_ID=null;clearInterval(_sesT);const now=new Date().toISOString();
+  try{fetch(SUPA_URL+'/rest/v1/kk_sessions?id=eq.'+encodeURIComponent(id),{method:'PATCH',keepalive:true,headers:{apikey:SUPA_KEY,Authorization:'Bearer '+(_sesTok||SUPA_KEY),'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({ended:now,last_seen:now})})}catch(e){}}
+window.addEventListener('pagehide',sessionEnd);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)sessionPing()});
+
+const fmtDur=ms=>{const m=Math.max(0,Math.round(ms/60000));if(m<1)return 'פחות מדקה';if(m<60)return m+' דק׳';const h=Math.floor(m/60);return h+' שע׳'+(m%60?' ו־'+(m%60)+' דק׳':'')};
+const fmtT=d=>{const x=new Date(d);return x.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'})+' '+x.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})};
+const fmtH=d=>new Date(d).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+let actFilt={who:'',days:7};
+async function renderActivity(){if(!isOwner())return go('home');
+  $('#main').innerHTML=`<section><div class="row"><h2>פעילות משתמשים</h2><span class="spacer"></span><button class="btn sm" id="acRef">רענן</button></div>
+  <p class="muted">רק אתה (בעלים) רואה את המסך הזה: מתי כל משתמש נכנס, כמה זמן היה במערכת, ומה בדיוק עשה בכל כניסה.</p>
+  <div class="toolbar"><select id="acWho"><option value="">כל המשתמשים</option></select>
+    <select id="acDays">${[[1,'היום'],[2,'יומיים אחרונים'],[7,'שבוע אחרון'],[30,'חודש אחרון'],[365,'שנה אחרונה']].map(([d,t])=>`<option value="${d}" ${actFilt.days==d?'selected':''}>${t}</option>`).join('')}</select></div>
+  <div id="acBody"><div class="card empty"><span class="spin"></span></div></div></section>`;
+  $('#acRef').onclick=renderActivity;
+  const since=new Date(Date.now()-actFilt.days*864e5);if(actFilt.days===1)since.setHours(0,0,0,0);const sinceISO=since.toISOString();
+  const [{data:users},{data:ses,error:e1},{data:logs,error:e2}]=await Promise.all([SB.from('kk_users').select('email,name,role,blocked,active'),
+    SB.from('kk_sessions').select('*').gte('last_seen',sinceISO).order('started',{ascending:false}).limit(3000),
+    SB.from('kk_log').select('*').gte('at',sinceISO).order('at',{ascending:true}).limit(8000)]);
+  if(e1||e2){$('#acBody').innerHTML=`<div class="card empty">לא ניתן לטעון: ${esc((e1||e2).message)}</div>`;return}
+  const L=await Promise.all((logs||[]).map(async r=>{let tg=r.target||'';try{if(tg.startsWith('enc:'))tg=await decStr(tg.slice(4))}catch(e){tg='🔒'}return {at:r.at,email:(r.email||'').toLowerCase(),who:r.details?.who||r.email,action:r.action,target:tg}}));
+  const U={};(users||[]).forEach(u=>U[u.email.toLowerCase()]=u);
+  const emails=[...new Set([...(users||[]).map(u=>u.email.toLowerCase()),...(ses||[]).map(s=>s.email.toLowerCase()),...L.map(l=>l.email).filter(Boolean)])];
+  const nameOf=e=>U[e]?.name||(L.find(l=>l.email===e)?.who)||e;
+  $('#acWho').innerHTML+=emails.sort((a,b)=>nameOf(a).localeCompare(nameOf(b),'he')).map(e=>`<option value="${esc(e)}" ${actFilt.who===e?'selected':''}>${esc(nameOf(e))} (${ROLES[U[e]?.role]||'—'})</option>`).join('');
+  $('#acWho').onchange=e=>{actFilt.who=e.target.value;renderActivity()};$('#acDays').onchange=e=>{actFilt.days=+e.target.value;renderActivity()};
+  /* בונים "ביקורים" לכל משתמש: ביקורים שנמדדו (זמן מדויק) + פעולות ישנות שמקובצות לפי הפסקה של חצי שעה (זמן משוער) */
+  const visits={};emails.forEach(e=>visits[e]=[]);
+  (ses||[]).forEach(s=>{const e=s.email.toLowerCase();(visits[e]=visits[e]||[]).push({start:new Date(s.started),end:new Date(s.ended||s.last_seen),open:!s.ended&&Date.now()-new Date(s.last_seen)<3*60000,device:s.device,exact:true,acts:[]})});
+  const loose={};
+  L.forEach(l=>{if(!l.email)return;const t=new Date(l.at);const v=(visits[l.email]||[]).find(v=>v.exact&&t>=new Date(v.start-60000)&&t<=new Date(+v.end+120000));if(v){v.acts.push(l);return}(loose[l.email]=loose[l.email]||[]).push(l)});
+  Object.entries(loose).forEach(([e,arr])=>{let cur=null;arr.forEach(l=>{const t=new Date(l.at);if(!cur||t-cur.end>30*60000){cur={start:t,end:t,exact:false,acts:[]};(visits[e]=visits[e]||[]).push(cur)}cur.end=t;cur.acts.push(l)})});
+  Object.values(visits).forEach(a=>a.sort((x,y)=>y.start-x.start));
+  const show=actFilt.who?[actFilt.who]:emails;
+  const rows=show.map(e=>{const v=visits[e]||[];const total=v.reduce((s,x)=>s+(x.end-x.start),0);const acts=v.reduce((s,x)=>s+x.acts.length,0);return {e,v,total,acts,last:v[0]?.end}}).sort((a,b)=>(b.last||0)-(a.last||0));
+  const cnt=(arr,rx)=>arr.filter(a=>rx.test(a.action)).length;
+  $('#acBody').innerHTML=`<div class="tablewrap"><table class="wide"><thead><tr><th>משתמש</th><th>הרשאה</th><th>כניסות</th><th>זמן במערכת</th><th>פעולות</th><th>צפיות</th><th>עריכות / קליטות</th><th>כספים</th><th>פעילות אחרונה</th></tr></thead><tbody>
+    ${rows.map(r=>{const all=r.v.flatMap(x=>x.acts);return `<tr class="click" data-acw="${esc(r.e)}"><td><b>${esc(nameOf(r.e))}</b><div class="small muted ltr">${esc(r.e)}</div></td><td>${ROLES[U[r.e]?.role]||'—'}${U[r.e]?.blocked?' <span class="pill rev">מושבת</span>':''}</td>
+      <td class="num">${r.v.length}</td><td class="num">${r.v.length?fmtDur(r.total):'—'}</td><td class="num">${r.acts}</td><td class="num">${cnt(all,/צפייה/)}</td><td class="num">${cnt(all,/עריכ|קליט|בקשה חדשה|סריקה|הוספ/)}</td><td class="num">${cnt(all,/כספ|תרומ|קבלה|קופה/)}</td>
+      <td>${r.last?fmtT(r.last):'<span class="muted">לא נכנס בתקופה הזו</span>'}</td></tr>`}).join('')||'<tr><td colspan="9" class="empty">אין פעילות</td></tr>'}</tbody></table></div>
+    ${actFilt.who?`<h3 style="margin:16px 0 8px">כל הכניסות של ${esc(nameOf(actFilt.who))}</h3>${(visits[actFilt.who]||[]).map(v=>`<div class="card" style="margin-bottom:10px"><div class="row"><b>${fmtT(v.start)} – ${fmtH(v.end)}</b><span class="pill ${v.open?'wait':'done'}">${v.open?'מחובר עכשיו':fmtDur(v.end-v.start)}</span>${v.exact?'':'<span class="small muted">(זמן משוער לפי הפעולות – לפני שהתחלנו למדוד)</span>'}<span class="spacer"></span><span class="small muted">${esc(v.device||'')}</span></div>
+      ${v.acts.length?`<table class="wide" style="margin-top:6px"><tbody>${v.acts.map(a=>`<tr><td class="num" style="width:70px">${fmtH(a.at)}</td><td><b>${esc(a.action)}</b></td><td>${esc(a.target||'')}</td></tr>`).join('')}</tbody></table>`:'<div class="small muted">נכנס ולא עשה פעולות</div>'}</div>`).join('')||'<div class="card empty">אין כניסות בתקופה הזו</div>'}`:'<p class="muted small">לחיצה על שורה מציגה את כל הכניסות של אותו משתמש, ומה עשה בכל כניסה.</p>'}`;
+  $$('[data-acw]').forEach(tr=>tr.onclick=()=>{actFilt.who=tr.dataset.acw;renderActivity()})}
+
 </script>
 
 </body>
